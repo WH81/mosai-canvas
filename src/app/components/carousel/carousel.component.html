@@ -1,0 +1,21 @@
+<swiper
+  [modules]="[Autoplay, Pagination, Navigation]"
+  [autoplay]="autoplay"
+  [pagination]="pagination"
+  [navigation]="navigation"
+  [slidesPerView]="slidesPerView"
+  [centeredSlides]="centeredSlides"
+  [spaceBetween]="spaceBetween"
+  class="mySwiper"
+>
+  <ng-container *ngFor="let item of items">
+    <ng-template swiperSlide>
+      <div class="slide-content">
+        <img [src]="item.imageUrl" [alt]="item.bandName" />
+        <h3>{{ item.bandName }} - {{ item.songName }}</h3>
+        <p>Released: {{ item.releaseDate }}</p>
+        <a [href]="item.buttonLink" target="_blank">Listen Now</a>
+      </div>
+    </ng-template>
+  </ng-container>
+</swiper>

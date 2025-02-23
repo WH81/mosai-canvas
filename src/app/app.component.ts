@@ -1,12 +1,21 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { CarouselService } from './services/carousel/carousel.service';
+import { CarouselComponent } from './components/carousel/carousel.component';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrls: ['./app.component.scss'],
+  standalone: true,
+  imports: [CarouselComponent, RouterModule]
 })
-export class AppComponent {
-  title = 'frontend';
+export class AppComponent implements OnInit {
+  carouselItems: { imageUrl: string; bandName: string; songName: string; releaseDate: string; buttonLink: string; }[] = [];
+
+  constructor(private carouselService: CarouselService) {}
+
+  ngOnInit(): void {
+    this.carouselItems = this.carouselService.getCarouselItems();
+  }
 }

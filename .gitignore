@@ -1,17 +1,67 @@
 # See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
 
-# Compiled output
+# ========================
+# 🔹 Compiled Output
+# ========================
 /dist
 /tmp
 /out-tsc
 /bazel-out
+/build/
+/out/
 
-# Node
+# ========================
+# 🔹 Secret Files & Credentials (Security Critical)
+# ========================
+*.key
+*.pem
+*.crt
+*.p12
+*.der
+*.sql
+*.sqlite
+*.db
+
+# SSH keys (NEVER commit these)
+.ssh/
+id_rsa
+id_rsa.pub
+
+# Cloud & Deployment Configs
+.aws/
+.azure/
+.gcp/
+firebase.json
+firestore.rules
+
+# ========================
+# 🔹 Node.js & Package Management
+# ========================
 /node_modules
 npm-debug.log
 yarn-error.log
 
-# IDEs and editors
+# Lock files (exclude if not needed in repo)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# ========================
+# 🔹 Environment Variables (Security Critical)
+# ========================
+.env
+.env.local
+.env.*.local
+.env.development
+.env.test
+.env.production
+.env.staging
+.envrc
+.npmrc
+
+# ========================
+# 🔹 IDEs & Editors
+# ========================
 .idea/
 .project
 .classpath
@@ -28,7 +78,9 @@ yarn-error.log
 !.vscode/extensions.json
 .history/*
 
-# Miscellaneous
+# ========================
+# 🔹 Miscellaneous Build & Cache Directories
+# ========================
 /.angular/cache
 .sass-cache/
 /connect.lock
@@ -37,6 +89,47 @@ yarn-error.log
 testem.log
 /typings
 
-# System files
+# Temporary Development & Debugging Files
+*.swp
+*.swo
+.~lock.*
+
+# ========================
+# 🔹 System Files (OS-specific)
+# ========================
 .DS_Store
-Thumbs.db
+._.DS_Store
+.Spotlight-V100
+.Trashes
+desktop.ini
+
+# ========================
+# 🔹 Logs & Debugging Files
+# ========================
+*.log
+*.log.*
+logs/
+logs/**/*.log
+
+# ========================
+# 🔹 Docker & CI/CD (If applicable)
+# ========================
+.dockerignore
+docker-compose.override.yml
+
+# ========================
+# 🔹 Local Development Overrides (Optional)
+# ========================
+.nvmrc
+.node-version
+.ruby-version
+
+# ========================
+# 🔹 Testing & Coverage (Jest, Cypress, etc.)
+# ========================
+/coverage/
+.cypress/videos/
+.cypress/screenshots/
+.turbo/
+.jest/
+.pytest_cache/

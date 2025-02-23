@@ -1,0 +1,70 @@
+.swiper-container {
+  width: 100%;
+  height: 100vh; /* Full screen height */
+}
+
+.swiper-slide {
+  width: 10%; /* Default width for side slides */
+  transition: width 0.3s ease;
+}
+
+.swiper-slide-active {
+  width: 80%; /* Width for the active center slide */
+}
+
+.carousel-image {
+  width: 100%;
+  height: 100vh;
+  object-fit: cover;
+}
+
+.carousel-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+
+  .carousel-date {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 18px;
+    color: white;
+  }
+
+  .carousel-content {
+    text-align: center;
+    color: white;
+
+    .carousel-title {
+      font-size: 36px;
+      margin: 0;
+    }
+
+    .carousel-subtitle {
+      font-size: 20px;
+      margin: 10px 0;
+    }
+
+    .carousel-button {
+      display: inline-block;
+      padding: 10px 20px;
+      font-size: 16px;
+      color: #fff;
+      background-color: #007bff;
+      text-decoration: none;
+      border-radius: 30px; /* Pill-shaped button */
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: #0056b3;
+      }
+    }
+  }
+}
