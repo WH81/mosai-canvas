@@ -133,3 +133,9 @@ docker-compose.override.yml
 .turbo/
 .jest/
 .pytest_cache/
+
+# ========================
+# 🔹 TypeScript Build Artifacts
+# ========================
+*.js
+*.js.map

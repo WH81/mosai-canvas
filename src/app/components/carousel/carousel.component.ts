@@ -1,41 +1,50 @@
-import { Component, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { SwiperModule } from 'swiper/angular';
-import { SwiperCore, Autoplay, Pagination, Navigation } from 'swiper/modules';
-
-SwiperCore.use([Autoplay, Pagination, Navigation]);
-
-// Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/autoplay';
-import 'swiper/css/pagination';
-import 'swiper/css/navigation';
-
-// Register Swiper modules globally (optional)
-SwiperCore.use([Autoplay, Pagination, Navigation]);
+import { RouterModule } from '@angular/router';
+import { trigger, transition, style, animate } from '@angular/animations';
+import { CarouselService } from '../../services/carousel/carousel.service';
+import { CarouselItem } from '../../models/carousel/carousel.model';
 
 @Component({
   selector: 'app-carousel',
   standalone: true,
-  imports: [CommonModule, SwiperModule],
   templateUrl: './carousel.component.html',
   styleUrls: ['./carousel.component.scss'],
+  imports: [CommonModule, RouterModule],
+  animations: [
+    trigger('slideUp', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(20px)' }),
+        animate(
+          '600ms ease-out',
+          style({ opacity: 1, transform: 'translateY(0)' })
+        ),
+      ]),
+    ]),
+  ],
 })
-export class CarouselComponent {
-  @Input() items: { 
-    imageUrl: string; 
-    bandName: string; 
-    songName: string; 
-    releaseDate: string; 
-    buttonLink: string; 
-  }[] = [];
 
-  // Swiper settings (Angular binding)
-  autoplay = { delay: 3000, disableOnInteraction: false };
-  pagination = { clickable: true };
-  navigation = true;
-  slidesPerView = 'auto';
-  centeredSlides = true;
-  spaceBetween = 30;
+export class CarouselComponent implements OnInit {
+  carouselItems: CarouselItem[] = [];
+  currentIndex: number = 0;
+
+  constructor(private carouselService: CarouselService) {}
+
+  ngOnInit(): void {
+    this.carouselService.getCarouselItems().subscribe(items => {
+      this.carouselItems = items;
+    });
+  }
+
+  selectSlide(index: number): void {
+    this.currentIndex = index;
+  }
+
+    nextSlide(): void {
+        this.currentIndex = (this.currentIndex + 1) % this.carouselItems.length;
+    }
+
+    prevSlide(): void {
+        this.currentIndex = (this.currentIndex - 1 + this.carouselItems.length) % this.carouselItems.length;
+    }
 }

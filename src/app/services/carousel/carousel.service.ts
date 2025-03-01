@@ -1,32 +1,41 @@
 import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { CarouselItem } from '../../models/carousel/carousel.model';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class CarouselService {
-  getCarouselItems() {
-    return [
-      {
-        imageUrl: 'assets/images/band1.jpg',
-        bandName: 'Band One',
-        songName: 'Song One',
-        releaseDate: '2023-01-01',
-        buttonLink: 'https://example.com/page1',
-      },
-      {
-        imageUrl: 'assets/images/band2.jpg',
-        bandName: 'Band Two',
-        songName: 'Song Two',
-        releaseDate: '2023-02-01',
-        buttonLink: 'https://example.com/page2',
-      },
-      {
-        imageUrl: 'assets/images/band3.jpg',
-        bandName: 'Band Three',
-        songName: 'Song Three',
-        releaseDate: '2023-03-01',
-        buttonLink: 'https://example.com/page3',
-      },
+
+  constructor() { }
+
+  getCarouselItems(): Observable<CarouselItem[]> {
+    const items: CarouselItem[] = [
+        {
+            imageUrl: '/assets/images/metallica.jpg',
+            bandName: 'Metallica',
+            songName: 'Unforgiven',
+            releaseDate: '1991',
+            buttonText: 'Listen',
+            buttonLink: 'https://www.youtube.com/watch?v=A_MjCqQoLLA'
+        },
+        {
+            imageUrl: '/assets/images/iron-maiden.jpg',
+            bandName: 'Iron Maiden',
+            songName: 'The Trooper',
+            releaseDate: '1983',
+            buttonText: 'Listen',
+            buttonLink: 'https://www.youtube.com/watch?v=O4irXQhgMqg'
+        },
+        {
+            imageUrl: '/assets/images/gnr.jpg',
+            bandName: 'Guns N\' Roses',
+            songName: 'Sweet Child O\' Mine',
+            releaseDate: '1987',
+            buttonText: 'Listen',
+            buttonLink: 'https://www.youtube.com/watch?v=flsBpM4x1E0'
+        },
     ];
+    return of(items);
   }
 }
