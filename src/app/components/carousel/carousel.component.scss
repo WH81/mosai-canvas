@@ -11,9 +11,13 @@
     background-position: center;
     background-repeat: no-repeat;
     display: none;
+    touch-action: pan-y;
+    cursor: grab;
+    user-select: none;
 
     &.active {
       display: block;
+      cursor: grabbing;
     }
 
     .carousel-content {
