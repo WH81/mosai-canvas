@@ -1,0 +1,17 @@
+<nav class="menu">
+    <ul>
+      <li *ngFor="let item of menuItems" class="menu-item" [class.has-submenu]="item.submenu">
+        <a *ngIf="!item.submenu" [routerLink]="item.path">{{ item.name }}</a>
+        
+        <div *ngIf="item.submenu" class="submenu-wrapper" (mouseenter)="isSubmenuOpen = true" (mouseleave)="isSubmenuOpen = false">
+          <a class="submenu-title" (click)="toggleSubmenu()">{{ item.name }}</a>
+          <ul class="submenu" *ngIf="isSubmenuOpen">
+            <li *ngFor="let sub of item.submenu">
+              <a [routerLink]="sub.path">{{ sub.name }}</a>
+            </li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+  </nav>
+  
