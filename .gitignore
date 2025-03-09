@@ -1,0 +1,227 @@
+# ========================
+# 🔹 Node.js (Backend & Frontend)
+# ========================
+/backend/node_modules
+/frontend/node_modules
+/backend/npm-debug.log
+/frontend/npm-debug.log
+/backend/yarn-error.log
+/frontend/yarn-error.log
+
+# ========================
+# 🔹 Environment Variables (Security Critical)
+# ========================
+/backend/.env
+/frontend/.env
+/frontend/.env.local
+/frontend/.env.*.local
+/frontend/.env.development
+/frontend/.env.test
+/frontend/.env.production
+/frontend/.env.staging
+/.envrc
+/.npmrc
+
+# ========================
+# 🔹 Secret Files & Credentials (Security Critical)
+# ========================
+/backend/*.key
+/frontend/*.key
+/backend/*.pem
+/frontend/*.pem
+/backend/*.crt
+/frontend/*.crt
+/backend/*.p12
+/frontend/*.p12
+/backend/*.der
+/frontend/*.der
+/backend/*.sql
+/frontend/*.sql
+/backend/*.sqlite
+/frontend/*.sqlite
+/backend/*.db
+/frontend/*.db
+/backend/.ssh/
+/frontend/.ssh/
+/backend/id_rsa
+/frontend/id_rsa
+/backend/id_rsa.pub
+/frontend/id_rsa.pub
+
+# Cloud & Deployment Configs
+/backend/aws/
+/frontend/aws/
+/backend/azure/
+/frontend/azure/
+/backend/gcp/
+/frontend/gcp/
+/backend/firebase.json
+/frontend/firebase.json
+/backend/firestore.rules
+/frontend/firestore.rules
+
+# ========================
+# 🔹 Logs (Frontend & Backend)
+# ========================
+/backend/logs/
+/frontend/logs/
+/backend/*.log
+/frontend/*.log
+/backend/npm-debug.log*
+/frontend/npm-debug.log*
+/backend/yarn-debug.log*
+/frontend/yarn-debug.log*
+/backend/yarn-error.log*
+/frontend/yarn-error.log*
+
+# ========================
+# 🔹 IDEs & Editors (Backend & Frontend)
+# ========================
+/backend/.vscode/
+/frontend/.vscode/
+/backend/.idea/
+/frontend/.idea/
+/backend/.project
+/frontend/.project
+/backend/.classpath
+/frontend/.classpath
+/backend/.c9/
+/frontend/.c9/
+/backend/*.launch
+/frontend/*.launch
+/backend/.settings/
+/frontend/.settings/
+/backend/*.sublime-workspace
+/frontend/*.sublime-workspace
+/backend/.history/
+/frontend/.history/
+
+# Visual Studio Code
+/backend/.vscode/*
+/frontend/.vscode/*
+!/frontend/.vscode/settings.json
+!/frontend/.vscode/tasks.json
+!/frontend/.vscode/launch.json
+!/frontend/.vscode/extensions.json
+
+# ========================
+# 🔹 Compiled Output (Frontend & Backend)
+# ========================
+/backend/dist/
+/frontend/dist/
+/backend/tmp/
+/frontend/tmp/
+/backend/out-tsc/
+/frontend/out-tsc/
+/backend/bazel-out/
+/frontend/bazel-out
+/backend/build/
+/frontend/build/
+/backend/out/
+/frontend/out/
+/backend/coverage/
+/frontend/coverage/
+
+# ========================
+# 🔹 SQLite3 Database Files (If applicable, Backend)
+# ========================
+/backend/*.sqlite3
+
+# ========================
+# 🔹 Package Distribution (Backend)
+# ========================
+/backend/dist/
+/backend/build/
+
+# ========================
+# 🔹 System Files (OS-specific)
+# ========================
+/backend/.DS_Store
+/frontend/.DS_Store
+/backend/._.DS_Store
+/frontend/._.DS_Store
+/backend/.Spotlight-V100
+/frontend/.Spotlight-V100
+/backend/.Trashes
+/frontend/.Trashes
+/backend/desktop.ini
+/frontend/desktop.ini
+
+# ========================
+# 🔹 Docker & CI/CD (If applicable)
+# ========================
+/backend/.dockerignore
+/frontend/.dockerignore
+/backend/docker-compose.override.yml
+/frontend/docker-compose.override.yml
+
+# ========================
+# 🔹 Temporary Development & Debugging Files
+# ========================
+/backend/*.swp
+/frontend/*.swp
+/backend/*.swo
+/frontend/*.swo
+/backend/.~lock.*
+/frontend/.~lock.*
+
+# ========================
+# 🔹 Testing & Coverage (Jest, Cypress, etc.)
+# ========================
+/backend/.cypress/videos/
+/frontend/.cypress/videos/
+/backend/.cypress/screenshots/
+/frontend/.cypress/screenshots/
+/backend/.turbo/
+/frontend/.turbo/
+/backend/.jest/
+/frontend/.jest/
+/backend/.pytest_cache/
+/frontend/.pytest_cache/
+
+# ========================
+# 🔹 TypeScript Build Artifacts (Frontend & Backend)
+# ========================
+/backend/*.js
+/frontend/*.js
+/backend/*.js.map
+/frontend/*.js.map
+
+# ========================
+# 🔹 Miscellaneous Build & Cache Directories
+# ========================
+/backend/angular/cache/
+/frontend/angular/cache/
+/backend/.sass-cache/
+/frontend/.sass-cache/
+/backend/.connect.lock
+/frontend/.connect.lock
+/backend/libpeerconnection.log
+/frontend/libpeerconnection.log
+/backend/testem.log
+/frontend/testem.log
+/backend/typings/
+/frontend/typings/
+
+# ========================
+# 🔹 Angular Specific Build Files (Generated)
+# ========================
+/frontend/.angular/cache/
+/frontend/.angular/tsbuildinfo
+/frontend/.angular/cache/*/
+
+# ========================
+# 🔹 Images & Assets (If they are large or irrelevant for GitHub)
+# ========================
+/frontend/src/assets/images/*.jpg
+/frontend/src/assets/images/*.png
+/frontend/src/assets/images/*.jpeg
+
+# ========================
+# 🔹 Other Large Files & Generated Files
+# ========================
+/frontend/src/.next/
+/frontend/src/dist/
+/frontend/src/.cache/
+/frontend/src/temp/
+/frontend/src/public/

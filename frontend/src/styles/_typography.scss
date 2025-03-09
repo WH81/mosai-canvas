@@ -1,0 +1,58 @@
+// Mixin for text styles
+@mixin text-style($size, $line-height, $weight) {
+    font-size: $size;
+    line-height: $line-height;
+    font-weight: $weight;
+  }
+  
+// Heading styles
+h1 { 
+    @include text-style(3.5rem, 1.2, 700); 
+    color: #ffffff; 
+    margin-bottom: 5px;
+}
+
+h2 { 
+    @include text-style(2rem, 1.3, 600); 
+    color: #ffffff;
+    margin-bottom: 5px;
+}
+
+h3 { 
+    @include text-style(1.5rem, 1.4, 600); 
+    color: #38d0eb;
+    margin-bottom: 5px;
+}
+
+h4 { 
+    @include text-style(1.125rem, 1.5, 500);
+    color: #ffffff;
+    margin-bottom: 5px;
+}
+
+h5 { 
+    @include text-style(1rem, 1.6, 500);
+    color: #ffffff;
+    margin-bottom: 5px;
+}
+
+h6 { 
+    @include text-style(0.875rem, 1.6, 400);
+    color: #ffffff;
+    margin-bottom: 5px;
+}
+
+// Paragraphs
+p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #ffffff;
+    margin-bottom: 1rem;
+}
+
+small {
+    font-size: 1rem;
+    opacity: 0.8;
+    color: #ffffff;
+    line-height: 1.7;
+  }
