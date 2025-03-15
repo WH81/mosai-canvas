@@ -5,4 +5,5 @@ export interface CarouselItem {
   releaseDate: string;
   buttonText: string;
   buttonLink: string;
+  formattedDate: string | null;
 }
