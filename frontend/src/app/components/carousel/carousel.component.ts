@@ -1,4 +1,5 @@
 import { Component, OnInit, HostListener } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { trigger, transition, style, animate } from '@angular/animations';
@@ -11,19 +12,16 @@ import { CarouselItem } from '../../models/carousel/carousel.model';
   templateUrl: './carousel.component.html',
   styleUrls: ['./carousel.component.scss'],
   imports: [CommonModule, RouterModule],
+  providers: [DatePipe],
   animations: [
     trigger('slideUp', [
       transition(':enter', [
         style({ opacity: 0, transform: 'translateY(20px)' }),
-        animate(
-          '600ms ease-out',
-          style({ opacity: 1, transform: 'translateY(0)' })
-        ),
+        animate('600ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
       ]),
     ]),
   ],
 })
-
 export class CarouselComponent implements OnInit {
   carouselItems: CarouselItem[] = [];
   currentIndex: number = 0;
@@ -31,11 +29,15 @@ export class CarouselComponent implements OnInit {
   startX: number = 0;
   endX: number = 0;
 
-  constructor(private carouselService: CarouselService) {}
+  constructor(private carouselService: CarouselService, private datePipe: DatePipe) {}
 
   ngOnInit(): void {
     this.carouselService.getCarouselItems().subscribe(items => {
-      this.carouselItems = items;
+      // Format the date before setting it
+      this.carouselItems = items.map(item => ({
+        ...item,
+        formattedDate: this.datePipe.transform(item.releaseDate, 'MMMM d, yyyy')
+      }));
     });
   }
 
@@ -43,15 +45,14 @@ export class CarouselComponent implements OnInit {
     this.currentIndex = index;
   }
 
-    nextSlide(): void {
-        this.currentIndex = (this.currentIndex + 1) % this.carouselItems.length;
-    }
+  nextSlide(): void {
+    this.currentIndex = (this.currentIndex + 1) % this.carouselItems.length;
+  }
 
-    prevSlide(): void {
-        this.currentIndex = (this.currentIndex - 1 + this.carouselItems.length) % this.carouselItems.length;
-    }
+  prevSlide(): void {
+    this.currentIndex = (this.currentIndex - 1 + this.carouselItems.length) % this.carouselItems.length;
+  }
 
-  
   // Handle touch/swipe gestures
   @HostListener('touchstart', ['$event'])
   @HostListener('mousedown', ['$event'])
@@ -73,12 +74,11 @@ export class CarouselComponent implements OnInit {
     if (!this.isDragging) return;
     this.isDragging = false;
     const diff = this.startX - this.endX;
-    
+
     if (diff > 50) {
       this.nextSlide();
     } else if (diff < -50) {
       this.prevSlide();
     }
   }
-
 }
