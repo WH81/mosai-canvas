@@ -12,8 +12,8 @@ describe('CarouselComponent', () => {
   let carouselServiceSpy: jasmine.SpyObj<CarouselService>;
 
   const mockCarouselItems: CarouselItem[] = [
-    { imageUrl: 'image1.jpg', bandName: 'Band 1', songName: 'Song 1', releaseDate: '2024-01-01', buttonText: 'Play', buttonLink: '/play/1' },
-    { imageUrl: 'image2.jpg', bandName: 'Band 2', songName: 'Song 2', releaseDate: '2024-02-01', buttonText: 'Play', buttonLink: '/play/2' }
+    { imageUrl: 'image1.jpg', bandName: 'Band 1', songName: 'Song 1', releaseDate: '2024-01-01', buttonText: 'Play', buttonLink: '/play/1', formattedDate: null },
+    { imageUrl: 'image2.jpg', bandName: 'Band 2', songName: 'Song 2', releaseDate: '2024-02-01', buttonText: 'Play', buttonLink: '/play/2', formattedDate: null }
   ];
 
   beforeEach(async () => {
