@@ -6,6 +6,7 @@ import compression from "compression";
 import connectDB from "./config/database";
 import bandRoutes from "./routes/bandRoutes";
 import carouselRoutes from "./routes/carouselRoutes";
+import aboutRoutes from "./routes/aboutRoutes";
 
 dotenv.config();
 connectDB();
@@ -18,6 +19,7 @@ app.use(compression());
 
 app.use("/api/bands", bandRoutes);
 app.use("/api/carousel", carouselRoutes);
+app.use("/api/about", aboutRoutes);
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

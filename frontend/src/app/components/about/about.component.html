@@ -1,0 +1,17 @@
+<div class="about-container">
+    <h1>About the Band</h1>
+  
+    <!-- Display the About section -->
+    <div *ngIf="about.title && about.body; else loading">
+      <div class="about-content">
+        <h2>{{ about.title }}</h2>
+        <p>{{ about.body }}</p>
+      </div>
+    </div>
+  
+    <!-- Fallback content while data is loading -->
+    <ng-template #loading>
+      <p class="loading">Loading about section...</p>
+    </ng-template>
+  </div>
+  
