@@ -1,34 +1,35 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http'; // Import HttpClient for API calls
-import { AboutService } from '../../services/about/about.service'; // Service to get About content
-import { About } from '../../models/about/about.model'; // Model for About data
-import { CommonModule } from '@angular/common'; // Import CommonModule for directives like *ngIf
+import { AboutService } from '../../services/about/about.service';
+import { About } from '../../models/about/about.model';
+import { CommonModule } from '@angular/common'; // For common Angular directives like *ngIf
 
 @Component({
   selector: 'app-about',
-  standalone: true,  // Standalone component
-  templateUrl: './about.component.html', // Template for the About component
-  styleUrls: ['./about.component.css'], // Styles for the About component
-  imports: [CommonModule], // Import CommonModule to use *ngIf
-  providers: [],  
+  standalone: true,
+  templateUrl: './about.component.html',
+  styleUrls: ['./about.component.scss'],
+  imports: [CommonModule],
 })
 export class AboutComponent implements OnInit {
-  about: About = { title: '', body: '' }; // Initialize the About model
+  aboutList: About[] = []; // Store the fetched data
+  loading: boolean = true; // Show loading indicator while waiting for data
 
-  // Constructor injects the AboutService for making API calls
   constructor(private aboutService: AboutService) {}
 
-  // ngOnInit is used to load the About content when the component initializes
   ngOnInit(): void {
-    this.aboutService.getAbout().subscribe(
-      (data: About | null) => {
-        if (data) {
-          this.about = data; // Assign the fetched data to the About object
-        }
+    this.getAboutData(); // Fetch the data when the component initializes
+  }
+
+  getAboutData() {
+    this.aboutService.getAboutData().subscribe({
+      next: (data: About[]) => {
+        this.aboutList = data; // Store the fetched data in the about property
+        this.loading = false; // Stop loading when data is fetched
       },
-      (error: any) => {
-        console.error('Error fetching About content', error); // Log any errors that occur during the API call
-      }
-    );
+      error: (error) => {
+        console.error('Error fetching About data', error);
+        this.loading = false; // Stop loading even if there is an error
+      },
+    });
   }
 }
