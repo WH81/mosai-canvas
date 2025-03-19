@@ -3,12 +3,13 @@
     font-family: Arial, sans-serif;
     max-width: 800px;
     margin: 0 auto;
-    background-color: #f8f9fa;
+    background-color: transparent;
     border-radius: 8px;
   }
   
   .about-content {
     margin-bottom: 20px;
+    text-align: center;
   }
   
   .about-content h2 {
@@ -27,6 +28,5 @@
   .loading {
     font-size: 18px;
     color: #888;
-    text-align: center;
   }
   
