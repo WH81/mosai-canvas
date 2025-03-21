@@ -1,9 +1,7 @@
 .menu {
     width: 100%;
-    position: fixed;
-    top: 0px;
-    left: 0;
-    background: rgba(0, 0, 0, 0.8);
+    position: relative;
+    background: linear-gradient(to right, #4A90E2, #50E3C2);
     text-align: center;
     padding: 1rem 0;
     z-index: 1000;
@@ -22,13 +20,14 @@
 
       a {
         text-decoration: none;
-        color: white;
-        font-size: 1.2rem;
+        color: #2d2d2d;
+        font-size: 1.5rem;
         font-weight: bold;
         transition: color 0.3s ease-in-out;
 
         &:hover {
-          color: #f39c12;
+          color: #000;
+          font-size: 1.6rem;
         }
       }
 
@@ -39,33 +38,36 @@
           position: relative;
 
           .submenu-title {
-            color: white;
-            font-size: 1.2rem;
+            color: #2d2d2d;
+            font-size: 1.5rem;
             font-weight: bold;
           }
 
           .submenu {
             position: absolute;
-            top: 100%;
+            top: 110%;
             left: 0;
-            background: rgba(0, 0, 0, 0.8);
-            padding: 0.5rem 0;
+            background: linear-gradient(to right, #4A90E2, #50E3C2);
+            padding: 1rem 0;
             border-radius: 5px;
-            min-width: 200px;
+            width: fit-content;
+            min-width: 350px;
             display: none;
+            box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.8);
 
             li {
-              padding: 0.5rem;
+              padding: 0.5rem 0;
               text-align: left;
 
               a {
-                color: white;
+                color: #2d2d2d;
                 display: block;
-                padding: 0.5rem;
+                padding: 0.7rem;
 
                 &:hover {
-                  background: #f39c12;
-                  color: black;
+                  background: #50E3C2;
+                  border-left: 6px solid #2d2d2d;
+                  color: #2d2d2d;
                 }
               }
             }
