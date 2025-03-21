@@ -7,7 +7,7 @@
   
 // Heading styles
 h1 { 
-    @include text-style(4rem, 1.2, 700); 
+    @include text-style(5rem, 1.2, 700);
     color: #ffffff;
 }
 
@@ -18,7 +18,7 @@ h2 {
 
 h3 { 
     @include text-style(2rem, 1.4, 600); 
-    color: #38d0eb;
+    color: #ffffff;
 }
 
 h4 { 
