@@ -1,9 +1,9 @@
 .carousel-container {
   position: relative;
   overflow: hidden;
-  height: 600px;
+  height: 700px;
   width: 100%;
-  margin-top: 54px;
+  margin-top: 4px;
 
   .carousel-slide {
     width: 100%;
@@ -27,39 +27,66 @@
       left: 18%;
       color: #fff;
       max-width: 50%;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+      text-shadow: 2px 2px 1px rgba(0, 0, 0, 1);
 
       .bandName {
-        padding-bottom: 1rem;
-        margin: 0;
+        font-size: 3rem;
+        font-weight: bold;
+        color: #fff;
+        margin: 0 0 24px;
       }
 
       .songName {
-        font-style: italic;
-        color: #111;
-        padding-bottom: 1rem;
-        margin: 0;
-        text-shadow: 1px 2px 1px rgba(255, 255, 255, 1);
+        font-size: 5rem;
+        font-weight: bold;
+        margin: auto;
       }
 
       .formattedDate {
+        font-size: 18px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: bold;
         color: #ffffff;
-        font-size: 1.5rem;
-        padding-bottom: 1rem;
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, 1);
         margin: 0;
+
+        .releaseDate {
+          font-weight: bold;
+          margin: 0;
+        }
       }
 
-      .carousel-button {
-        display: inline-block;
-        padding: 10px 20px;
-        background-color: #000000;
+      .animated-button {
+        padding: 14px 30px;
+        font-size: 18px;
+        font-weight: bold;
+        text-transform: uppercase;
+        border: 3px solid #fff;
+        border-radius: 50px;
+        //background-image: linear-gradient(45deg, #4A90E2, #50E3C2);
+        //background-color: #222;
         color: #fff;
+        text-shadow: 1px 2px 4px rgba(45, 45, 45, 0.6);
+        cursor: pointer;
+        position: relative;
+        top: 30px;
+        overflow: hidden;
+        transition: color 0.4s ease, border-color 0.4s ease;
         text-decoration: none;
-        border-radius: 4px;
-        transition: background-color 0.3s ease;
 
         &:hover {
+          border: 4px solid #fff;
+          box-shadow: 0 0 10px #4A90E2, 0 0 20px #50E3C2;
+      
+          &::before {
+            background-color: #ff0000;
+          }
+        }
+
+        &:active {
           background-color: #2d2d2d;
+          color: #fff;
+          border-color: #000;
         }
       }
     }
