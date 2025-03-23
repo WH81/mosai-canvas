@@ -1,4 +1,8 @@
-<div class="carousel-container">
+<div
+  class="carousel-container"
+  (mouseenter)="stopAutoSlide()"
+  (mouseleave)="startAutoSlide()"
+>
   <div
     class="carousel-slide"
     *ngFor="let item of carouselItems; let i = index"
@@ -6,11 +10,12 @@
     [ngStyle]="{ 'background-image': 'url(' + item.imageUrl + ')' }"
   >
     <div class="carousel-content" *ngIf="i === currentIndex" @slideUp>
-      <h1 class="bandName">{{ item.bandName }}</h1>
+      <h4 class="formattedDate"><span class="releaseDate">Release Date: </span>{{ item.formattedDate }}</h4>
       <h2 class="songName">{{ item.songName }}</h2>
-      <h4 class="formattedDate">{{ item.formattedDate }}</h4>
+      <h1 class="bandName">{{ item.bandName }}</h1>
+      
       <a
-        class="carousel-button"
+        class="carousel-button animated-button"
         [href]="item.buttonLink"
         target="_blank"
         rel="noopener noreferrer"
@@ -19,7 +24,7 @@
       </a>
     </div>
   </div>
-
+  
   <div class="carousel-pagination">
     <span
       *ngFor="let item of carouselItems; let i = index"
