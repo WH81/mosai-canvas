@@ -3,12 +3,12 @@ import CarouselItem from "../models/CarouselItem";
 import mongoose from "mongoose";
 
 // Get all carousel items
-export const getCarouselItems = async (_: Request, res: Response) => {
+export const getCarouselItems = async (_req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const items = await CarouselItem.find();
     res.json(items);
   } catch (error) {
-    res.status(500).json({ message: (error as Error).message });
+      next(error);
   }
   return;
 };

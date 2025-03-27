@@ -1,13 +1,5 @@
-import mongoose, { Schema, Document } from 'mongoose';
-
-export interface ICarouselItem extends Document {
-  imageUrl: string;
-  bandName: string;
-  songName: string;
-  releaseDate: Date;
-  buttonText: string;
-  buttonLink: string;
-}
+import mongoose, { Schema } from 'mongoose';
+import { ICarouselItem } from '../interfaces/CarouselItem.interface';
 
 const CarouselItemSchema: Schema = new mongoose.Schema(
   {

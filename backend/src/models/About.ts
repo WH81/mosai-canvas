@@ -1,10 +1,5 @@
-import { Schema, model, Document } from 'mongoose';
-
-export interface IAbout extends Document {
-  id?: string;
-  title: string;
-  body: string;
-}
+import mongoose, { Schema } from 'mongoose';
+import { IAbout } from '../interfaces/About.interface';
 
 const AboutSchema: Schema = new Schema({
   id: { type: String },
@@ -12,5 +7,5 @@ const AboutSchema: Schema = new Schema({
   body: { type: String, required: true },
 });
 
-const About = model<IAbout>('About', AboutSchema);
-export default About;
+export default mongoose.model<IAbout>('About', AboutSchema);
+
