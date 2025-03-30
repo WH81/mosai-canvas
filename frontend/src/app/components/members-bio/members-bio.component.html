@@ -1,0 +1,7 @@
+<div *ngIf="memberData" class="member-bio">
+  <h2>{{ memberData.name }}</h2>
+  <p><strong>Instrument:</strong> {{ memberData.instrument }}</p>
+  <p><strong>Band:</strong> {{ memberData.band }}</p>
+  <img [src]="memberData.image" alt="{{ memberData.name }}">
+  <p>{{ memberData.bio }}</p>
+</div>

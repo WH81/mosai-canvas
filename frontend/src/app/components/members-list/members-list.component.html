@@ -1,0 +1,12 @@
+<div *ngIf="members && members.length">
+  <h2>Members of {{ band }}</h2>
+  <ul>
+    <li *ngFor="let member of members">
+      <a [routerLink]="['/bands', band, member.id]">{{ member.name }}</a>
+    </li>
+  </ul>
+</div>
+
+<div *ngIf="!members || members.length === 0">
+  <p>No members found for {{ band }}.</p>
+</div>
