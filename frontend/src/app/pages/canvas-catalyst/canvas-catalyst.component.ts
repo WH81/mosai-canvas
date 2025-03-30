@@ -8,5 +8,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./canvas-catalyst.component.scss']
 })
 export class CanvasCatalystComponent {
-
+  canvasCatalystMembers = [
+    { id: '1', name: 'Zakk Doe' },
+    { id: '2', name: 'Ali Smith' },
+    { id: '3', name: 'Heather Harris' }
+  ];
 }

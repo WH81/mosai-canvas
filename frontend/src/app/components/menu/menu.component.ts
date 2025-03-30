@@ -27,10 +27,4 @@ export class MenuComponent {
     { name: 'Art', path: '/art' },
     { name: 'Contact', path: '/contact' }
   ];
-
-  isSubmenuOpen = false;
-
-  toggleSubmenu() {
-    this.isSubmenuOpen = !this.isSubmenuOpen;
-  }
 }
