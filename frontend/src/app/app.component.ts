@@ -10,7 +10,7 @@ import { MosaicanvasLogoComponent } from './components/mosaicanvas-logo/mosaican
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   standalone: true,
-  imports: [RouterModule, MenuComponent, ],
+  imports: [RouterModule, MenuComponent],
 })
 export class AppComponent {
   bandName(bandName: any) {
