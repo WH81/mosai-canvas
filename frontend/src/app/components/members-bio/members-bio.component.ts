@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { MemberService } from '../../services/members-bio/members.service'; // Service for fetching member data
+import { MembersService } from '../../services/members-bio/members.service';
+import { Member } from '../../models/members-bio/member.model';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
-import { Member } from '../../models/members-bio/member.model';
 
 @Component({
   selector: 'app-member-bio',
@@ -15,11 +15,12 @@ import { Member } from '../../models/members-bio/member.model';
 export class MemberBioComponent implements OnInit {
   memberId: string | null = null;
   memberData: Member | null = null;
-  errorMessage: string | null = null; // Add an error message for error handling
+  errorMessage: string | null = null;
+  http: any;
 
   constructor(
     private route: ActivatedRoute,
-    private memberService: MemberService // Service to get member details
+    private memberService: MembersService
   ) {}
 
   ngOnInit(): void {

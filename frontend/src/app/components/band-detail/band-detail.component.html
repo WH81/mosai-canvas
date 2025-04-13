@@ -1,0 +1,15 @@
+<div
+  *ngIf="band"
+  class="band-hero"
+  [class.image-loaded]="imageLoaded"
+  [ngStyle]="{ 'background-image': 'url(' + band.image + ')' }"
+>
+  <div class="overlay">
+    <div class="band-info">
+      <h1 class="band-name">{{ band.name }}</h1>
+      <p class="band-description">{{ band.description }}</p>
+    </div>
+  </div>
+
+  <app-members-list [band]="band"></app-members-list>
+</div>

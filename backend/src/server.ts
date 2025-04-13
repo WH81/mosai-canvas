@@ -4,7 +4,7 @@ import cors from "cors";
 import helmet from "helmet";
 import compression from "compression";
 import connectDB from "./config/database";
-import bandRoutes from "./routes/bandRoutes";
+import bandRoutes from "./routes/band.routes";
 import carouselRoutes from "./routes/carouselRoutes";
 import aboutRoutes from "./routes/aboutRoutes";
 import memberRoutes from './routes/memberRoutes';
