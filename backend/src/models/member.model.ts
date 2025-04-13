@@ -5,7 +5,7 @@ const memberSchema: Schema = new mongoose.Schema(
   {
     name: { type: String, required: true },
     instrument: { type: String, required: true },
-    band: { type: String, required: true },
+    band: { type: mongoose.Schema.Types.ObjectId, ref: 'Band', required: true },
     image: { type: String, required: true },
     bio: { type: String, required: true }
   },

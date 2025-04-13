@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import Member from '../models/Member';
+import Member from '../models/member.model';
 import mongoose from 'mongoose';
 
 // GET /api/members/band/:band
