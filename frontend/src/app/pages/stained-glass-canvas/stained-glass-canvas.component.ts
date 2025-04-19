@@ -11,7 +11,8 @@ import { CommonModule } from '@angular/common'; // CommonModule is needed for ng
 })
 export class StainedGlassCanvasComponent {
   bandName: string = 'staind-glass-canvas';  // Band name for Stained Glass Canvas
-
+  bandSlug: string = 'staind-glass-canvas'; // Slug for Stained Glass Canvas
+  
   constructor() {}
 
   ngOnInit(): void {
