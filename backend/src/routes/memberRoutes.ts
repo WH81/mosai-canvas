@@ -9,7 +9,7 @@ import {
 
 const router = express.Router();
 
-router.get('/band/:band', getMembersByBand);
+router.get('/band/:bandSlug', getMembersByBand);
 router.get('/:id', getMemberById);
 router.post('/', createMember);
 router.put('/:id', updateMember);

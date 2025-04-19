@@ -1,5 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';  // Import ActivatedRoute
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MembersService } from '../../services/members-bio/members.service';
 import { Member } from '../../models/members-bio/member.model';
@@ -11,29 +10,20 @@ import { Member } from '../../models/members-bio/member.model';
   templateUrl: './members-list.component.html',
   styleUrls: ['./members-list.component.scss'],
 })
-export class MembersListComponent implements OnInit {
-  @Input() band: string = ''; // Use @Input() to receive the band name
-  bandSlug: string = ''; // This will hold the band name (slug)
+export class MembersListComponent implements OnChanges {
+  @Input() bandSlug: string = ''; // Input from band-detail
   members: Member[] = [];
 
-  constructor(
-    private route: ActivatedRoute,  // Inject ActivatedRoute to capture route params
-    private memberService: MembersService
-  ) {}
+  constructor(private memberService: MembersService) {}
 
-  ngOnInit(): void {
-    // Capture the bandSlug parameter from the route
-    this.bandSlug = this.route.snapshot.paramMap.get('bandSlug') || '';
-    
-    if (this.bandSlug) {
-      this.fetchMembers(); // Fetch members by band name (slug)
-    } else {
-      console.error('Band slug is not provided');
+  ngOnChanges(changes: SimpleChanges): void {
+    // Trigger fetch if bandSlug changes and is defined
+    if (changes['bandSlug'] && this.bandSlug) {
+      this.fetchMembers();
     }
   }
 
   fetchMembers(): void {
-    // Fetch members for the given band
     this.memberService.getMembersByBand(this.bandSlug).subscribe(
       (members: Member[]) => {
         this.members = members;

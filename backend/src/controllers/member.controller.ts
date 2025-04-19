@@ -1,12 +1,14 @@
 import { NextFunction, Request, Response } from 'express';
 import Member from '../models/member.model';
 import mongoose from 'mongoose';
+import slugify from 'slugify';
+import Band from '../models/band.model'; // Import the Band model
 
-// GET /api/members/band/:band
+// GET /api/members/band/:bandSlug
 export const getMembersByBand = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const band = req.params.band;
-    const members = await Member.find({ band });
+    const bandSlug = req.params.bandSlug;
+    const members = await Member.find({ bandSlug });
     res.json(members);
   } catch (error) {
       next(error);
@@ -29,17 +31,26 @@ export const getMemberById = async (req: Request, res: Response, next: NextFunct
 
 // POST /api/members
 export const createMember = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  const { name, instrument, band, image, bio } = req.body;
-  
-  const newMember = new Member({
-    name,
-    instrument,
-    band,
-    image,
-    bio
-  });
+  const { name, instrument, band: bandName, image, bio } = req.body;
 
   try {
+    const bandDoc = await Band.findOne({ name: bandName });
+    if (!bandDoc) {
+      res.status(404).json({ message: 'Band not found' });
+      return;
+    }
+
+    const bandSlug = slugify(bandName, { lower: true });
+
+    const newMember = new Member({
+      name,
+      instrument,
+      band: bandDoc._id, // 👈 make sure this is an ObjectId
+      bandSlug,
+      image,
+      bio
+    });
+
     const savedMember = await newMember.save();
     res.status(201).json(savedMember);
   } catch (error) {
@@ -51,7 +62,8 @@ export const createMember = async (req: Request, res: Response, next: NextFuncti
 export const updateMember = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const { id } = req.params;
   const { name, instrument, band, image, bio } = req.body;
-  
+  const bandSlug = band ? slugify(band, { lower: true }) : undefined;
+
   // Validate request body
   if (!name || !instrument || !band || !image || !bio) {
     res.status(400).json({ message: 'All fields are required' });
@@ -61,7 +73,7 @@ export const updateMember = async (req: Request, res: Response, next: NextFuncti
   try {
     const updatedMember = await Member.findByIdAndUpdate(
       id, 
-      { name, instrument, band, image, bio },
+      { name, instrument, band, bandSlug, image, bio },
       { new: true }
     );
   
