@@ -1,3 +1,5 @@
+@import 'breakpoints';
+
 .mosaicanvas-logo {
     width: 600px;
     height: auto;
@@ -9,4 +11,21 @@
     border-radius: 10px;
     cursor: pointer;
     transition: all 0.3s;
-}
+  
+    @include respond-max(lg) {
+      width: 500px;
+    }
+  
+    @include respond-max(md) {
+      width: 400px;
+    }
+  
+    @include respond-max(sm) {
+      width: 300px;
+    }
+  
+    @include respond-max(xs) {
+      width: 220px;
+    }
+  }
+  
