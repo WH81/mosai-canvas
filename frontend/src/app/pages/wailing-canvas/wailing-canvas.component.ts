@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common'; // CommonModule is needed for ng
   styleUrls: ['./wailing-canvas.component.scss']
 })
 export class WailingCanvasComponent {
-  bandName: string = 'wailing-canvas';
+  bandSlug: string = 'wailing-canvas';
 
   constructor() {}
 

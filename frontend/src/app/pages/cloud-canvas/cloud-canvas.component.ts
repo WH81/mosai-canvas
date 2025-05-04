@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common'; // CommonModule is needed for ng
   styleUrls: ['./cloud-canvas.component.scss']
 })
 export class CloudCanvasComponent {
-  bandName: string = 'cloud-canvas';
+  bandSlug: string = 'cloud-canvas';
 
   constructor() {}
   

@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common'; // CommonModule is needed for ng
   styleUrls: ['./phosphorescent-canvas.component.scss']
 })
 export class PhosphorescentCanvasComponent {
-  bandName: string = 'phosphorescent-canvas';
+  bandSlug: string = 'phosphorescent-canvas';
 
   constructor() {}
 

@@ -1,0 +1,17 @@
+@use "variables" as v;
+
+@mixin text-style-primary($min, $max, $line-height, $weight) {
+  font-size: clamp(#{$min}, 2vw, #{$max});
+  line-height: $line-height;
+  font-weight: $weight;
+  font-family: v.$font-family-base;
+  color: v.$text-color-light;
+}
+
+@mixin text-style-secondary($min, $max, $line-height, $weight) {
+  font-size: clamp(#{$min}, 2vw, #{$max});
+  line-height: $line-height;
+  font-weight: $weight;
+  font-family: v.$font-family-secondary;
+  color: v.$text-color-light;
+}

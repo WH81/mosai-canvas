@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common'; // CommonModule is needed for ng
   styleUrls: ['./rye-canvas.component.scss']
 })
 export class RyeCanvasComponent {
-  bandName: string = 'rye-canvas';
+  bandSlug: string = 'rye-canvas';
 
   constructor() {}
 

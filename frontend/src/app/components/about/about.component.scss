@@ -1,31 +1,31 @@
+// Imports global styles
+@use 'index' as *;
+
 .about-container {
     padding: 20px;
-    font-family: Arial, sans-serif;
-    max-width: 800px;
     margin: 0 auto;
     background-color: transparent;
-    border-radius: 8px;
   }
   
   .about-content {
-    margin-bottom: 20px;
+    width: 75%;
+    margin: 6rem auto 10rem;
     text-align: center;
   }
   
   .about-content h2 {
-    font-weight: bold;
-    margin-bottom: 10px;
+    @include text-style-primary(4rem, 5rem, 1.7, 700);
+    padding: 4rem 0;
     color: #7d7d7d;
   }
   
   .about-content p {
-    font-size: 1.2rem;
-    line-height: 1.6;
+    @include text-style-secondary(1rem, 2rem, 1.7, 400);
     color: #ccc;
   }
   
   .loading {
-    font-size: 18px;
+    @include text-style-secondary(1rem, 2rem, 1.7, 400);
     color: #888;
   }
   
