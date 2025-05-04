@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common'; // CommonModule is needed for ng
   styleUrls: ['./canvas-catalyst.component.scss']
 })
 export class CanvasCatalystComponent {
-  bandName: string = 'canvas-catalyst';
+  bandSlug: string = 'canvas-catalyst';
 
   constructor() {}
 

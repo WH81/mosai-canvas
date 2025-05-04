@@ -16,13 +16,22 @@ export class MembersListComponent implements OnChanges {
 
   constructor(private memberService: MembersService) {}
 
+  // ngOnChanges(changes: SimpleChanges): void {
+  //   // Trigger fetch if bandSlug changes and is defined
+  //   if (changes['bandSlug'] && this.bandSlug) {
+  //     console.log('bandSlug input:', this.bandSlug);
+  //     this.fetchMembers();
+  //   }
+  // }
+
   ngOnChanges(changes: SimpleChanges): void {
-    // Trigger fetch if bandSlug changes and is defined
-    if (changes['bandSlug'] && this.bandSlug) {
+    const bandSlugChange = changes['bandSlug'];
+    if (bandSlugChange && bandSlugChange.currentValue !== bandSlugChange.previousValue && this.bandSlug) {
+      console.log('bandSlug input changed to:', this.bandSlug);
       this.fetchMembers();
     }
   }
-
+  
   fetchMembers(): void {
     this.memberService.getMembersByBand(this.bandSlug).subscribe(
       (members: Member[]) => {

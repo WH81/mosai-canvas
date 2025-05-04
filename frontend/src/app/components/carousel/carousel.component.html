@@ -10,9 +10,12 @@
     [ngStyle]="{ 'background-image': 'url(' + item.imageUrl + ')' }"
   >
     <div class="carousel-content" *ngIf="i === currentIndex" @slideUp>
-      <h4 class="formattedDate"><span class="releaseDate">Release Date: </span>{{ item.formattedDate }}</h4>
       <h1 class="bandName">{{ item.bandName }}</h1>
       <h2 class="songName">"{{ item.songName }}"</h2>
+      <h4 class="formattedDate">
+        <span class="releaseDate">OUT</span>
+        {{ item.formattedDate }}
+      </h4>
       <a
         class="carousel-button animated-button"
         [href]="item.buttonLink"

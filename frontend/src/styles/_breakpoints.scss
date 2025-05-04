@@ -1,21 +1,18 @@
-// Define named breakpoints for reuse
-$breakpoint-xs: 576px;  // Extra small devices (phones)
-$breakpoint-sm: 768px;  // Small devices (tablets)
-$breakpoint-md: 992px;  // Medium devices (small laptops)
-$breakpoint-lg: 1200px; // Large devices (desktops)
-$breakpoint-xl: 1400px; // Extra large devices (large desktops)
+$breakpoints: (
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px
+);
 
-// Mixin for media queries
+@mixin respond($breakpoint) {
+  @media (min-width: map-get($breakpoints, $breakpoint)) {
+    @content;
+  }
+}
+
 @mixin respond-max($breakpoint) {
-  @if $breakpoint == xs {
-    @media (max-width: $breakpoint-xs) { @content; }
-  } @else if $breakpoint == sm {
-    @media (max-width: $breakpoint-sm) { @content; }
-  } @else if $breakpoint == md {
-    @media (max-width: $breakpoint-md) { @content; }
-  } @else if $breakpoint == lg {
-    @media (max-width: $breakpoint-lg) { @content; }
-  } @else if $breakpoint == xl {
-    @media (max-width: $breakpoint-xl) { @content; }
+  @media (max-width: map-get($breakpoints, $breakpoint)) {
+    @content;
   }
 }

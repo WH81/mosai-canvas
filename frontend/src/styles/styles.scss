@@ -1,7 +1,8 @@
-@use 'variables';
-@use 'mixins';
-@use 'base';
-@use 'typography';
-@use 'layout';
-@use 'components';
-@use 'utilities';
+@use 'variables' as v;
+@use 'mixins' as m;
+@use 'typography' as t;
+@use 'breakpoints' as bp;
+@use 'utilities' as u;
+@use 'components' as c;
+@use 'layout' as l;
+@use 'base' as b;

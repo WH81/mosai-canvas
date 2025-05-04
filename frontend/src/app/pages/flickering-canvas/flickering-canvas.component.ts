@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common'; // CommonModule is needed for ng
   styleUrls: ['./flickering-canvas.component.scss']
 })
 export class FlickeringCanvasComponent {
-  bandName: string = 'flickering-canvas';
+  bandSlug: string = 'flickering-canvas';
 
   constructor() {}
 

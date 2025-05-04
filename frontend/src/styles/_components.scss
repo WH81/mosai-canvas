@@ -1,0 +1,17 @@
+@use 'sass:color';
+@use 'variables' as v;
+
+.button {
+  padding: 0.75rem 1.5rem;
+  background-color: v.$primary-color;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: color.scale(v.$primary-color, $lightness: -10%);
+  }
+}
