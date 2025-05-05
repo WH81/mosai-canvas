@@ -12,8 +12,8 @@ export class MembersService {
 
   constructor(private http: HttpClient) {}
 
-  getMembersByBand(bandName: string): Observable<Member[]> {
-    return this.http.get<Member[]>(`${this.apiUrl}?band=${bandName}`);
+  getMembersByBand(bandSlug: string): Observable<Member[]> {
+    return this.http.get<Member[]>(`${this.apiUrl}/band/${bandSlug}`);
   }
 
   getMember(memberId: string): Observable<Member> {

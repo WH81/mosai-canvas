@@ -16,7 +16,6 @@ export class MemberBioComponent implements OnInit {
   memberId: string | null = null;
   memberData: Member | null = null;
   errorMessage: string | null = null;
-  http: any;
 
   constructor(
     private route: ActivatedRoute,

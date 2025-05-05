@@ -8,10 +8,19 @@ import Band from '../models/band.model'; // Import the Band model
 export const getMembersByBand = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const bandSlug = req.params.bandSlug;
-    const members = await Member.find({ bandSlug });
-    res.json(members);
+    const members = await Member.find({ bandSlug }).populate('band', 'name');
+
+    // Simplify band to just the name string
+    const simplifiedMembers = members.map((member) => ({
+      ...member.toObject(),
+      band: typeof member.band === 'object' && member.band !== null
+        ? (member.band as any).name
+        : member.band
+    }));
+
+    res.json(simplifiedMembers);
   } catch (error) {
-      next(error);
+    next(error);
   }
 };
 
