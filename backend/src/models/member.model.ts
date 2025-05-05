@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import { IMember } from '../interfaces/member.interface';
+import { IMember } from '../interfaces/Member.interface';
 
 const memberSchema: Schema = new mongoose.Schema(
   {

@@ -1,11 +1,12 @@
-<div *ngFor="let member of members" class="member-card">
-  <div class="member-image">
-    <img [src]="member.image" alt="{{ member.name }}'s image" />
-  </div>
-  <div class="member-details">
-    <h3>{{ member.name }}</h3>
-    <p><strong>Instrument:</strong> {{ member.instrument }}</p>
-    <p><strong>Band:</strong> {{ member.band }}</p>
-    <p>{{ member.bio || 'No bio available' }}</p>
+<div class="members-list-container">
+  <div *ngFor="let member of members" class="member-card">
+    <div class="member-image">
+      <img [src]="member.image" alt="{{ member.name }}'s image" />
+    </div>
+    <div class="member-details">
+      <h3>{{ member.name }}</h3>
+      <p><strong>Instrument:</strong> {{ member.instrument }}</p>
+      <p>{{ member.bio || 'No bio available' }}</p>
+    </div>
   </div>
 </div>

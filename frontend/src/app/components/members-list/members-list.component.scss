@@ -1,33 +1,77 @@
+@use 'index' as *;  // Import all styles from index.scss
+
+// Ensure the container holds the cards in a horizontal layout
+.members-list-container {
+  display: flex;  // Flexbox to arrange the cards horizontally
+  flex-wrap: wrap;  // Wrap cards to the next line if there are too many
+  justify-content: flex-start;  // Align cards to the left
+  gap: 32px;  // Space between cards
+  padding: 16px;  // Padding around the container
+  justify-content: center;  // Center the cards in the container
+}
+
 .member-card {
   display: flex;
-  flex-direction: row;
-  margin: 10px 0;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  flex-direction: row;  // Cards in a horizontal layout
+  align-items: center;  // Vertically align content in the center
+  justify-content: flex-start;  // Align to the left side
+  margin: 16px 0;
+  padding: 16px;
+  border-radius: 12px;
+  background: transparent;
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.08);
+  max-width: 600px;  // Fixed width for the card
+  width: 100%;  // Let the card take 100% of 400px width
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: scale(1.02);  // Slightly larger on hover
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+  }
 }
 
 .member-image {
-  margin-right: 15px;
-}
+  margin-right: 20px;  // Space between image and text
+  flex-shrink: 0;  // Prevent image from shrinking
 
-.member-image img {
-  width: 100px;  // Adjust size as needed
-  height: 100px;  // Adjust size as needed
-  object-fit: cover;
-  border-radius: 50%;
+  img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #888;
+  }
 }
 
 .member-details {
   display: flex;
   flex-direction: column;
-}
+  justify-content: flex-start;
+  padding-top: 4px;
+  width: 100%;  // Allow text content to take full available width
 
-.member-details h3 {
-  margin: 0;
-  font-size: 1.5rem;
-}
+  h3 {
+    margin: 0;
+    @include text-style-primary(1.6rem, 2rem, 1.2, 700);  // Font size and weight
+    color: #fff;  // Adjust for text color
+    padding-bottom: 8px;
+    margin-bottom: 8px;
+    width: fit-content;
 
-.member-details p {
-  margin: 5px 0;
+    &::after {
+      content: "";
+      width: 100%;
+      max-width: 100px;
+      height: 8px;
+      background: #888;  // Underline color
+      display: block;
+      margin: 10px 0;
+    }
+  }
+
+  p {
+    @include text-style-secondary(1rem, 1.125rem, 1.7, 400); 
+    color: #ccc;  // Text color
+    margin: 5px 0;
+  }
 }
