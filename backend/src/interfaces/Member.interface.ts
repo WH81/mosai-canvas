@@ -1,4 +1,4 @@
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 
 export interface IMember extends Document {
   name: string;
@@ -7,4 +7,5 @@ export interface IMember extends Document {
   bandSlug: string;
   image: string;
   bio: string;
+  socialLinks?: Types.ObjectId;
 }

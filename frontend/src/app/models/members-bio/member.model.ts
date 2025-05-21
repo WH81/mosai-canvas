@@ -2,7 +2,14 @@ export interface Member {
   name: string;
   instrument: string;
   band: string;
-  bio?: string;
+  bandSlug: string;
   image: string;
-  _id?: string;
+  bio: string;
+  socialLinks?: {
+    facebook?: string;
+    instagram?: string;
+    x?: string;
+    youtube?: string;
+    tiktok?: string;
+  };
 }

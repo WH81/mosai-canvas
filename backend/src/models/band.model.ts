@@ -7,6 +7,11 @@ const bandSchema: Schema = new mongoose.Schema(
     slug: { type: String, required: true, unique: true },
     description: { type: String, required: true },
     image: { type: String, required: true },
+    socialLinks: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'SocialLinks',
+      required: false,
+    }
   },
   { timestamps: true }
 );
