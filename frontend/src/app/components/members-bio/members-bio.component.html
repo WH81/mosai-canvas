@@ -4,4 +4,5 @@
   <p><strong>Band:</strong> {{ memberData.band }}</p>
   <img [src]="memberData.image" alt="{{ memberData.name }}">
   <p>{{ memberData.bio }}</p>
+  <app-social-links [links]="memberData?.socialLinks"></app-social-links>
 </div>

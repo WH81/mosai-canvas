@@ -4,9 +4,11 @@
       <img [src]="member.image" alt="{{ member.name }}'s image" />
     </div>
     <div class="member-details">
-      <h3>{{ member.name }}</h3>
-      <p><strong>Instrument:</strong> {{ member.instrument }}</p>
+      <h3 class="member-name">{{ member.name }}</h3>
+      <!-- <p><strong>Instrument:</strong> {{ member.instrument }}</p> -->
+      <p class="member-instrument">{{ member.instrument }}</p> 
       <p>{{ member.bio || 'No bio available' }}</p>
+      <app-social-links [links]="member.socialLinks || {}"></app-social-links>
     </div>
   </div>
 </div>

@@ -8,7 +8,7 @@ import { Member } from '../../models/members-bio/member.model';
 })
 export class MembersService {
 
-  private apiUrl = 'http://localhost:5001/api/members'; // Match your BandService port
+  private apiUrl = 'http://localhost:5001/api/members'; // Match the BandService port
 
   constructor(private http: HttpClient) {}
 

@@ -1,0 +1,58 @@
+.social-links {
+  position: relative;
+  display: flex;
+  gap: 10px;
+}
+
+.social-border {
+  padding: 1px;
+  border-radius: 30%;
+  display: inline-block;
+  transition: background 0.3s ease;
+
+  // &:hover {
+  //   background: linear-gradient(to right, #4A90E2, #50E3C2); // Hover gradient
+  // }
+}
+
+.social-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 25%;
+  background-color: #121212;
+  color: white;
+  font-size: 18px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+
+  i {
+    pointer-events: none;
+  }
+
+  &.facebook {
+    // background-color: #333;
+  }
+
+  &.x {
+    // background-color: #333;
+  }
+
+  &.instagram {
+    // background-color: #333;
+  }
+
+  &.youtube {
+    // background-color: #333;
+  }
+
+  &.tiktok {
+    // background-color: #333;
+  }
+
+  &:hover {
+    background: linear-gradient(to right, #4A90E2, #50E3C2);
+  }
+}

@@ -1,0 +1,34 @@
+<!-- <span class="gradient-separator-line"></span> -->
+<div *ngIf="links" class="social-links">
+  
+  <div class="social-border">
+    <a *ngIf="links.facebook" [href]="links.facebook" target="_blank" aria-label="Facebook" class="social-icon facebook">
+      <i class="fa-brands fa-facebook"></i>
+    </a>
+  </div>
+
+  <div class="social-border">
+    <a *ngIf="links.instagram" [href]="links.instagram" target="_blank" aria-label="Instagram" class="social-icon instagram">
+      <i class="fa-brands fa-instagram"></i>
+    </a>
+  </div>
+
+  <div class="social-border">
+    <a *ngIf="links.x" [href]="links.x" target="_blank" aria-label="X" class="social-icon x">
+      <i class="fa-brands fa-x-twitter"></i>
+    </a>
+  </div>
+
+  <div class="social-border">
+    <a *ngIf="links.youtube" [href]="links.youtube" target="_blank" aria-label="YouTube" class="social-icon youtube">
+      <i class="fa-brands fa-youtube"></i>
+    </a>
+  </div>
+
+  <div class="social-border">
+    <a *ngIf="links.tiktok" [href]="links.tiktok" target="_blank" aria-label="TikTok" class="social-icon tiktok">
+      <i class="fa-brands fa-tiktok"></i>
+    </a>
+  </div>
+
+</div>

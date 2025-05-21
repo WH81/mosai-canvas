@@ -11,7 +11,7 @@
 }
 
 .navbar a {
-  @include text-style-secondary(1rem, 1.5rem, 1.7, 400);
+  @include text-style-secondary(1rem, 1.5rem, 1.7, 700);
   float: left;
   transition: color 0.3s ease-in-out;
   color: #000;
@@ -26,7 +26,7 @@
 }
 
 .dropdown .dropbtn {
-  @include text-style-secondary(1rem, 1.5rem, 1.7, 400);
+  @include text-style-secondary(1rem, 1.5rem, 1.7, 700);
   transition: color 0.3s ease-in-out; 
   border: none;
   outline: none;
