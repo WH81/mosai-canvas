@@ -8,10 +8,13 @@
     <div class="band-info">
       <h1 class="band-name">{{ band.name }}</h1>
       <p class="band-description">{{ band.description }}</p>
+      <div class="band-media-links-wrapper">
+        <app-social-links [links]="band?.socialLinks" size="large"></app-social-links>
+        <app-streaming-links [streamingLinks]="band?.streamingLinks" size="large"></app-streaming-links>
+      </div>
     </div>
   </div>
 </div>
 <div class="band-members-section">
   <app-members-list [bandSlug]="band.slug"></app-members-list>
-  <app-social-links [links]="band?.socialLinks"></app-social-links>
 </div>

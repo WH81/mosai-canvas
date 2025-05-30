@@ -1,6 +1,8 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
+import { ISocialLinks } from '../interfaces/social-links.interface';
 
-const socialLinksSchema = new mongoose.Schema({
+const SocialLinksSchema = new Schema<ISocialLinks>({
+  band: { type: Schema.Types.ObjectId, ref: 'Band', required: true, unique: true },
   facebook: String,
   instagram: String,
   x: String,
@@ -8,5 +10,4 @@ const socialLinksSchema = new mongoose.Schema({
   tiktok: String,
 }, { timestamps: true });
 
-const SocialLinks = mongoose.model('SocialLinks', socialLinksSchema);
-export default SocialLinks;
+export const SocialLinks = mongoose.model<ISocialLinks>('SocialLinks', SocialLinksSchema);

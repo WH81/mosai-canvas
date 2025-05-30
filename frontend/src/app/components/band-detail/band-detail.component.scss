@@ -3,50 +3,99 @@
 
 :host {
   display: block;
+}
 
+.band-hero {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 50vh; // Increased height for better parallax effect visibility
+  opacity: 1;
+  transition: opacity 0.8s ease-in;
+
+  // --- Parallax Effect Start ---
+  background-attachment: fixed; // This is the key for CSS parallax
+  // --- Parallax Effect End ---
+
+  &.image-loaded {
+    opacity: 1;
+  }
+}
+
+.overlay {
+  padding: 2rem;
+  width: 100%;
+  min-height: 50vh; // Match parent height
+  height: 100%;
+  display: flex;
+  flex-direction: column; // Allow content to stack
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: linear-gradient(to bottom, rgba(18, 18, 18, 0.5), rgba(18, 18, 18, 1));
+}
+
+.band-media-link {
+  font-size: 2rem;
+  color: white;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.band-info {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 0; // Add some padding to separate from hero if needed
+
+  .band-media-links-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .band-name {
+    font-size: clamp(3rem, 6vw, 7rem);
+    line-height: 1.2;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    // Consider softening text-shadow or using a subtle glow for 2025
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); // Slightly softer shadow
+  }
+
+  .band-description {
+    @include text-style-secondary(1rem, 1.5rem, 1.2, 500);
+    color: #e0e0e0;
+    margin-bottom: 2rem; // Add margin for spacing
+  }
+}
+
+// --- Optional: Media Queries for Parallax Behavior ---
+@media (max-width: 768px) {
   .band-hero {
-    position: relative;  // Ensure the container is positioned correctly
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    min-height: 25vh; // Adjust as needed
-    opacity: 1; // Ensure opacity is set correctly to show both image and gradient
-    transition: opacity 0.8s ease-in;
-  
-    &.image-loaded {
-      opacity: 1; // Ensures the image and gradient are visible once loaded
-    }
+    // On smaller screens, background-attachment: fixed can cause issues
+    // or look unnatural, so it's often better to disable it.
+    background-attachment: scroll;
+    // You might also want to adjust min-height for mobile
+    min-height: 35vh;
   }
 
-    .overlay {
-      padding: 2rem;
-      width: 100%;
-      min-height: 25vh;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      background: linear-gradient(to bottom, rgba(18, 18, 18, 0.5), rgba(18, 18, 18, 1));
-    }
-
-    .band-info {
-      max-width: 800px;
-      margin: 0 auto;
-
-      .band-name {
-        // Mobile-first: clamp provides smooth scaling
-        font-size: clamp(3rem, 6vw, 7rem);
-        line-height: 1.2;
-        font-weight: 700;
-        margin-bottom: 1rem;
-        text-shadow: 2px 2px #000;
-      }
-
-      .band-description {
-        // Mixin handles font-size responsiveness
-        @include text-style-secondary(1rem, 1.5rem, 1.2, 500);
-        color: #e0e0e0;
-      }
-    }
+  .overlay {
+    min-height: 35vh;
   }
+}
+
+// --- Accessibility consideration: Reduce motion ---
+@media (prefers-reduced-motion: reduce) {
+  .band-hero {
+    background-attachment: scroll; /* Disable parallax for users who prefer reduced motion */
+  }
+}

@@ -2,8 +2,8 @@ import { NextFunction, Request, Response } from 'express';
 import mongoose from 'mongoose';
 import slugify from 'slugify';
 import Member from '../models/member.model';
-import Band from '../models/band.model';
-import SocialLinks from '../models/social-links.model';
+import { Band } from '../models/band.model';
+import { SocialLinks } from '../models/social-links.model';
 
 // GET /api/members/band/:bandSlug
 export const getMembersByBand = async (req: Request, res: Response, next: NextFunction): Promise<void> => {

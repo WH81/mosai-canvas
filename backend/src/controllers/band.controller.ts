@@ -1,140 +1,159 @@
-import { Request, Response, NextFunction } from 'express';
-import Band from '../models/band.model';
-import Member from '../models/member.model';
-import SocialLinks from '../models/social-links.model';
-import mongoose from 'mongoose';
+import { Request, Response, RequestHandler } from 'express';
+import { Types } from 'mongoose';
+import { Band } from '../models/band.model';
+import { StreamingLinks } from '../models/streaming-links.model';
+import { SocialLinks } from '../models/social-links.model';
 
-// GET /api/bands
-export const getAllBands = async (_req: Request, res: Response, next: NextFunction): Promise<void> => {
+// Create a new band
+export const createBand: RequestHandler = async (req: Request, res: Response): Promise<void> => {
   try {
-    const bands = await Band.find().populate('socialLinks');
-    res.json(bands);
-  } catch (error) {
-    return next(error);
-  }
-};
-
-// GET /api/bands/:slug
-export const getBandBySlug = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  try {
-    const { slug } = req.params;
-    const band = await Band.findOne({ slug }).populate('socialLinks');
-
-    if (!band) {
-      res.status(404).json({ message: 'Band not found' });
-      return;
-    }
-
-    res.json(band);
-  } catch (error) {
-    next(error);
-  }
-};
-
-// GET /api/bands/:slug/members
-export const getBandWithMembers = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  try {
-    const { slug } = req.params;
-    const band = await Band.findOne({ slug }).populate('socialLinks');
-
-    if (!band) {
-      res.status(404).json({ message: 'Band not found' });
-      return;
-    }
-
-    const members = await Member.find({ band: band.name }).populate('socialLinks');
-    res.json({ band, members });
-  } catch (error) {
-    return next(error);
-  }
-};
-
-// POST /api/bands
-export const createBand = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  const { name, slug, description, image, socialLinks } = req.body;
-
-  try {
-    const bandExists = await Band.findOne({ slug });
-    if (bandExists) {
-      res.status(400).json({ message: 'Band with that slug already exists' });
-      return;
-    }
-
-    let socialLinksId = undefined;
-
-    if (socialLinks && typeof socialLinks === 'object' && !mongoose.Types.ObjectId.isValid(socialLinks)) {
-      const newLinks = new SocialLinks({ ...socialLinks });
-      const savedLinks = await newLinks.save();
-      socialLinksId = savedLinks._id;
-    } else if (mongoose.Types.ObjectId.isValid(socialLinks)) {
-      socialLinksId = socialLinks;
-    }
-
-    const newBand = new Band({ name, slug, description, image, socialLinks: socialLinksId });
-    const savedBand = await newBand.save();
+    const band = new Band(req.body);
+    const savedBand = await band.save();
     res.status(201).json(savedBand);
-  } catch (error) {
-    return next(error);
+  } catch (err) {
+    res.status(500).json({ message: 'Error creating band', error: err });
   }
 };
 
-// PUT /api/bands/:id
-export const updateBand = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  const { id } = req.params;
-  const { name, slug, description, image, socialLinks } = req.body;
-
-  if (!id || !mongoose.Types.ObjectId.isValid(id)) {
-    res.status(400).json({ message: 'Invalid Band ID' });
-    return;
-  }
-
+// Get all bands
+export const getAllBands: RequestHandler = async (_req: Request, res: Response): Promise<void> => {
   try {
-    let socialLinksId = undefined;
+    const bands = await Band.find();
+    res.json(bands);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching bands', error: err });
+  }
+};
 
-    if (socialLinks && typeof socialLinks === 'object' && !mongoose.Types.ObjectId.isValid(socialLinks)) {
-      const newLinks = new SocialLinks({ ...socialLinks });
-      const savedLinks = await newLinks.save();
-      socialLinksId = savedLinks._id;
-    } else if (mongoose.Types.ObjectId.isValid(socialLinks)) {
-      socialLinksId = socialLinks;
+// Get band by slug
+export const getBandBySlug: RequestHandler<{ slug: string }> = async (
+  req: Request<{ slug: string }>,
+  res: Response
+): Promise<void> => {
+  try {
+    const { slug } = req.params;
+    const band = await Band.findOne({ slug }).populate('streamingLinks').populate('socialLinks');
+    if (!band) {
+      res.status(404).json({ message: 'Band not found' });
+      return;
     }
+    res.json(band);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching band', error: err });
+  }
+};
 
-    const updatedBand = await Band.findByIdAndUpdate(
-      id,
-      { name, slug, description, image, socialLinks: socialLinksId },
-      { new: true }
-    );
-
+// Update a band
+export const updateBand: RequestHandler<{ id: string }> = async (
+  req: Request<{ id: string }>,
+  res: Response
+): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const updatedBand = await Band.findByIdAndUpdate(id, req.body, { new: true });
     if (!updatedBand) {
       res.status(404).json({ message: 'Band not found' });
       return;
     }
-
     res.json(updatedBand);
-  } catch (error) {
-    return next(error);
+  } catch (err) {
+    res.status(500).json({ message: 'Error updating band', error: err });
   }
 };
 
-// DELETE /api/bands/:id
-export const deleteBand = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  const { id } = req.params;
-
-  if (!id || !mongoose.Types.ObjectId.isValid(id)) {
-    res.status(400).json({ message: 'Invalid Band ID' });
-    return;
-  }
-
+// Delete a band
+export const deleteBand: RequestHandler<{ id: string }> = async (
+  req: Request<{ id: string }>,
+  res: Response
+): Promise<void> => {
   try {
+    const { id } = req.params;
     const deletedBand = await Band.findByIdAndDelete(id);
-
     if (!deletedBand) {
       res.status(404).json({ message: 'Band not found' });
       return;
     }
+    res.json({ message: 'Band deleted' });
+  } catch (err) {
+    res.status(500).json({ message: 'Error deleting band', error: err });
+  }
+};
 
-    res.status(204).send();
-  } catch (error) {
-    return next(error);
+// Upsert streaming links
+export const upsertStreamingLinks: RequestHandler<{ bandId: string }> = async (
+  req: Request<{ bandId: string }>,
+  res: Response
+): Promise<void> => {
+  const { bandId } = req.params;
+
+  if (!Types.ObjectId.isValid(bandId)) {
+    res.status(400).json({ message: 'Invalid band ID' });
+    return;
+  }
+
+  const data = { ...req.body, band: bandId };
+  if (data.memberId == null) delete data.memberId;
+
+  try {
+    let streamingLinks = await StreamingLinks.findOne({ band: bandId });
+
+    if (streamingLinks) {
+      streamingLinks.set(data);
+    } else {
+      streamingLinks = new StreamingLinks(data);
+    }
+
+    await streamingLinks.save();
+
+    const band = await Band.findById(bandId);
+    if (!band) {
+      res.status(404).json({ message: 'Band not found' });
+      return;
+    }
+
+    band.streamingLinks = streamingLinks._id as Types.ObjectId;
+    await band.save();
+
+    res.status(200).json(streamingLinks);
+  } catch (err) {
+    res.status(500).json({ message: 'Error saving streaming links', error: err });
+  }
+};
+
+// Upsert social links
+export const upsertSocialLinks: RequestHandler<{ bandId: string }> = async (
+  req: Request<{ bandId: string }>,
+  res: Response
+): Promise<void> => {
+  const { bandId } = req.params;
+
+  if (!Types.ObjectId.isValid(bandId)) {
+    res.status(400).json({ message: 'Invalid band ID' });
+    return;
+  }
+
+  const data = { ...req.body, band: bandId };
+
+  try {
+    const socialLinks = await SocialLinks.findOneAndUpdate(
+      { band: bandId },
+      data,
+      { new: true, upsert: true }
+    );    
+
+    await socialLinks.save();
+
+    const band = await Band.findById(bandId);
+    if (!band) {
+      res.status(404).json({ message: 'Band not found' });
+      return;
+    }
+
+    band.socialLinks = socialLinks._id as Types.ObjectId;
+    await band.save();
+
+    res.status(200).json(socialLinks);
+  } catch (err) {
+    res.status(500).json({ message: 'Error saving social links', error: err });
   }
 };
