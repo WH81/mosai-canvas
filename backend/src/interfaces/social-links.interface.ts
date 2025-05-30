@@ -1,11 +1,11 @@
-import { Document } from 'mongoose';
+import { Types } from 'mongoose';
 
-export interface ISocialLinks extends Document {
-    facebook?: string;
-    instagram?: string;
-    x?: string;
-    youtube?: string;
-    tiktok?: string;
-    member: string; // or Types.ObjectId if you import it
-  }
-  
+export interface ISocialLinks {
+  _id?: Types.ObjectId;
+  band: Types.ObjectId;
+  facebook?: string;
+  instagram?: string;
+  x?: string;
+  youtube?: string;
+  tiktok?: string;
+}

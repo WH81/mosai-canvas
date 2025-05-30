@@ -1,14 +1,14 @@
 $gradient-start: #4A90E2;
 $gradient-end: #50E3C2;
 
-.social-links {
+.streaming-links {
   display: flex;
   gap: 1rem;               // space between buttons horizontally
   justify-content: center;
   align-items: center;
   padding: 1rem;
 
-  a.social-icon {
+  a.streaming-icon {
     position: relative;
     display: flex;
     justify-content: center;

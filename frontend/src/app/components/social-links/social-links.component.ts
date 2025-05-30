@@ -11,4 +11,5 @@ import { SocialLinks } from '../../models/social-links/social-links.model';
 })
 export class SocialLinksComponent {
   @Input() links?: SocialLinks;
+  @Input() size: 'small' | 'large' = 'small';
 }

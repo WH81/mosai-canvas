@@ -1,19 +1,14 @@
 import mongoose, { Schema } from 'mongoose';
 import { IBand } from '../interfaces/band.interface';
 
-const bandSchema: Schema = new mongoose.Schema(
-  {
-    name: { type: String, required: true },
-    slug: { type: String, required: true, unique: true },
-    description: { type: String, required: true },
-    image: { type: String, required: true },
-    socialLinks: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'SocialLinks',
-      required: false,
-    }
-  },
-  { timestamps: true }
-);
+const BandSchema = new Schema<IBand>({
+  name: { type: String, required: true },
+  slug: { type: String, required: true, unique: true },
+  description: String,
+  image: String,
+  members: [{ type: Schema.Types.ObjectId, ref: 'Member' }],
+  streamingLinks: { type: Schema.Types.ObjectId, ref: 'StreamingLinks' },
+  socialLinks: { type: Schema.Types.ObjectId, ref: 'SocialLinks' }
+}, { timestamps: true });
 
-export default mongoose.model<IBand>('Band', bandSchema);
+export const Band = mongoose.model<IBand>('Band', BandSchema);

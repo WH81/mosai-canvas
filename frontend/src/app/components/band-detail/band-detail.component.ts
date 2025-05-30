@@ -5,11 +5,12 @@ import { CommonModule } from '@angular/common';
 import { MembersListComponent } from '../../components/members-list/members-list.component';
 import { Subscription } from 'rxjs';
 import { SocialLinksComponent } from '../social-links/social-links.component';
+import { StreamingLinksComponent } from '../streaming-links/streaming-links.component';
 
 @Component({
   selector: 'app-band-detail',
   standalone: true,
-  imports: [CommonModule, MembersListComponent, SocialLinksComponent],
+  imports: [CommonModule, MembersListComponent, SocialLinksComponent, StreamingLinksComponent],
   templateUrl: './band-detail.component.html',
   styleUrls: ['./band-detail.component.scss'],
 })

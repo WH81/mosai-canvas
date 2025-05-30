@@ -1,34 +1,44 @@
 <!-- <span class="gradient-separator-line"></span> -->
 <div *ngIf="links" class="social-links">
   
-  <div class="social-border">
-    <a *ngIf="links.facebook" [href]="links.facebook" target="_blank" aria-label="Facebook" class="social-icon facebook">
-      <i class="fa-brands fa-facebook"></i>
-    </a>
-  </div>
+  <a *ngIf="links.facebook" 
+     [href]="links.facebook" 
+     target="_blank" 
+     aria-label="Facebook" 
+     [ngClass]="['social-icon', 'facebook', size]">
+    <i class="fa-brands fa-facebook"></i>
+  </a>
 
-  <div class="social-border">
-    <a *ngIf="links.instagram" [href]="links.instagram" target="_blank" aria-label="Instagram" class="social-icon instagram">
-      <i class="fa-brands fa-instagram"></i>
-    </a>
-  </div>
+  <a *ngIf="links.instagram" 
+     [href]="links.instagram" 
+     target="_blank" 
+     aria-label="Instagram" 
+     [ngClass]="['social-icon', 'instagram', size]">
+    <i class="fa-brands fa-instagram"></i>
+  </a>
 
-  <div class="social-border">
-    <a *ngIf="links.x" [href]="links.x" target="_blank" aria-label="X" class="social-icon x">
-      <i class="fa-brands fa-x-twitter"></i>
-    </a>
-  </div>
+  <a *ngIf="links.x" 
+     [href]="links.x" 
+     target="_blank" 
+     aria-label="X" 
+     [ngClass]="['social-icon', 'x', size]">
+    <i class="fa-brands fa-x-twitter"></i>
+  </a>
 
-  <div class="social-border">
-    <a *ngIf="links.youtube" [href]="links.youtube" target="_blank" aria-label="YouTube" class="social-icon youtube">
-      <i class="fa-brands fa-youtube"></i>
-    </a>
-  </div>
+  <a *ngIf="links.youtube" 
+     [href]="links.youtube" 
+     target="_blank" 
+     aria-label="YouTube" 
+     [ngClass]="['social-icon', 'youtube', size]">
+    <i class="fa-brands fa-youtube"></i>
+  </a>
 
-  <div class="social-border">
-    <a *ngIf="links.tiktok" [href]="links.tiktok" target="_blank" aria-label="TikTok" class="social-icon tiktok">
-      <i class="fa-brands fa-tiktok"></i>
-    </a>
-  </div>
-
+  <a *ngIf="links.tiktok" 
+     [href]="links.tiktok" 
+     target="_blank" 
+     aria-label="TikTok" 
+     [ngClass]="['social-icon', 'tiktok', size]">
+    <i class="fa-brands fa-tiktok"></i>
+  </a>
+  
 </div>
