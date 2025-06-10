@@ -5,7 +5,7 @@
   position: relative;
   width: 100%;
   overflow: hidden;
-  
+
   .carousel-slide {
     display: none;
     background-size: cover;
@@ -14,28 +14,7 @@
     width: 100%;
     height: 80vh;
     position: relative;
-    
 
-    &::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      //background: linear-gradient(to top, rgba(34, 34, 34, 1) 0%, rgba(34, 34, 34, 0) 25%);
-    }
-
-    &::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      //background: linear-gradient(to bottom, rgba(34, 34, 34, 1) 0%, rgba(34, 34, 34, 0) 25%);
-    }
-    
     &.active {
       display: block;
     }
@@ -43,7 +22,7 @@
     .carousel-content {
       position: absolute;
       top: 50%;
-      left: 10%;
+      left: 8%;
       transform: translateY(-50%);
       max-width: 75%;
       color: #fff;
@@ -69,22 +48,13 @@
         z-index: 1;
         width: fit-content;
         text-transform: uppercase;
-
-        &::before {
-          content: "";
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          z-index: -1;
-        }
+        position: relative;
       }
 
       .animated-button {
-        @include text-style-secondary(2rem, 3rem, 1.6, 700);
+        @include text-style-secondary(1.6rem, 2rem, 1.5, 700);
         display: inline-block;
-        padding: 0.75rem 2rem;
+        padding: 0.6rem 1.5rem;
         text-transform: uppercase;
         border: 3px solid #fff;
         border-radius: 50px;
@@ -100,7 +70,6 @@
           background-color: #000000;
           border-color: #fff;
         }
-
       }
     }
   }
@@ -125,8 +94,6 @@
     }
 
     .dot.active {
-      width: 10px;
-      height: 10px;
       background-color: #50bfff;
     }
   }
@@ -163,18 +130,20 @@
   .carousel-container {
     .carousel-slide {
       .carousel-content {
-        padding: 2.5rem 1.5rem 5rem 14%;
+        left: 5%;
+        padding: 2.5rem 1.5rem 5rem 5%;
 
         .bandName {
-          font-size: 2.2rem;
+          font-size: 3rem;
         }
 
         .songName {
-          font-size: 1.6rem;
+          font-size: 2.2rem;
         }
 
         .animated-button {
-          font-size: 1.1rem;
+          font-size: 1.2rem;
+          padding: 0.6rem 1.25rem;
         }
       }
     }
@@ -184,8 +153,11 @@
 @include respond-max(sm) {
   .carousel-container {
     .carousel-slide {
+      height: 65vh;
+
       .carousel-content {
-        padding: 2rem 1.2rem 4rem 1.2rem;
+        left: 4%;
+        padding: 2rem 1.2rem 4rem 4%;
 
         .bandName {
           font-size: 2.4rem;
@@ -197,7 +169,7 @@
 
         .animated-button {
           font-size: 1rem;
-          padding: 0.65rem 1.5rem;
+          padding: 0.6rem 1.2rem;
         }
       }
     }
@@ -211,8 +183,11 @@
 @include respond-max(xs) {
   .carousel-container {
     .carousel-slide {
+      height: 60vh;
+
       .carousel-content {
-        padding: 1.5rem 1rem 3.5rem 1rem;
+        left: 5%;
+        padding: 1.5rem 1rem 3.5rem 10%;
 
         .formattedDate {
           font-size: 1rem;
@@ -228,7 +203,7 @@
 
         .animated-button {
           font-size: 0.95rem;
-          padding: 0.5rem 1.25rem;
+          padding: 0.5rem 1.1rem;
         }
       }
     }

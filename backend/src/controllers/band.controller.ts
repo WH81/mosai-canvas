@@ -1,5 +1,4 @@
 import { Request, Response, RequestHandler } from 'express';
-import { Types } from 'mongoose';
 import { Band } from '../models/band.model';
 import { StreamingLinks } from '../models/streaming-links.model';
 import { SocialLinks } from '../models/social-links.model';
@@ -16,9 +15,11 @@ export const createBand: RequestHandler = async (req: Request, res: Response): P
 };
 
 // Get all bands
-export const getAllBands: RequestHandler = async (_req: Request, res: Response): Promise<void> => {
+export const getAllBands: RequestHandler = async (_req, res): Promise<void> => {
   try {
-    const bands = await Band.find();
+    const bands = await Band.find()
+      .populate('socialLinks')
+      .populate('streamingLinks');
     res.json(bands);
   } catch (err) {
     res.status(500).json({ message: 'Error fetching bands', error: err });
@@ -32,7 +33,7 @@ export const getBandBySlug: RequestHandler<{ slug: string }> = async (
 ): Promise<void> => {
   try {
     const { slug } = req.params;
-    const band = await Band.findOne({ slug }).populate('streamingLinks').populate('socialLinks');
+    const band = await Band.findOne({ slug }).populate('socialLinks').populate('streamingLinks');
     if (!band) {
       res.status(404).json({ message: 'Band not found' });
       return;
@@ -50,11 +51,15 @@ export const updateBand: RequestHandler<{ id: string }> = async (
 ): Promise<void> => {
   try {
     const { id } = req.params;
-    const updatedBand = await Band.findByIdAndUpdate(id, req.body, { new: true });
+    const updatedBand = await Band.findByIdAndUpdate(id, req.body, { new: true })
+      .populate('socialLinks')
+      .populate('streamingLinks');
+
     if (!updatedBand) {
       res.status(404).json({ message: 'Band not found' });
       return;
     }
+    
     res.json(updatedBand);
   } catch (err) {
     res.status(500).json({ message: 'Error updating band', error: err });
@@ -79,81 +84,161 @@ export const deleteBand: RequestHandler<{ id: string }> = async (
   }
 };
 
-// Upsert streaming links
-export const upsertStreamingLinks: RequestHandler<{ bandId: string }> = async (
+// ===== Social Links CRUD for Band =====
+
+export const getSocialLinksByBand: RequestHandler<{ bandId: string }> = async (
   req: Request<{ bandId: string }>,
   res: Response
 ): Promise<void> => {
   const { bandId } = req.params;
-
-  if (!Types.ObjectId.isValid(bandId)) {
-    res.status(400).json({ message: 'Invalid band ID' });
-    return;
-  }
-
-  const data = { ...req.body, band: bandId };
-  if (data.memberId == null) delete data.memberId;
-
   try {
-    let streamingLinks = await StreamingLinks.findOne({ band: bandId });
-
-    if (streamingLinks) {
-      streamingLinks.set(data);
-    } else {
-      streamingLinks = new StreamingLinks(data);
-    }
-
-    await streamingLinks.save();
-
-    const band = await Band.findById(bandId);
-    if (!band) {
-      res.status(404).json({ message: 'Band not found' });
+    const socialLinks = await SocialLinks.findOne({ band: bandId });
+    if (!socialLinks) {
+      res.status(404).json({ message: 'Social links not found for this band' });
       return;
     }
-
-    band.streamingLinks = streamingLinks._id as Types.ObjectId;
-    await band.save();
-
-    res.status(200).json(streamingLinks);
+    res.json(socialLinks);
   } catch (err) {
-    res.status(500).json({ message: 'Error saving streaming links', error: err });
+    res.status(500).json({ message: 'Error fetching social links', error: err });
   }
 };
 
-// Upsert social links
-export const upsertSocialLinks: RequestHandler<{ bandId: string }> = async (
+export const createSocialLinksForBand: RequestHandler<{ bandId: string }> = async (
   req: Request<{ bandId: string }>,
   res: Response
 ): Promise<void> => {
   const { bandId } = req.params;
-
-  if (!Types.ObjectId.isValid(bandId)) {
-    res.status(400).json({ message: 'Invalid band ID' });
-    return;
+  try {
+    const existing = await SocialLinks.findOne({ band: bandId });
+    if (existing) {
+      res.status(400).json({ message: 'Social links already exist for this band, use PUT to update' });
+      return;
+    }
+    const socialLinks = new SocialLinks({ ...req.body, band: bandId });
+    await socialLinks.save();
+    await Band.findByIdAndUpdate(bandId, { socialLinks: socialLinks._id });
+    res.status(201).json(socialLinks);
+  } catch (err) {
+    res.status(500).json({ message: 'Error creating social links', error: err });
   }
+};
 
-  const data = { ...req.body, band: bandId };
-
+export const updateSocialLinksForBand: RequestHandler<{ bandId: string }> = async (
+  req: Request<{ bandId: string }>,
+  res: Response
+): Promise<void> => {
+  const { bandId } = req.params;
   try {
     const socialLinks = await SocialLinks.findOneAndUpdate(
       { band: bandId },
-      data,
-      { new: true, upsert: true }
-    );    
+      req.body,
+      { new: true }
+    );
+    if (!socialLinks) {
+      res.status(404).json({ message: 'Social links not found for this band' });
+      return;
+    }
+    res.json(socialLinks);
+  } catch (err) {
+    res.status(500).json({ message: 'Error updating social links', error: err });
+  }
+};
 
-    await socialLinks.save();
+export const deleteSocialLinksForBand: RequestHandler<{ bandId: string }> = async (
+  req: Request<{ bandId: string }>,
+  res: Response
+): Promise<void> => {
+  const { bandId } = req.params;
+  try {
+    const deleted = await SocialLinks.findOneAndDelete({ band: bandId });
+    if (!deleted) {
+      res.status(404).json({ message: 'Social links not found for this band' });
+      return;
+    }
+    await Band.findByIdAndUpdate(bandId, { $unset: { socialLinks: 1 } });
+    res.status(204).send();
+  } catch (err) {
+    res.status(500).json({ message: 'Error deleting social links', error: err });
+  }
+};
 
-    const band = await Band.findById(bandId);
-    if (!band) {
-      res.status(404).json({ message: 'Band not found' });
+// ===== Streaming Links CRUD for Band =====
+
+export const getStreamingLinksByBand: RequestHandler<{ bandId: string }> = async (
+  req: Request<{ bandId: string }>,
+  res: Response
+): Promise<void> => {
+  const { bandId } = req.params;
+  try {
+    const streamingLinks = await StreamingLinks.findOne({ band: bandId });
+    if (!streamingLinks) {
+      res.status(404).json({ message: 'Streaming links not found for this band' });
+      return;
+    }
+    res.json(streamingLinks);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching streaming links', error: err });
+  }
+};
+
+export const createStreamingLinksForBand: RequestHandler<{ bandId: string }> = async (
+  req: Request<{ bandId: string }>,
+  res: Response
+): Promise<void> => {
+  const { bandId } = req.params;
+  try {
+    const existing = await StreamingLinks.findOne({ band: bandId });
+    if (existing) {
+      res.status(400).json({ message: 'Streaming links already exist for this band, use PUT to update' });
       return;
     }
 
-    band.socialLinks = socialLinks._id as Types.ObjectId;
-    await band.save();
+    const streamingLinks = new StreamingLinks({ ...req.body, band: bandId });
+    await streamingLinks.save();
 
-    res.status(200).json(socialLinks);
+    await Band.findByIdAndUpdate(bandId, { streamingLinks: streamingLinks._id });
+    res.status(201).json(streamingLinks);
   } catch (err) {
-    res.status(500).json({ message: 'Error saving social links', error: err });
+    res.status(500).json({ message: 'Error creating streaming links', error: err });
   }
 };
+
+export const updateStreamingLinksForBand: RequestHandler<{ bandId: string }> = async (
+  req: Request<{ bandId: string }>,
+  res: Response
+): Promise<void> => {
+  const { bandId } = req.params;
+  try {
+    const streamingLinks = await StreamingLinks.findOneAndUpdate(
+      { band: bandId },
+      req.body,
+      { new: true }
+    );
+    if (!streamingLinks) {
+      res.status(404).json({ message: 'Streaming links not found for this band' });
+      return;
+    }
+    res.json(streamingLinks);
+  } catch (err) {
+    res.status(500).json({ message: 'Error updating streaming links', error: err });
+  }
+};
+
+export const deleteStreamingLinksForBand: RequestHandler<{ bandId: string }> = async (
+  req: Request<{ bandId: string }>,
+  res: Response
+): Promise<void> => {
+  const { bandId } = req.params;
+  try {
+    const deleted = await StreamingLinks.findOneAndDelete({ band: bandId });
+    if (!deleted) {
+      res.status(404).json({ message: 'Streaming links not found for this band' });
+      return;
+    }
+    await Band.findByIdAndUpdate(bandId, { $unset: { streamingLinks: 1 } });
+    res.status(204).send();
+  } catch (err) {
+    res.status(500).json({ message: 'Error deleting streaming links', error: err });
+  }
+};
+

@@ -1,0 +1,53 @@
+<h2 class="tour-title">Tour Dates</h2>
+<div class="tour-list">
+  <div *ngIf="tours.length === 0" class="no-tours">No upcoming shows.</div>
+
+  <div class="tour-card" *ngFor="let tour of tours">
+    <div class="left">
+      <div class="date">{{ tour.date | date: 'mediumDate' }}</div>
+      <div class="band">{{ tour.band }}</div>
+    </div>
+    <div class="center">
+      <div class="venue">{{ tour.venue }}</div>
+      <div class="city-state">{{ tour.city }}, {{ tour.state }}</div>
+    </div>
+    <div class="right">
+      <div class="actions">
+        <a 
+          class="calendar-button"
+          [href]="getGoogleCalendarLink(tour)"
+          target="_blank"
+          role="button"
+        >
+          Add to Google Calendar
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="tour-list">
+  <div *ngIf="tours.length === 0" class="no-tours">No tours available.</div>
+
+  <div class="tour-card header">
+    <div class="col">Date</div>
+    <div class="col">Venue</div>
+    <div class="col">City</div>
+    <div class="col">State</div>
+    <div class="col">Band</div>
+    <div class="col">Calendar</div>
+  </div>
+
+  <div class="tour-card" *ngFor="let tour of tours">
+    <div class="col">{{ tour.date | date: 'mediumDate' }}</div>
+    <div class="col">{{ tour.venue }}</div>
+    <div class="col">{{ tour.city }}</div>
+    <div class="col">{{ tour.state }}</div>
+    <div class="col">{{ tour.band }}</div>
+    <div class="col">
+      <a class="calendar-link" [href]="getGoogleCalendarLink(tour)" target="_blank">
+        Add
+      </a>
+    </div>
+  </div>
+</div> -->

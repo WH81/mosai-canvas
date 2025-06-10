@@ -1,9 +1,10 @@
 export interface CarouselItem {
-  imageUrl: string;
+  id: string;
   bandName: string;
   songName: string;
   releaseDate: string;
+  imageUrl: string;
   buttonText: string;
   buttonLink: string;
-  formattedDate: string | null;
+  formattedDate?: string;
 }

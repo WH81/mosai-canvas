@@ -38,7 +38,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
     this.carouselService.getCarouselItems().subscribe(items => {
       this.carouselItems = items.map(item => ({
         ...item,
-        formattedDate: this.datePipe.transform(item.releaseDate, 'MMMM d, yyyy')
+        formattedDate: this.datePipe.transform(item.releaseDate, 'MMMM d, yyyy') ?? undefined
       }));
     });
 

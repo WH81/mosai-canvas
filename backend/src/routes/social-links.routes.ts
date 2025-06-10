@@ -1,9 +1,29 @@
-import express from 'express';
-import { createSocialLinks, updateSocialLinks } from '../controllers/social-links.controller';
+import { Router } from 'express';
+import {
+    createSocialLinksForBand,
+    updateSocialLinksForBand,
+    deleteSocialLinksForBand,
+    getSocialLinksForBand,
+    createSocialLinksForMember,
+    updateSocialLinksForMember,
+    deleteSocialLinksForMember,
+    getSocialLinksForMember,
+  } from '../controllers/social-links.controller';
+  
 
-const router = express.Router();
-
-router.post('/:bandId', createSocialLinks);
-router.put('/:bandId', updateSocialLinks);
-
-export default router;
+  const router = Router();
+  
+  // Band-level social links
+  router.post('/band/:bandId', createSocialLinksForBand);
+  router.put('/band/:bandId', updateSocialLinksForBand);
+  router.delete('/band/:bandId', deleteSocialLinksForBand);
+  router.get('/band/:bandId', getSocialLinksForBand);
+  
+  // Member-level social links
+  router.post('/member/:memberId', createSocialLinksForMember);
+  router.put('/member/:memberId', updateSocialLinksForMember);
+  router.delete('/member/:memberId', deleteSocialLinksForMember);
+  router.get('/member/:memberId', getSocialLinksForMember);
+  
+  export default router;
+  

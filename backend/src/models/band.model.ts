@@ -7,8 +7,8 @@ const BandSchema = new Schema<IBand>({
   description: String,
   image: String,
   members: [{ type: Schema.Types.ObjectId, ref: 'Member' }],
-  streamingLinks: { type: Schema.Types.ObjectId, ref: 'StreamingLinks' },
-  socialLinks: { type: Schema.Types.ObjectId, ref: 'SocialLinks' }
+  socialLinks: { type: Schema.Types.ObjectId, ref: 'SocialLinks' },
+  streamingLinks: { type: Schema.Types.ObjectId, ref: 'StreamingLinks' }
 }, { timestamps: true });
 
 export const Band = mongoose.model<IBand>('Band', BandSchema);

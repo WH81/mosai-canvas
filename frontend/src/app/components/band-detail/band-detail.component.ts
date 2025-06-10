@@ -34,9 +34,13 @@ export class BandDetailComponent implements OnInit, OnDestroy {
   getBand(slug: string): void {
     this.bandService.getBandBySlug(slug).subscribe(
       (data) => {
-        this.band = data;
-
-        // 🧠 Only run image load logic *after* band is fetched
+        // Safely assign
+        this.band = {
+          ...data,
+          socialLinks: data.socialLinks || null,
+          streamingLinks: data.streamingLinks || null
+        };
+  
         const img = new Image();
         img.src = this.band.image;
         img.onload = () => {
