@@ -1,24 +1,22 @@
-$gradient-start: #4A90E2;
-$gradient-end: #50E3C2;
+@use 'variables' as *;
 
 .streaming-links {
   display: flex;
-  gap: 1rem;               // space between buttons horizontally
+  gap: 1rem; // space between buttons horizontally
   justify-content: center;
   align-items: center;
-  padding: 1rem;
+  //padding: 1rem;
 
   a.streaming-icon {
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-
     width: 40px;
     height: 40px;
     border-radius: 50%;
-
-    color: white;
+    box-shadow: 0px 4px 7px #000000;
+    color: #ffffff;
     font-size: 20px;
     text-decoration: none;
 

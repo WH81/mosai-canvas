@@ -2,7 +2,8 @@ import mongoose, { Schema } from 'mongoose';
 import { ISocialLinks } from '../interfaces/social-links.interface';
 
 const SocialLinksSchema = new Schema<ISocialLinks>({
-  band: { type: Schema.Types.ObjectId, ref: 'Band', required: true, unique: true },
+  band: { type: Schema.Types.ObjectId, ref: 'Band', required: false, unique: true },
+  member: { type: Schema.Types.ObjectId, ref: 'Member', required: false, unique: true },
   facebook: String,
   instagram: String,
   x: String,

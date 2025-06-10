@@ -1,0 +1,20 @@
+<div class="mailing-list" @fadeIn>
+  <h2>Join Our Mailing List</h2>
+  <p class="mailing-list__details">Be one of the first to know about new releases and show dates.</p>
+  
+  <form #form="ngForm" (ngSubmit)="addEntry(form)">
+    <input type="text" [(ngModel)]="newEntry.name" name="name" placeholder="Full Name" required #nameInput="ngModel"/>
+    <div *ngIf="nameInput.invalid && nameInput.touched" class="error">Name is required.</div>
+
+    <input type="email" [(ngModel)]="newEntry.email" name="email" placeholder="Email" required email #emailInput="ngModel"/>
+    <div *ngIf="emailInput.invalid && emailInput.touched" class="error">A valid email is required.</div>
+    
+    <button type="submit" [disabled]="form.invalid">Subscribe</button>
+  </form>
+  
+  <div *ngIf="submissionSuccess" class="success-message">
+    Thank you for subscribing!
+  </div>
+  
+
+</div>

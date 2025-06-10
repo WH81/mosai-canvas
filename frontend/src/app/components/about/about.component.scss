@@ -2,30 +2,47 @@
 @use 'index' as *;
 
 .about-container {
-    padding: 20px;
-    margin: 0 auto;
-    background-color: transparent;
+  padding: 1.5rem;
+  margin: 0 auto;
+  //background-color: transparent;
+  background-image: url('/assets/svgs/subtle-fiber-texture.svg');
+  background-repeat: repeat;
+  background-size: 70px 70px;
+
+  @media (min-width: 768px) {
+    padding: 2rem 4rem;
   }
-  
-  .about-content {
-    width: 75%;
-    margin: 6rem auto 10rem;
-    text-align: center;
+
+  @media (min-width: 1200px) {
+    padding: 3rem 6rem;
   }
+}
+
+.about-content {
+  max-width: 1600px;
+  text-align: center;
+  margin: clamp(2rem, 6vw, 6rem) auto clamp(4rem, 10vw, 8rem);
+  padding: 0 1rem;
   
-  .about-content h2 {
-    @include text-style-primary(4rem, 5rem, 1.7, 700);
-    padding: 4rem 0;
-    color: #7d7d7d;
-  }
-  
-  .about-content p {
-    @include text-style-secondary(1rem, 2rem, 1.7, 400);
-    color: #ccc;
-  }
-  
-  .loading {
-    @include text-style-secondary(1rem, 2rem, 1.7, 400);
-    color: #888;
-  }
-  
+}
+
+.about-content h2 {
+  @include text-style-primary(clamp(2.5rem, 5vw, 4rem), clamp(3rem, 6vw, 5rem), 1.4, 700);
+  color: #7d7d7d;
+  padding: clamp(1rem, 4vw, 2rem) 0;
+}
+
+.about-content p {
+  @include text-style-secondary(clamp(1rem, 2vw, 1.25rem), 1.7, 400, normal);
+  color: #ccc;
+  max-width: 75ch;
+  margin: 0 auto;
+  line-height: 1.8;
+}
+
+.loading {
+  @include text-style-secondary(1rem, 2rem, 1.7, 400);
+  color: #888;
+  text-align: center;
+  margin-top: 2rem;
+}

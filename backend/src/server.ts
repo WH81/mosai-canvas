@@ -11,6 +11,8 @@ import carouselRoutes from "./routes/carouselRoutes";
 import aboutRoutes from "./routes/aboutRoutes";
 import memberRoutes from './routes/memberRoutes';
 import { errorHandler } from './middleware/error.middleware';
+import tourRoutes from './routes/tour.routes';
+import mailingListRoutes from "./routes/mailing-list.routes";
 
 dotenv.config();
 connectDB();
@@ -27,6 +29,9 @@ app.use('/api/streaming-links', streamingLinksRoutes);
 app.use("/api/members", memberRoutes);
 app.use("/api/carousel", carouselRoutes);
 app.use("/api/about", aboutRoutes);
+app.use('/api/tours', tourRoutes);
+app.use('/api/mailing-list', mailingListRoutes);
+
 app.use(errorHandler);
 
 

@@ -1,0 +1,153 @@
+@use 'index' as *;
+@use 'variables' as *;
+
+.tour-title {
+  @include text-style-primary(clamp(2.5rem, 5vw, 4rem), clamp(3rem, 6vw, 5rem), 1.4, 700);
+  color: #7d7d7d;
+  padding: clamp(1rem, 4vw, 2rem) 0;
+  text-align: center;
+}
+
+.tour-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0rem;
+  padding: 0rem 1rem 10rem;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.tour-card {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  background: transparent; // This is the background the button will appear transparent against
+  color: #ccc;
+  padding: 1.25rem;
+  border-radius: 0px;
+  border-bottom: 1px solid #444;
+  transition: background 0.3s ease;
+  gap: 1rem;
+
+  &:first-of-type {
+    border-top: 1px solid #444;
+  }
+
+  &:hover {
+    background-color: #1a1a1a;
+  }
+
+  .left,
+  .center,
+  .right {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .left {
+    flex: 1 1 150px;
+
+    .date {
+      font-weight: bold;
+      font-size: 1.125rem;
+    }
+
+    .band {
+      font-weight: 600;
+      font-size: 1.125rem;
+    }
+  }
+
+  .center {
+    flex: 2 1 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    .venue,
+    .city-state {
+      font-size: 1.125rem;
+    }
+  }
+
+  .right {
+    flex: 1 1 150px;
+    display: flex;
+    justify-content: center; // vertical center in column
+    align-items: flex-end;
+
+    .calendar-button {
+      /* Base styles for the button */
+      display: inline-block;
+      padding: 0.75rem 1rem;
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: #ccc; /* Changed to white for better contrast with the gradient */
+      background-color: transparent; /* Makes the button background transparent */
+      border: 3px solid transparent; /* Required for border-image to work properly */
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s ease; /* Smooth transition for hover effects */
+      text-align: center; /* Center text inside the button */
+      /* Gradient Border using border-image */
+      border-image: linear-gradient(to right, $gradient-start, $gradient-end) 1; /* '1' slices the image evenly */
+      border-image-slice: 1; /* Specifies how the image is sliced, '1' means no slicing */
+      border-image-outset: 0; /* Ensures the border doesn't extend beyond the element's box */
+      border-image-repeat: stretch; /* Stretches the image to fill the border area */
+
+      &:hover {
+        color: #ccc;
+        background-color: #1a1a1a; /* Slightly visible background on hover */
+        border: 3px solid #ccc;
+        transform: scale(1.05); /* Slightly enlarge the button */
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        transition: all 0.3s ease;
+      }
+
+      &:focus {
+        outline: none;
+        border-image: linear-gradient(to right, $gradient-end, $gradient-start) 1;
+        box-shadow: 0 0 0 3px rgba($gradient-start, 0.5), 0 4px 15px rgba(0, 0, 0, 0.3);
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    padding: 1rem;
+    gap: 0.5rem;
+
+    .left,
+    .center,
+    .right {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: left;
+      gap: 0.25rem;
+      flex: none;
+    }
+
+    .date,
+    .band,
+    .venue,
+    .city-state {
+      font-size: 1.125rem;
+      margin: 0;
+      line-height: 1.3;
+    }
+
+    .calendar-button {
+      width: 100%;
+      text-align: center;
+      font-size: 1.125rem;
+      margin-top: 0.5rem;
+    }
+  }
+}

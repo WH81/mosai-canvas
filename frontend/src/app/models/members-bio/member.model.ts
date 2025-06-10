@@ -11,5 +11,5 @@ export interface Member {
     x?: string;
     youtube?: string;
     tiktok?: string;
-  };
+  } | null;
 }

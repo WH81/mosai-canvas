@@ -1,0 +1,119 @@
+@use 'index' as *;
+@use 'variables' as *;
+@use 'mixins' as m;
+
+.mailing-list {
+    max-width: 600px;
+    margin: auto;
+    padding: 1rem;
+  
+    h2 {
+      @include text-style-primary(clamp(2.5rem, 5vw, 4rem), clamp(3rem, 6vw, 5rem), 1.4, 700);
+      color: #7d7d7d;
+      padding: clamp(1rem, 4vw, 2rem) 0;
+      text-align: center;
+    }
+
+    p {
+      @include m.text-style-secondary(1rem, 1.125rem, 1.7, 400);
+      color: #7d7d7d;
+      text-align: center;
+      margin-bottom: 3.5rem;
+      line-height: 1.6;
+    }    
+  
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 5rem;
+  
+      input {
+        background: transparent;
+        border: none;
+        border-bottom: 2px solid #666;
+        padding: 0.5rem 0;
+        color: #fff;
+        font-size: 1rem;
+        width: 100%;
+        margin-bottom: 1.5rem;
+      
+        &::placeholder {
+          color: #aaa;
+        }
+      
+        &:focus {
+          outline: none;
+          border-bottom: 2px solid #00e0ff; // Accent color
+        }
+      }
+      
+      .error {
+        color: #ff0000;
+        margin-top: -1rem;
+        margin-bottom: 2rem;
+      }
+
+      button {
+         /* Base styles for the button */
+        display: inline-block;
+        padding: 0.75rem 1rem;
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: #ccc; /* Changed to white for better contrast with the gradient */
+        background-color: transparent; /* Makes the button background transparent */
+        border: 3px solid transparent; /* Required for border-image to work properly */
+        border-radius: 6px;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.3s ease; /* Smooth transition for hover effects */
+        text-align: center; /* Center text inside the button */
+        /* Gradient Border using border-image */
+        border-image: linear-gradient(to right, $gradient-start, $gradient-end) 1; /* '1' slices the image evenly */
+        border-image-slice: 1; /* Specifies how the image is sliced, '1' means no slicing */
+        border-image-outset: 0; /* Ensures the border doesn't extend beyond the element's box */
+        border-image-repeat: stretch; /* Stretches the image to fill the border area */
+
+        &:hover {
+          color: #ccc;
+          background-color: #1a1a1a; /* Slightly visible background on hover */
+          border: 3px solid #ccc;
+          transform: scale(1.05); /* Slightly enlarge the button */
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+          transition: all 0.3s ease;
+        }
+
+        &:focus {
+          outline: none;
+          border-image: linear-gradient(to right, $gradient-end, $gradient-start) 1;
+          box-shadow: 0 0 0 3px rgba($gradient-start, 0.5), 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+      }
+    }
+  
+    ul {
+      list-style: none;
+      padding: 0;
+  
+      li {
+        background: #fafafa;
+        border: 1px solid #eee;
+        padding: 0.5rem;
+        border-radius: 0.5rem;
+        margin-bottom: 0.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+  }
+  
+  .success-message {
+    text-align: center;
+    font-size: 1.125rem;
+    color: #00e0ff; // Accent color
+    margin-top: 2rem;
+    padding: 1rem;
+    background-color: rgba(0, 224, 255, 0.1); // Light background for visibility
+    border-radius: 0.5rem;
+  }

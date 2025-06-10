@@ -27,7 +27,10 @@ export class MemberBioComponent implements OnInit {
     if (this.memberId) {
       this.memberService.getMember(this.memberId).subscribe(
         (value: Member) => {
-          this.memberData = value; // Assign fetched data to the memberData variable
+          this.memberData = {
+            ...value,
+            socialLinks: value.socialLinks || null
+          };
         },
         (error: any) => {
           console.error('Error fetching member data:', error);
@@ -35,5 +38,6 @@ export class MemberBioComponent implements OnInit {
         }
       );
     }
+    
   }
 }
