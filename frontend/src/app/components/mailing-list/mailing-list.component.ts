@@ -47,7 +47,6 @@ export class MailingListComponent implements OnInit {
     });
   }
   
-
   deleteEntry(id: string) {
     this.mailingListService.delete(id).subscribe(() => this.fetchEntries());
   }
