@@ -10,11 +10,10 @@
     <div *ngIf="emailInput.invalid && emailInput.touched" class="error">A valid email is required.</div>
     
     <button type="submit" [disabled]="form.invalid">Subscribe</button>
+
+    <div *ngIf="submissionSuccess" class="success-message">
+      Thank you for subscribing!
+    </div>
   </form>
-  
-  <div *ngIf="submissionSuccess" class="success-message">
-    Thank you for subscribing!
-  </div>
-  
 
 </div>
