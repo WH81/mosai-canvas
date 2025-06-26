@@ -12,6 +12,7 @@
       color: #7d7d7d;
       padding: clamp(1rem, 4vw, 2rem) 0;
       text-align: center;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
     }
 
     p {
@@ -20,14 +21,14 @@
       text-align: center;
       margin-bottom: 3.5rem;
       line-height: 1.6;
-    }    
-  
+    }
+
     form {
       display: flex;
       flex-direction: column;
       gap: 0.75rem;
       margin-bottom: 5rem;
-  
+
       input {
         background: transparent;
         border: none;
@@ -37,17 +38,17 @@
         font-size: 1rem;
         width: 100%;
         margin-bottom: 1.5rem;
-      
+
         &::placeholder {
           color: #aaa;
         }
-      
+
         &:focus {
           outline: none;
           border-bottom: 2px solid #00e0ff; // Accent color
         }
       }
-      
+
       .error {
         color: #ff0000;
         margin-top: -1rem;
@@ -60,6 +61,7 @@
         padding: 0.75rem 1rem;
         font-size: 1.125rem;
         font-weight: 600;
+        width: fit-content;
         color: #ccc; /* Changed to white for better contrast with the gradient */
         background-color: transparent; /* Makes the button background transparent */
         border: 3px solid transparent; /* Required for border-image to work properly */
@@ -73,6 +75,7 @@
         border-image-slice: 1; /* Specifies how the image is sliced, '1' means no slicing */
         border-image-outset: 0; /* Ensures the border doesn't extend beyond the element's box */
         border-image-repeat: stretch; /* Stretches the image to fill the border area */
+        margin: auto;
 
         &:hover {
           color: #ccc;
@@ -90,11 +93,11 @@
         }
       }
     }
-  
+
     ul {
       list-style: none;
       padding: 0;
-  
+
       li {
         background: #fafafa;
         border: 1px solid #eee;
@@ -107,7 +110,7 @@
       }
     }
   }
-  
+
   .success-message {
     text-align: center;
     font-size: 1.125rem;

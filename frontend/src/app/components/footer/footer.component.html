@@ -1,0 +1,71 @@
+<footer class="footer">
+  <div class="footer__container">
+    
+    <!-- Left Column -->
+    <div class="footer__left">
+      <div class="footer__brand">
+        <app-mosaicanvas-logo class="footer__logo" [width]="'300px'"></app-mosaicanvas-logo>
+      </div>
+
+      <app-social-links *ngIf="socialLinks" [links]="socialLinks"></app-social-links>
+
+        <div class="footer__streaming">
+          <a href="https://spotify.com" target="_blank" aria-label="Spotify">
+            <i class="fab fa-spotify"></i>
+          </a>
+          <a href="https://music.apple.com" target="_blank" aria-label="Apple Music">
+            <i class="fab fa-apple"></i>
+          </a>
+          <a href="https://soundcloud.com" target="_blank" aria-label="SoundCloud">
+            <i class="fab fa-soundcloud"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Center Column -- Footer Links (commented out by user) -->
+    <!-- <div class="footer__center">
+      <div class="footer__links">
+        <ng-container *ngFor="let item of menuItems">
+          <ng-container *ngIf="item.submenu; else singleLink">
+            <div class="footer__link-group">
+              <span class="footer__link-title">{{ item.name }}</span>
+              <div class="footer__sublinks">
+                <a *ngFor="let sub of item.submenu" [routerLink]="sub.path" class="footer__sublink">
+                  {{ sub.name }}
+                </a>
+              </div>
+            </div>
+          </ng-container>
+          <ng-template #singleLink>
+            <a [routerLink]="item.path" class="footer__link">{{ item.name }}</a>
+          </ng-template>
+        </ng-container>
+      </div>
+    </div> -->
+
+    <!-- Right Column (commented out by user) -->
+    <!-- <app-mailing-list></app-mailing-list> -->
+
+  <!-- Copyright -->
+  <div class="footer__bottom">
+    <p>&copy; {{ currentYear }} Mosai Canvas. All rights reserved.</p>
+    <p>Website design & developed by Wayne Hite.</p>
+  </div>
+</footer>
+
+<!-- Back to Top Button -->
+<button id="backToTopBtn" #backToTopBtn class="back-to-top" (click)="scrollToTop()">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+        <defs>
+            <linearGradient id="arrowGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#4A90E2" />
+                <stop offset="100%" stop-color="#50E3C2" />
+            </linearGradient>
+        </defs>
+        <path
+            d="M12 4L4 12H9V20H15V12H20L12 4Z"
+            fill="url(#arrowGradient)"
+        />
+    </svg>
+</button>

@@ -1,0 +1,248 @@
+@use 'index' as *;
+@use 'variables' as *;
+@use 'mixins' as m;
+
+.footer {
+  background-color: rgba(17, 17, 17, 0.9);
+  color: #ccc;
+  padding: 1rem;
+  font-size: 1rem;
+  border-top: 1px solid;
+  border-image: linear-gradient(to right, $gradient-start, $gradient-end) 1;
+  border-image-slice: 1;
+
+  &__container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1600px;
+    margin: 0 auto;
+    gap: 4rem;
+  }
+
+  &__left,
+  &__center,
+  &__right {
+    flex: 1 1 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  &__left {
+    flex: 1 1 250px;
+    align-items: center;
+  }
+
+  // &__center {
+  //   border-left: 3px solid transparent;
+  //   border-image: linear-gradient(to bottom, $gradient-start, $gradient-end) 1;
+  //   border-image-slice: 1;
+  // }
+
+  &__brand {
+    .footer__logo {
+      display: block;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      max-width: 300px;
+
+      svg {
+        display: block;
+        width: 100%;
+        height: auto;
+        margin: 0;
+        padding: 0;
+      }
+    }
+  }
+
+  &__media-links {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  &__social,
+  &__streaming {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    a {
+      color: #ccc;
+      font-size: 1.3rem;
+      font-weight: bold;
+      transition: color 0.3s;
+      padding: 0.3rem;
+
+      &:hover {
+        color: #fff;
+      }
+    }
+  }
+
+  // &__links {
+  //   display: flex;
+  //   flex-direction: column;
+
+  //   .footer__link {
+  //     color: #ccc;
+  //     font-weight: bold;
+  //     text-decoration: none;
+  //     display: inline-block;
+  //     padding: 0.3rem;
+  //     margin: 0.3rem 0 0.3rem 4rem;
+  //     transition: color 0.3s, border-left 0.3s;
+
+  //     &:hover {
+  //       color: #fff;
+  //       border-left: 4px solid #fff;
+  //       width: fit-content;
+  //       padding-left: 12px;
+  //     }
+  //   }
+  // }
+
+  // .footer__link-group {
+  //   margin-bottom: 1rem;
+  //   margin-left: 4rem;
+
+  //   .footer__link-title {
+  //     font-weight: bold;
+  //     color: #ccc;
+  //     display: block;
+  //     margin-bottom: 0.25rem;
+  //     padding: 0.3rem;
+  //   }
+
+  //   .footer__sublinks {
+  //     display: flex;
+  //     flex-direction: column;
+  //     gap: 0.25rem;
+  //     margin-left: 1rem;
+
+  //     .footer__sublink {
+  //       color: #ccc;
+  //       text-decoration: none;
+  //       padding: 0.3rem;
+  //       margin: 0.3rem 0 0.3rem 0;
+  //       transition: color 0.3s, border-left 0.3s;
+
+  //       &:hover {
+  //         color: #fff;
+  //         border-left: 4px solid #fff;
+  //         width: fit-content;
+  //         padding-left: 12px;
+  //       }
+  //     }
+  //   }
+  // }
+
+  // &__mailing-list {
+  //   width: 100%;
+
+  //   p {
+  //     font-weight: bold;
+  //     margin-bottom: 0.5rem;
+  //   }
+
+  //   input {
+  //     width: 100%;
+  //     padding: 0.5rem;
+  //     margin-bottom: 0.5rem;
+  //     background-color: #222;
+  //     border: 1px solid #444;
+  //     color: #ccc;
+  //   }
+
+  //   button {
+  //     background: linear-gradient(to right, $gradient-start, $gradient-end);
+  //     color: #fff;
+  //     border: none;
+  //     padding: 0.5rem 1rem;
+  //     cursor: pointer;
+  //     transition: background 0.3s ease;
+
+  //     &:hover {
+  //       opacity: 0.9;
+  //     }
+  //   }
+  // }
+
+  &__bottom {
+    text-align: center;
+    margin-top: 2rem;
+    border-top: 1px solid #666;
+    padding-top: 1rem;
+
+    p {
+      color: #ccc;
+      font-size: 1rem;
+    }
+  }
+}
+
+.back-to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 48px;
+  height: 48px;
+  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  z-index: 1000;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  border: 2px solid transparent;
+  background-image: 
+    linear-gradient(#111, #111), // Inner background (transparent/black)
+    linear-gradient(to right, $gradient-start, $gradient-end); // Border gradient
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  svg {
+    width: 60%;
+    height: 60%;
+    background: linear-gradient(to right, $gradient-start, $gradient-end);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+/* --- Active State --- */
+.back-to-top.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* --- Hover State --- */
+.back-to-top:hover {
+  background-image: 
+    linear-gradient(#000, #000), // Inner background becomes black
+    linear-gradient(to right, $gradient-start, $gradient-end); // Keep gradient border
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+}
+
+/* --- Focus State --- */
+.back-to-top:focus {
+  outline: none;
+  box-shadow: 0 0 0 1px rgba(#fff, 0.6);
+}
+ 

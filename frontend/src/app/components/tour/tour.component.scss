@@ -6,6 +6,7 @@
   color: #7d7d7d;
   padding: clamp(1rem, 4vw, 2rem) 0;
   text-align: center;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 .tour-list {
@@ -13,7 +14,7 @@
   flex-direction: column;
   gap: 0rem;
   padding: 0rem 1rem 10rem;
-  max-width: 1600px;
+  max-width: 1440px;
   margin: 0 auto;
 }
 
@@ -34,7 +35,7 @@
   }
 
   &:hover {
-    background-color: #1a1a1a;
+    background-color: #000;
   }
 
   .left,
@@ -49,8 +50,8 @@
     flex: 1 1 150px;
 
     .date {
-      font-weight: bold;
-      font-size: 1.125rem;
+      font-weight: normal;
+      font-size: 1rem;
     }
 
     .band {
@@ -100,7 +101,7 @@
 
       &:hover {
         color: #ccc;
-        background-color: #1a1a1a; /* Slightly visible background on hover */
+        background: linear-gradient(to right, rgba(0, 0, 0, 1), rgba(36, 36, 36, 0.3), rgba(0, 0, 0, 1));
         border: 3px solid #ccc;
         transform: scale(1.05); /* Slightly enlarge the button */
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
