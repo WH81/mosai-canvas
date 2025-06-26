@@ -1,9 +1,28 @@
-<div class="navbar">
+<!-- <div class="navbar">
   <ng-container *ngFor="let item of menuItems">
     <div class="dropdown" *ngIf="item.submenu; else singleLink">
       <button class="dropbtn">
         {{ item.name }}
         <i class="fa fa-caret-down"></i>
+      </button>
+      <div class="dropdown-content">
+        <a *ngFor="let sub of item.submenu" [routerLink]="sub.path">
+          {{ sub.name }}
+        </a>
+      </div>
+    </div>
+    <ng-template #singleLink>
+      <a [routerLink]="item.path">{{ item.name }}</a>
+    </ng-template>
+  </ng-container>
+</div> -->
+
+<div class="navbar">
+  <ng-container *ngFor="let item of menuItems">
+    <div class="dropdown" *ngIf="item.submenu; else singleLink">
+      <button class="dropbtn">
+        {{ item.name }}
+        <i class="fa fa-caret-down chevron-icon" aria-hidden="true"></i>
       </button>
       <div class="dropdown-content">
         <a *ngFor="let sub of item.submenu" [routerLink]="sub.path">

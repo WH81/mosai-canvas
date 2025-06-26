@@ -1,11 +1,15 @@
-import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-mosaicanvas-logo',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './mosaicanvas-logo.component.html',
   styleUrls: ['./mosaicanvas-logo.component.scss']
 })
 export class MosaicanvasLogoComponent {
-
+  @Input() class: string = '';
+  @Input() alt: string = 'MosaiCanvas Logo';
+  @Input() width: string = '450px'; // Default for header usage
+  @Input() height: string = '150px'; // Default for header usage
 }
