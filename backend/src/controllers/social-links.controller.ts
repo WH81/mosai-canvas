@@ -3,11 +3,7 @@ import * as socialLinksService from '../services/social-links.service';
 
 // BAND social links handlers
 
-export const createSocialLinksForBand = async (
-  req: Request, 
-  res: Response, 
-  next: NextFunction
-): Promise<void> => {
+export const createSocialLinksForBand = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const bandId = req.params.bandId;
   if (!bandId) {
     res.status(400).json({ message: 'Band ID is required' });
@@ -26,11 +22,7 @@ export const createSocialLinksForBand = async (
   }
 };
 
-export const updateSocialLinksForBand = async (
-  req: Request, 
-  res: Response, 
-  next: NextFunction
-): Promise<void> => {
+export const updateSocialLinksForBand = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const bandId = req.params.bandId;
   if (!bandId) {
     res.status(400).json({ message: 'Band ID is required' });
@@ -49,11 +41,7 @@ export const updateSocialLinksForBand = async (
   }
 };
 
-export const getSocialLinksForBand = async (
-  req: Request, 
-  res: Response, 
-  next: NextFunction
-): Promise<void> => {
+export const getSocialLinksForBand = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const bandId = req.params.bandId;
   if (!bandId) {
     res.status(400).json({ message: 'Band ID is required' });
@@ -72,11 +60,7 @@ export const getSocialLinksForBand = async (
   }
 };
 
-export const deleteSocialLinksForBand = async (
-  req: Request, 
-  res: Response, 
-  next: NextFunction
-): Promise<void> => {
+export const deleteSocialLinksForBand = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const bandId = req.params.bandId;
   if (!bandId) {
     res.status(400).json({ message: 'Band ID is required' });
@@ -97,11 +81,7 @@ export const deleteSocialLinksForBand = async (
 
 // MEMBER social links handlers
 
-export const createSocialLinksForMember = async (
-  req: Request, 
-  res: Response, 
-  next: NextFunction
-): Promise<void> => {
+export const createSocialLinksForMember = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const memberId = req.params.memberId;
   if (!memberId) {
     res.status(400).json({ message: 'Member ID is required' });
@@ -120,11 +100,7 @@ export const createSocialLinksForMember = async (
   }
 };
 
-export const updateSocialLinksForMember = async (
-  req: Request, 
-  res: Response, 
-  next: NextFunction
-): Promise<void> => {
+export const updateSocialLinksForMember = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const memberId = req.params.memberId;
   if (!memberId) {
     res.status(400).json({ message: 'Member ID is required' });
@@ -143,11 +119,7 @@ export const updateSocialLinksForMember = async (
   }
 };
 
-export const getSocialLinksForMember = async (
-  req: Request, 
-  res: Response, 
-  next: NextFunction
-): Promise<void> => {
+export const getSocialLinksForMember = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const memberId = req.params.memberId;
   if (!memberId) {
     res.status(400).json({ message: 'Member ID is required' });
@@ -166,11 +138,7 @@ export const getSocialLinksForMember = async (
   }
 };
 
-export const deleteSocialLinksForMember = async (
-  req: Request, 
-  res: Response, 
-  next: NextFunction
-): Promise<void> => {
+export const deleteSocialLinksForMember = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const memberId = req.params.memberId;
   if (!memberId) {
     res.status(400).json({ message: 'Member ID is required' });

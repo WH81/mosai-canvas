@@ -1,44 +1,37 @@
-<!-- <span class="gradient-separator-line"></span> -->
-<div *ngIf="links" class="social-links">
-  
-  <a *ngIf="links.facebook" 
-     [href]="links.facebook" 
+<div *ngIf="socialLinks" class="social-links">
+  <a *ngIf="socialLinks.facebook" 
+     [href]="socialLinks.facebook" 
      target="_blank" 
      aria-label="Facebook" 
      [ngClass]="['social-icon', 'facebook', size]">
     <i class="fa-brands fa-facebook"></i>
   </a>
-
-  <a *ngIf="links.instagram" 
-     [href]="links.instagram" 
+  <a *ngIf="socialLinks.instagram" 
+     [href]="socialLinks.instagram" 
      target="_blank" 
      aria-label="Instagram" 
      [ngClass]="['social-icon', 'instagram', size]">
     <i class="fa-brands fa-instagram"></i>
   </a>
-
-  <a *ngIf="links.x" 
-     [href]="links.x" 
+  <a *ngIf="socialLinks.x" 
+     [href]="socialLinks.x" 
      target="_blank" 
      aria-label="X" 
      [ngClass]="['social-icon', 'x', size]">
     <i class="fa-brands fa-x-twitter"></i>
   </a>
-
-  <a *ngIf="links.youtube" 
-     [href]="links.youtube" 
+  <a *ngIf="socialLinks.youtube" 
+     [href]="socialLinks.youtube" 
      target="_blank" 
      aria-label="YouTube" 
      [ngClass]="['social-icon', 'youtube', size]">
     <i class="fa-brands fa-youtube"></i>
   </a>
-
-  <a *ngIf="links.tiktok" 
-     [href]="links.tiktok" 
+  <a *ngIf="socialLinks.tiktok" 
+     [href]="socialLinks.tiktok" 
      target="_blank" 
      aria-label="TikTok" 
      [ngClass]="['social-icon', 'tiktok', size]">
     <i class="fa-brands fa-tiktok"></i>
   </a>
-  
 </div>

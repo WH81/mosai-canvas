@@ -10,6 +10,6 @@ import { SocialLinks } from '../../models/social-links/social-links.model';
   styleUrls: ['./social-links.component.scss']
 })
 export class SocialLinksComponent {
-  @Input() links?: SocialLinks;
+  @Input() socialLinks?: SocialLinks;
   @Input() size: 'small' | 'large' = 'small';
 }
