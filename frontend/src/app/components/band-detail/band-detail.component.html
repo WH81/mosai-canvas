@@ -9,7 +9,7 @@
       <h1 class="band-name">{{ band.name }}</h1>
       <p class="band-description">{{ band.description }}</p>
       <div class="band-media-links-wrapper">
-        <app-social-links [links]="band?.socialLinks" size="large"></app-social-links>
+        <app-social-links [socialLinks]="band?.socialLinks" size="large"></app-social-links>
         <app-streaming-links [streamingLinks]="band?.streamingLinks" size="large"></app-streaming-links>
       </div>
     </div>

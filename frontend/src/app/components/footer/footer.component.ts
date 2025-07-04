@@ -5,30 +5,60 @@ import { MosaicanvasLogoComponent } from '../mosaicanvas-logo/mosaicanvas-logo.c
 import { menuItems } from '../../shared/nav-config';
 import { SocialLinksComponent } from '../social-links/social-links.component';
 import { SocialLinks } from '../../models/social-links/social-links.model';
+import { StreamingLinks } from '../../models/streaming-links/streaming-links.model';
+import { StreamingLinksComponent } from '../streaming-links/streaming-links.component';
 import { FooterService } from '../../services/footer/footer.service';
+import { BandService } from '../../services/bands/band.service';
 
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [CommonModule, RouterModule, MosaicanvasLogoComponent, SocialLinksComponent],
+  imports: [
+    CommonModule,
+    RouterModule,
+    MosaicanvasLogoComponent,
+    SocialLinksComponent,
+    StreamingLinksComponent
+  ],
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.scss']
 })
 export class FooterComponent implements AfterViewInit, OnDestroy, OnInit {
-  homepageBandId = '685b5c2ca1ee1c0efcc20e7d';
+  homepageBandSlug = 'mosai-canvas';
+  bandId?: string;
   socialLinks?: SocialLinks;
+  streamingLinks?: StreamingLinks;
   currentYear = new Date().getFullYear();
   menuItems = menuItems;
 
   @ViewChild('backToTopBtn') backToTopBtnRef!: ElementRef<HTMLButtonElement>;
   private scrollThreshold = 300;
 
-  constructor(private footerService: FooterService) {}
+  constructor(
+    private footerService: FooterService,
+    private bandService: BandService  // Inject BandService
+  ) {}
 
   ngOnInit(): void {
-    this.footerService.getHomePageSocialLinks(this.homepageBandId).subscribe({
-      next: (data: SocialLinks | undefined) => this.socialLinks = data,
-      error: (err: any) => console.error('Failed to load social links for homepage:', err)
+    this.bandService.getBandBySlug(this.homepageBandSlug).subscribe({
+      next: (band) => {
+        if (!band || !band._id) {
+          console.error('Band not found for slug:', this.homepageBandSlug);
+          return;
+        }
+        const bandId = band._id;
+
+        this.footerService.getHomePageSocialLinks(bandId).subscribe({
+          next: (data) => this.socialLinks = data,
+          error: (err) => console.error('Failed to load social links:', err)
+        });
+
+        this.footerService.getHomePageStreamingLinks(bandId).subscribe({
+          next: (data) => this.streamingLinks = data,
+          error: (err) => console.error('Failed to load streaming links:', err)
+        });
+      },
+      error: (err) => console.error('Failed to load band by slug:', err)
     });
   }
 

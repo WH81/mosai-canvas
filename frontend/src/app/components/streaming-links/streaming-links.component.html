@@ -1,5 +1,4 @@
 <div *ngIf="streamingLinks" class="streaming-links">
-  
   <a *ngIf="streamingLinks.appleMusic" 
      [href]="streamingLinks.appleMusic" 
      target="_blank" 
@@ -7,7 +6,6 @@
      [ngClass]="['streaming-icon', 'apple-music', size]">
     <i class="fa-brands fa-apple"></i>
   </a>
-
   <a *ngIf="streamingLinks.spotify" 
      [href]="streamingLinks.spotify" 
      target="_blank" 
@@ -15,7 +13,6 @@
      [ngClass]="['streaming-icon', 'spotify', size]">
     <i class="fa-brands fa-spotify"></i>
   </a>
-
   <a *ngIf="streamingLinks.soundCloud" 
      [href]="streamingLinks.soundCloud" 
      target="_blank" 
@@ -23,5 +20,4 @@
      [ngClass]="['streaming-icon', 'soundcloud', size]">
     <i class="fa-brands fa-soundcloud"></i>
   </a>
-
 </div>

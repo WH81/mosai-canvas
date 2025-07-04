@@ -10,7 +10,7 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  min-height: 50vh; // Increased height for better parallax effect visibility
+  min-height: 80vh; // Increased height for better parallax effect visibility
   opacity: 1;
   transition: opacity 0.8s ease-in;
 
@@ -26,14 +26,15 @@
 .overlay {
   padding: 2rem;
   width: 100%;
-  min-height: 50vh; // Match parent height
+  min-height: 80vh; // Match parent height
   height: 100%;
   display: flex;
   flex-direction: column; // Allow content to stack
   align-items: center;
   justify-content: center;
   text-align: center;
-  background: linear-gradient(to bottom, rgba(18, 18, 18, 0.5), rgba(18, 18, 18, 1));
+  background: linear-gradient(to bottom, rgba(18, 18, 18, 0.1), rgba(18, 18, 18, 0.8));
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
 }
 
 .band-media-link {

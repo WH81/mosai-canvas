@@ -21,6 +21,13 @@
     gap: 4rem;
   }
 
+  &__links-row {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
   &__left,
   &__center,
   &__right {

@@ -5,7 +5,8 @@ const StreamingLinksSchema = new Schema<IStreamingLinks>({
   band: {
     type: Schema.Types.ObjectId,
     ref: 'Band',
-    required: true
+    required: false,
+    unique: true
   },
   spotify: {
     type: String

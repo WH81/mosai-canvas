@@ -1,91 +1,290 @@
-@use 'index' as *;  // Import all styles from index.scss
+@use 'index' as *;
 
-// Ensure the container holds the cards in a horizontal layout
 .members-list-container {
-  display: flex;  // Flexbox to arrange the cards horizontally
-  flex-wrap: wrap;  // Wrap cards to the next line if there are too many
-  justify-content: flex-start;  // Align cards to the left
-  gap: 24px;  // Space between cards
-  padding: 12px;  // Padding around the container
-  justify-content: center;  // Center the cards in the container
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px;
+  padding: 3rem 1rem;
+  background-color: rgba(0, 0, 0, 0.3);
 }
 
 .member-card {
+  position: relative;       // Needed for absolute positioning of bio overlay and initial content
+  overflow: hidden;         // Crucial to clip content that slides in/out smoothly
   display: flex;
-  flex-direction: column;  // Cards in a horizontal layout
-  align-items: center;  // Vertically align content in the center
-  justify-content: flex-start;  // Align to the left side
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
   margin: 16px 0;
-  padding: 0 16px 16px 16px;
+  padding: 0 16px 16px 16px; // Original padding for the base card when unexpanded
   border-radius: 12px;
-  background: transparent;
-  //box-shadow: 0 4px 10px rgba(255, 255, 255, 0.08);
-  max-width: 400px;  // Fixed width for the card
-  width: 100%;  // Let the card take 100% of 400px width
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  background: transparent; // Start with transparent, actual background on hover/expand
+  max-width: 400px;
+  width: 100%;
+  transition: box-shadow 0.3s ease-in-out, background-color 0.3s ease-in-out;
+  height: 550px; // Example fixed height to accommodate image + text + bio
 
-  &:hover {
-    transform: scale(1.05);  // Slightly larger on hover
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
-    background-color: #111111;
+  // State when the card is NOT expanded (default and hover)
+  &:not(.expanded) {
+    background-color: #0d0d0d; // Dark background for the unexpanded card
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); // Initial subtle shadow
+
+    &:hover {
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); // More prominent shadow on hover
+      background-color: #1a1a1a; // Slightly lighter background on hover
+
+      .member-image img {
+        filter: brightness(0.7); // Dim the image on hover
+      }
+
+      .member-toggle {
+        opacity: 1; // Show chevron on hover
+        transform: translateY(1); // Slide chevron up on hover
+      }
+    }
+  }
+
+  // State when the card IS expanded
+  &.expanded {
+    background-color: #121212; // Dark grey background for expanded bio
+    box-shadow: 0 0 20px rgba(74, 144, 226, 0.5); // Blue glow when expanded
+    padding: 0; // Remove padding when expanded as bio container takes full space
+  }
+}
+
+// This div holds the content visible when the card is NOT expanded (front face)
+.card-front {
+  width: 100%;
+  height: 100%; // Occupy full height of the parent .member-card
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute; // Position absolutely within .member-card
+  top: 0;
+  left: 0;
+  padding: 0 16px 16px 16px; // Re-apply the original card padding to this content
+  transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s ease;
+  z-index: 1; // Ensure it's below the bio overlay when expanded
+  border: 2px solid black;
+  border-radius: 15px;
+
+  // When the parent card is expanded, hide this front content
+  .member-card.expanded & {
+    opacity: 0;
+    transform: translateY(-100%); // Slide up and fade out
+    pointer-events: none; // Disable interactions when hidden
+    visibility: hidden; // Ensure it's truly not interactive
   }
 }
 
 .member-image {
-  flex-shrink: 0;  // Prevent image from shrinking
+  flex-shrink: 0;
+  // To make image full-bleed at top despite card padding,
+  // we adjust its width and negative margins.
+  width: calc(100% + 32px); // Card width (100%) + 2 * side padding (2 * 16px = 32px)
+  margin-left: -16px; // Compensate for card's left padding
+  margin-right: -16px; // Compensate for card's right padding
+
+  // Use padding-top for a 1:1 aspect ratio, making it responsive while maintaining shape
+  position: relative;
+  padding-top: 100%; // Creates a 1:1 aspect ratio (height = width)
+  height: 0; // Necessary when using padding-top for aspect ratio trick
 
   img {
-    width: 400px;
-    height: 400px;
+    position: absolute; // Position image within the aspect ratio box
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    border-radius: 2%;
-    //padding: 2px; // Create space for the border
+    border-radius: 0; // Original code kept no border-radius for image
     background-image:
       linear-gradient(#000000, #000000),
       linear-gradient(to right, #0e0e0e, #0f0f0f);
     background-origin: border-box;
     background-clip: content-box, border-box;
-    //border: 1px solid transparent; // Required for background-clip trick
+    mask-image: url('/assets/svgs/test.svg'); // Preserve user's mask image
+    -webkit-mask-image: url('/assets/svgs/test.svg');
+    mask-size: contain;
+    -webkit-mask-size: contain;
+    mask-repeat: no-repeat;
+    -webkit-mask-repeat: no-repeat;
+    mask-position: center;
+    -webkit-mask-position: center;
+    mask-type: alpha;
+    -webkit-mask-type: alpha;
+    transition: filter 0.3s ease; // Smooth dimming transition on hover
+    object-position: top;
   }
 }
 
 .member-details {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   justify-content: flex-start;
-  padding-top: 32px;
-  width: 100%; // Allow text content to take full available width
+  padding-top: 32px; // Space from the image
+  width: 100%;
 
-  h3 {
+  h3.member-name { // Specific class to target this h3
     margin: 0;
-    @include text-style-primary(1.5rem, 1.7rem, 1.2, 700); // Font size and weight
-    color: #fff; // Adjust for text color
+    @include text-style-primary(1.75rem, 2rem, 1.3, 400); // Larger, semi-bold for name
+    color: #fff;
     padding-bottom: 8px;
     margin-bottom: 8px;
     width: fit-content;
+    text-align: center;
+  }
 
-    &::after {
-      content: "";
-      width: 100%;
-      max-width: 100px;
-      height: 8px;
-      background: linear-gradient(to right, #4A90E2, #50E3C2); // Underline color
-      display: block;
-      margin: 10px 0;
+  .name-underline {
+    // Styling for the underline below the name
+    width: 100%;
+    max-width: 100px; // Shorter underline as per screenshot
+    height: 8px;
+    background: linear-gradient(to right, #4A90E2, #50E3C2);
+    display: block;
+    margin-bottom: 1.25rem; // Space below the underline
+  }
+
+  p.member-instrument {
+    @include text-style-secondary(1.125rem, 1.25rem, 1.7, 700);
+    color: #ccc;
+    margin: 4px 0 16px; // Original margin
+  }
+}
+
+.member-toggle {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute; // Position absolutely within the .member-card
+  bottom: 4px; // Place at the bottom
+  left: 50%;
+  transform: translateX(-50%) translateY(20px); // Start off-screen below, centered horizontally
+  opacity: 0; // Initially hidden
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  z-index: 10; // Ensure it's above other elements on the front card
+  margin: 1rem auto;
+
+  svg {
+    width: 32px; // Larger chevron for better visibility
+    height: 32px;
+    fill: #ccc;
+  }
+}
+
+// This div holds the content visible when the card IS expanded (bio overlay)
+.member-bio-container {
+  position: absolute;
+  inset: 0; // top/right/bottom/left: 0 to cover the full .member-card
+  z-index: 20; // Higher z-index to overlay .card-front
+  background-color: #121212; // Dark grey background for the bio content
+  color: #eee;
+  display: flex;
+  flex-direction: column; // Crucial for vertical stacking and spacing
+  border-radius: 12px; // Match card border-radius
+  box-sizing: border-box; // Include padding in width/height calculations
+  transform: translateY(100%); // Start off-screen, below the card
+  opacity: 0; // Initially invisible
+  visibility: hidden; // Ensures it's not interactive when hidden
+  transition: transform 0.4s ease, opacity 0.4s ease, visibility 0.4s ease; // Smooth slide and fade
+
+  &.expanded {
+    transform: translateY(0); // Slide into view from the bottom
+    opacity: 1; // Become fully visible
+    visibility: visible; // Make interactive
+  }
+
+  .bio-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1rem 0 1rem; // Padding for header content within the bio overlay
+    margin-bottom: 1rem;
+    position: relative; // For positioning buttons within header
+
+    h3.member-name { // Re-using existing text styles for the name in bio header
+      @include text-style-primary(1.75rem, 2rem, 1.3, 700);
+      color: #fff;
+      margin: 0;
+      flex-grow: 1;
+      text-align: left; // Align to the left as per screenshot
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 10px; // Space between action icons
+      z-index: 30; // Ensure buttons are clickable
+
+      button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 5px;
+        color: #eee;
+        font-size: 1.8rem;
+        line-height: 1;
+        transition: all 0.2s ease;
+        display: inline-block;
+      
+        &:hover {
+          background-image: linear-gradient(to right, #4A90E2, #50E3C2);
+          -webkit-background-clip: text;
+          background-clip: text;
+      
+          -webkit-text-fill-color: transparent;
+          color: #4A90E2; // fallback color for browsers that don't support -webkit-text-fill-color
+        }
+      }
     }
   }
 
-  p {
-    @include text-style-secondary(1rem, 1.125rem, 1.7, 400);
-    color: #ccc;
-    margin: 4px 0 16px;
+  .bio-title-underline {
+    // Underline for the bio header title
+    width: 100%;
+    max-width: 100px;
+    height: 8px;
+    background: linear-gradient(to right, #4A90E2, #50E3C2);
+    display: block;
+    margin: 0 1rem 1rem 1rem; // Left-aligned below header
   }
 
-  .member-name {
-    @include text-style-primary(1.75rem, 2rem, 1.3, 400);
-  }
-  
-  .member-instrument {
-    @include text-style-secondary(1.125rem, 1.25rem, 1.7, 700);
+  .member-bio-content {
+    flex-grow: 1; // Allows bio text to take up available vertical space
+    display: flex; // Added display: flex
+    flex-direction: column; // Added flex-direction: column
+    justify-content: space-between; // NEW: Pushes content to top and bottom
+    overflow-y: auto; // Enable scrolling for long bios within the fixed card height
+    padding: 0 1rem 1rem 1rem; // Padding for bio text content and social links
+
+    .bio-text {
+      @include text-style-secondary(1rem, 1.2rem, 1.7, 400);
+      color: #ccc;
+      margin: 2rem 1rem;
+      flex-grow: 1; // NEW: Makes bio-text take up all available space
+    }
+
+    .read-more {
+      @include text-style-secondary(1rem, 1.2rem, 1.7, 700); // Make "read more" bold
+      color: #4A90E2; // Blue color for the link
+      text-decoration: none;
+      margin-top: 1rem; // Space from bio text
+      cursor: pointer;
+      display: inline-block; // For proper styling
+      transition: color 0.2s ease;
+
+      &:hover {
+        color: #50E3C2; // Green hover color
+      }
+    }
+
+    app-social-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 1rem; // Ensure some space above social links
+    }
   }
 }

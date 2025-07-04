@@ -3,7 +3,7 @@ import {
   createStreamingLinks,
   updateStreamingLinks,
   getStreamingLinks,
-  deleteStreamingLinks
+  deleteStreamingLinks,
 } from '../controllers/streaming-links.controller';
 
 const router = express.Router();

@@ -1,27 +1,18 @@
 <footer class="footer">
   <div class="footer__container">
-    
     <!-- Left Column -->
     <div class="footer__left">
       <div class="footer__brand">
         <app-mosaicanvas-logo class="footer__logo" [width]="'300px'"></app-mosaicanvas-logo>
       </div>
 
-      <app-social-links *ngIf="socialLinks" [links]="socialLinks"></app-social-links>
-
-        <div class="footer__streaming">
-          <a href="https://spotify.com" target="_blank" aria-label="Spotify">
-            <i class="fab fa-spotify"></i>
-          </a>
-          <a href="https://music.apple.com" target="_blank" aria-label="Apple Music">
-            <i class="fab fa-apple"></i>
-          </a>
-          <a href="https://soundcloud.com" target="_blank" aria-label="SoundCloud">
-            <i class="fab fa-soundcloud"></i>
-          </a>
-        </div>
+      <div class="footer__links-row">
+        <app-social-links *ngIf="socialLinks" [socialLinks]="socialLinks" size="small"></app-social-links>
+        <app-streaming-links *ngIf="streamingLinks" [streamingLinks]="streamingLinks" size="small"></app-streaming-links>
       </div>
+
     </div>
+  </div>
 
     <!-- Center Column -- Footer Links (commented out by user) -->
     <!-- <div class="footer__center">

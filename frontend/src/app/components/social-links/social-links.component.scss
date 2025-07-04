@@ -4,7 +4,7 @@ $gradient-end: #50E3C2;
 .social-links {
   display: flex;
   gap: 1rem; // space between buttons horizontally
-  justify-content: center;
+  justify-content: start;
   align-items: center;
   //padding: 1rem;
 
@@ -16,7 +16,7 @@ $gradient-end: #50E3C2;
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    box-shadow: 0px 7px 7px #000000;
+    // box-shadow: 0px 7px 7px #000000;
     color: #ffffff;
     font-size: 20px;
     text-decoration: none;
@@ -31,8 +31,8 @@ $gradient-end: #50E3C2;
       left: -2px;
       width: calc(100% + 4px);
       height: calc(100% + 4px);
-      border-radius: 50%;
-      background: linear-gradient(to right, $gradient-start, $gradient-end);
+      // border-radius: 50%;
+      // background: linear-gradient(to right, $gradient-start, $gradient-end);
       z-index: 0;
     }
 
@@ -43,8 +43,8 @@ $gradient-end: #50E3C2;
       left: 0px;
       width: calc(100% - 0px);
       height: calc(100% - 0px);
-      border-radius: 50%;
-      background-color: rgba(0, 0, 0, 1);
+      // border-radius: 50%;
+      // background-color: rgba(0, 0, 0, 1);
       z-index: 0;
       transition: background-color 0.3s ease;
     }
@@ -56,7 +56,8 @@ $gradient-end: #50E3C2;
     }
 
     &:hover::after {
-      background-color: rgba(0, 0, 0, 1);
+      // background-color: rgba(0, 0, 0, 1);
+      background-color: transparent;
     }
 
     &:hover > * {
@@ -66,12 +67,13 @@ $gradient-end: #50E3C2;
       background-clip: text;
       color: transparent;
       transition: color 0.3s ease;
+      font-size: 32px;
     }
 
     &.small {
       width: 32px;
       height: 32px;
-      font-size: 16px;
+      font-size: 24px;
 
       &::before {
         top: -2px;
@@ -91,7 +93,7 @@ $gradient-end: #50E3C2;
     &.large {
       width: 48px;
       height: 48px;
-      font-size: 24px;
+      font-size: 32px;
 
       &::before {
         top: -2px;
