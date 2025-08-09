@@ -1,0 +1,77 @@
+<svg width="670" height="275" viewBox="0 0 670 275" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="canvasFill" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5C5470"/>
+      <stop offset="100%" stop-color="#4C3F61"/>
+    </linearGradient>
+
+    <linearGradient id="catalystFill" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F27D42"/>
+      <stop offset="100%" stop-color="#C95B27"/>
+    </linearGradient>
+
+    <filter id="textShadowOutline" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="shadowBlur"/>
+      <feOffset dx="3" dy="3" in="shadowBlur" result="shadowOffset"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0
+                                           0 0 0 0 0
+                                           0 0 0 0 0
+                                           0 0 0 1 0" in="shadowOffset" result="shadowColored"/>
+
+      <feMorphology in="SourceGraphic" operator="dilate" radius="1.5" result="outline"/>
+      <feComposite in="outline" in2="SourceGraphic" operator="arithmetic" k1="0" k2="1" k3="1" k4="0" result="textOutline"/>
+
+      <feMerge>
+        <feMergeNode in="shadowColored"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+
+    <style>
+      .word {
+        font-family: 'Orbitron', sans-serif; /* Make sure 'Orbitron' is imported/available */
+        font-weight: 800;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+      }
+
+      .canvas {
+        fill: url(#canvasFill);
+        font-size: 80px;
+        /* !!! NEW: Apply the filter to the text !!! */
+        filter: url(#textShadowOutline);
+      }
+
+      .catalyst {
+        fill: url(#catalystFill);
+        font-size: 80px;
+        /* !!! NEW: Apply the filter to the text !!! */
+        filter: url(#textShadowOutline);
+      }
+
+      .symbol {
+        fill: url(#catalystFill);
+        opacity: 0.9;
+        filter: url(#standardDropShadow);
+      }
+
+      .texture-line {
+        stroke: #5C547033;
+        stroke-width: 1;
+        stroke-dasharray: 3,3;
+      }
+    </style>
+  </defs>
+
+  <g class="texture">
+    <line class="texture-line" x1="40" y1="100" x2="760" y2="100" />
+    <line class="texture-line" x1="40" y1="140" x2="760" y2="140" />
+    <line class="texture-line" x1="40" y1="180" x2="760" y2="180" />
+  </g>
+
+  <polygon class="symbol" points="80,150 100,130 120,150 110,160 100,185 90,160" />
+
+  <text class="word canvas" x="150" y="135">Canvas</text>
+  <text class="word catalyst" x="150" y="215">Catalyst</text>
+</svg>

@@ -1,0 +1,71 @@
+body.bg-home {
+    --primary-color: #4A90E2;
+    --secondary-color: #50E3C2;
+    --accent-color: #121212;
+    --gradient: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    --cta-link-primary: #4A90E2;
+    --cta-link-primary-hover: #4A90E2;
+}
+
+body.bg-canvas-catalyst {
+    --primary-color: #504564;
+    --secondary-color: #dd6c34;
+    --accent-color: #1b1522;
+    --gradient: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    --cta-link-primary: #dd6c34;
+    --cta-link-primary-hover: #dd6c34;
+}
+
+body.bg-cloud-canvas {
+    --primary-color: #00eeff;
+    --secondary-color: #077afe;
+    --accent-color: #fcffcf;
+    --gradient: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    --cta-link-primary: #00eeff;
+    --cta-link-primary-hover: #00eeff;
+}
+
+body.bg-rye-canvas {
+    --primary-color: #af6b0b;
+    --secondary-color: #60197e;
+    --accent-color: #fcffcf;
+    --gradient: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    --cta-link-primary: #af6b0b;
+    --cta-link-primary-hover: #af6b0b;
+}
+
+body.bg-wailing-canvas {
+    --primary-color: #c1c1c1;
+    --secondary-color: #e4ff1a;
+    --accent-color: #fcffcf;
+    --gradient: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    --cta-link-primary: #e4ff1a;
+    --cta-link-primary-hover: #e4ff1a;
+}
+
+body.bg-phosphorescent-canvas {
+    --primary-color: #000000;
+    --secondary-color: #00ff8b;
+    --accent-color: #fcffcf;
+    --gradient: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    --cta-link-primary: #00ff8b;
+    --cta-link-primary-hover: #00ff8b;
+}
+
+body.bg-flickering-canvas {
+    --primary-color: #ff0000;
+    --secondary-color: #d4ff00;
+    --accent-color: #fcffcf;
+    --gradient: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    --cta-link-primary: #d4ff00;
+    --cta-link-primary-hover: #d4ff00;
+}
+
+body.bg-staind-glass-canvas {
+    --primary-color: #f8f8f8;
+    --secondary-color: #545454;
+    --accent-color: #fcffcf;
+    --gradient: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    --cta-link-primary: #f8f8f8;
+    --cta-link-primary-hover: #f8f8f8;
+}

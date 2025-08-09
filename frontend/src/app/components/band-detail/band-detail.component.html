@@ -5,16 +5,45 @@
   [ngStyle]="{ 'background-image': 'url(' + band.image + ')' }"
 >
   <div class="overlay">
+    <img 
+      *ngIf="band?.slug" 
+      [src]="'assets/svgs/' + band.slug + '.svg'" 
+      alt="{{ band.name }} logo" 
+      class="band-logo full-width-logo"
+    />
+
     <div class="band-info">
-      <h1 class="band-name">{{ band.name }}</h1>
-      <p class="band-description">{{ band.description }}</p>
-      <div class="band-media-links-wrapper">
-        <app-social-links [socialLinks]="band?.socialLinks" size="large"></app-social-links>
-        <app-streaming-links [streamingLinks]="band?.streamingLinks" size="large"></app-streaming-links>
+      <div class="about-and-social-container">
+        <div class="about-section">
+          <div class="about-title-wrapper">
+            <h2 class="band-description-title">About</h2>
+            <div class="title-underline"></div>
+          </div>
+          
+          <div class="about-description-and-links">
+            <p class="band-description">{{ band.description }}</p>
+
+            <div class="band-media-links-wrapper">
+              <div class="media-block">
+                <app-social-links 
+                  [socialLinks]="band?.socialLinks" 
+                  size="large"
+                ></app-social-links>
+              </div>
+              <div class="media-block">
+                <app-streaming-links 
+                  [streamingLinks]="band?.streamingLinks" 
+                  size="large"
+                ></app-streaming-links>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
+
 <div class="band-members-section">
   <app-members-list [bandSlug]="band.slug"></app-members-list>
 </div>

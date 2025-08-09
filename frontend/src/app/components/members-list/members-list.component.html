@@ -1,67 +1,60 @@
-<div class="members-list-container">
-  <div *ngFor="let member of members" class="member-card" [class.expanded]="isExpanded(member.name)">
+<section class="band-members-section"> 
+  <div class="band-members-title-wrapper">
+    <h2 class="band-members-title">Band Members</h2>
+    <div class="title-underline"></div>
+  </div>
 
-    <!-- This div holds the content visible when the card is NOT expanded -->
-    <div class="card-front">
-      <!-- IMAGE -->
-      <div class="member-image">
-        <img [src]="member.image" alt="{{ member.name }}'s image" />
+  <div class="members-list-container">
+    <!-- trackBy to avoid re-renders -->
+    <ng-container *ngFor="let member of members; trackBy: trackByName">
+      <div class="member-item-wrapper" [class.expanded]="isExpanded(member.name)">
+
+        <!-- Only the card-front opens the modal now -->
+        <div class="card-front" role="button" tabindex="0"
+             (click)="toggleExpand(member.name)"
+             (keydown.enter)="toggleExpand(member.name)">
+          <div class="member-image">
+            <img [src]="member.image" alt="{{ member.name }}'s image" />
+          </div>
+
+          <div class="member-details">
+            <h3 class="member-name">{{ member.name }}</h3>
+            <p class="member-instrument">{{ member.instrument }}</p>
+          </div>
+        </div>
+
       </div>
 
-      <!-- VISIBLE: NAME + UNDERLINE + INSTRUMENT -->
-      <div class="member-details">
-        <h3 class="member-name">{{ member.name }}</h3>
-        <div class="name-underline"></div>
-        <!-- Instrument is now visible again -->
-        <p class="member-instrument">{{ member.instrument }}</p>
-      </div>
+      <!-- Modal moved outside the wrapper so clicks on the backdrop won't bubble to the card -->
+      <div class="member-bio-container" 
+           [class.expanded]="isExpanded(member.name)" 
+           aria-live="polite"
+           (click)="closeAllModals()">
 
-      <!-- HOVER-ONLY CHEVRON - Only shown when the card is NOT expanded -->
-      <div
-        class="member-toggle"
-        (click)="toggleExpand(member.name)"
-        title="Show bio"
-        role="button"
-        tabindex="0"
-        (keydown.enter)="toggleExpand(member.name)"
-        (keydown.space)="toggleExpand(member.name)"
-      >
-        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <path d="M7 10l5 5 5-5z" />
-        </svg>
-      </div>
-    </div>
-
-    <!-- SLIDE-OVER BIO SECTION - Visible only when card IS expanded -->
-    <div class="member-bio-container" [class.expanded]="isExpanded(member.name)" aria-live="polite">
-      <div class="bio-header">
-        <h3 class="member-name">{{ member.name }}</h3>
-        <div class="action-buttons">
-          <!-- Plus icon for "More actions" -->
-          <!-- <button title="More actions" class="action-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
-            </svg>
-          </button> -->
-          <!-- Close button (X icon) to collapse bio -->
-          <button (click)="toggleExpand(member.name)" title="Close bio" class="action-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-            </svg>
+        <!-- Prevent clicks inside the modal from closing via propagation -->
+        <div class="bio-modal-content-wrapper" (click)="$event.stopPropagation()">
+          <button (click)="closeModal(member.name); $event.stopPropagation()"
+                  class="modal-close-button" title="Close bio" aria-label="Close bio">
+            &times;
           </button>
+
+          <div class="member-modal-top-section">
+            <div class="member-bio-image">
+              <img [src]="member.image" alt="{{ member.name }}'s image" />
+            </div>
+
+            <div class="member-details-modal-info">
+              <h3 class="member-name">{{ member.name }}</h3>
+              <p class="member-instrument">{{ member.instrument }}</p>
+
+              <app-social-links [socialLinks]="member.socialLinks || {}"></app-social-links>
+
+              <p class="bio-text">{{ member.bio || 'No bio available' }}</p>
+            </div>
+          </div>
+
         </div>
       </div>
-      <!-- Bio title underline -->
-      <div class="bio-title-underline"></div>
-
-      <div class="member-bio-content">
-        <p class="bio-text">{{ member.bio || 'No bio available' }}</p>
-
-        <!-- "Read More" link - currently only visual, no further navigation implemented
-        <a href="#" class="read-more" (click)="$event.preventDefault()">READ MORE &rarr;</a> -->
-
-        <app-social-links [socialLinks]="member.socialLinks || {}"></app-social-links>
-      </div>
-    </div>
+    </ng-container>
   </div>
-</div>
+</section>

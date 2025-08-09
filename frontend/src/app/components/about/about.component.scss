@@ -4,7 +4,7 @@
 .about-container {
   padding: 1.5rem;
   margin: 0 auto;
-  // background-color: transparent;
+  // background-color: rgba(18, 18, 18, 0.9);
   // background-image: url('/assets/svgs/subtle-fiber-texture.svg');
   // background-repeat: repeat;
   // background-size: 70px 70px;
@@ -30,6 +30,7 @@
   @include text-style-primary(clamp(2.5rem, 5vw, 4rem), clamp(3rem, 6vw, 5rem), 1.4, 700);
   color: #7d7d7d;
   padding: clamp(1rem, 4vw, 2rem) 0;
+  text-align: center;
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 }
 

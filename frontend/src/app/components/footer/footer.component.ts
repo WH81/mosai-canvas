@@ -16,7 +16,7 @@ import { BandService } from '../../services/bands/band.service';
   imports: [
     CommonModule,
     RouterModule,
-    MosaicanvasLogoComponent,
+    // MosaicanvasLogoComponent,
     SocialLinksComponent,
     StreamingLinksComponent
   ],

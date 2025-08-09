@@ -1,0 +1,48 @@
+<svg width="400" height="200" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Define reusable color variables for easy customization -->
+  <defs>
+    <linearGradient id="ryeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#b58a3e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e0b65e;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="canvasGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#c8713d;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e0935e;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background for visualization (can be removed) -->
+  <rect width="100%" height="100%" fill="transparent"/>
+
+  <!-- The "Rye" text and graphic -->
+  <g id="rye-group" transform="translate(40, 60)">
+    <!-- Stylized "Rye" Text -->
+    <text x="0" y="0" font-family="Verdana, sans-serif" font-size="60" font-weight="bold" fill="url(#ryeGradient)" stroke="#8c6a2d" stroke-width="2">Rye</text>
+
+    <!-- Rye stalks graphic, positioned to the left of the text -->
+    <g id="rye-stalks" transform="translate(-15, 25)">
+      <path d="M-20,-10 C-15,-25 -5,-35 0,-40 M-20,-10 C-25,-20 -20,-30 -15,-40 M-20,-10 C-15,-18 -10,-22 -5,-30" stroke="#b58a3e" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M-10,-5 C-5,-20 5,-30 10,-35 M-10,-5 C-15,-15 -10,-25 -5,-35" stroke="#b58a3e" stroke-width="3" fill="none" stroke-linecap="round" transform="rotate(10, 0, 0)"/>
+    </g>
+  </g>
+
+  <!-- The "Canvas" text and graphic -->
+  <g id="canvas-group" transform="translate(180, 60)">
+    <!-- Stylized "Canvas" Text -->
+    <text x="0" y="0" font-family="Verdana, sans-serif" font-size="60" font-weight="bold" fill="url(#canvasGradient)" stroke="#a15629" stroke-width="2">Canvas</text>
+
+    <!-- Brush stroke graphic, positioned to the right of the text -->
+    <g id="brush-stroke" transform="translate(200, 30)">
+      <path d="M-10,0 Q 20,50 60,30 Q 80,10 90,0" fill="#a15629" opacity="0.8"/>
+      <path d="M-5,5 Q 25,55 65,35 Q 85,15 95,5" fill="#e0935e" opacity="0.8"/>
+      <path d="M-15,-5 Q 15,45 55,25 Q 75,5 85,-5" fill="#b58a3e" opacity="0.8"/>
+    </g>
+  </g>
+
+  <!-- Combined text, positioned and styled to look like a complete logo -->
+  <g transform="translate(10, 120)">
+    <text x="0" y="0" font-family="'Verdana', sans-serif" font-size="60" font-weight="bold" fill="url(#ryeGradient)">Rye</text>
+    <text x="140" y="0" font-family="'Verdana', sans-serif" font-size="60" font-weight="bold" fill="url(#canvasGradient)">Canvas</text>
+  </g>
+
+</svg>

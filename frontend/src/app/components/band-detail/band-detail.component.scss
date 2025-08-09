@@ -1,103 +1,223 @@
-// Imports global styles
 @use "index" as *;
 
+// Base styles for the host component if needed
 :host {
-  display: block;
+  display: block; // Ensures the component takes up space and allows for flexbox on its children if needed
 }
 
+// Band Hero Section (Background Image and Overlay)
 .band-hero {
   position: relative;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  min-height: 80vh; // Increased height for better parallax effect visibility
-  opacity: 1;
-  transition: opacity 0.8s ease-in;
-
-  // --- Parallax Effect Start ---
-  background-attachment: fixed; // This is the key for CSS parallax
-  // --- Parallax Effect End ---
+  min-height: 70vh;
+  opacity: 1; // Default opacity for initial render
+  transition: opacity 0.8s ease-in; // Smooth transition for image loading
+  background-attachment: fixed; // Parallax effect for desktop
 
   &.image-loaded {
-    opacity: 1;
+    opacity: 1; // Ensures content is visible once image loads
+  }
+
+  // Responsive adjustments for smaller screens
+  @media (max-width: 768px) {
+    background-attachment: scroll; // Disable parallax on mobile for performance
+    min-height: 50vh; // Shorter hero section on smaller screens
+  }
+
+  // Accessibility: Respect user's motion preferences
+  @media (prefers-reduced-motion: reduce) {
+    background-attachment: scroll; // Disable parallax if user prefers less motion
   }
 }
 
+// Overlay for content over the hero image
 .overlay {
-  padding: 2rem;
+  padding: 2rem; // Overall padding for the overlay content
   width: 100%;
-  min-height: 80vh; // Match parent height
-  height: 100%;
+  min-height: 80vh; // Ensure overlay covers most of the hero section
+  height: 100%; // Takes full height of its parent
   display: flex;
-  flex-direction: column; // Allow content to stack
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  background: linear-gradient(to bottom, rgba(18, 18, 18, 0.1), rgba(18, 18, 18, 0.8));
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
-}
+  flex-direction: column; // Stacks content vertically (logo, band-info)
+  align-items: center; // Centers content horizontally
+  justify-content: center; // Centers content vertically
+  text-align: center; // Default text alignment for children
+  background: linear-gradient(
+    to bottom,
+    rgba(18, 18, 18, 0.6), // Subtle gradient at the top
+    rgba(18, 18, 18, 0) // Slightly darker at the bottom for readability over image
+  );
 
-.band-media-link {
-  font-size: 2rem;
-  color: white;
-  text-decoration: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  &:hover {
-    opacity: 0.8;
+  @media (max-width: 768px) {
+    padding: 1.5rem 1rem; // Adjusted padding for mobile
   }
 }
 
+// Band Logo Styles
+.band-logo.full-width-logo {
+  display: block; // Ensures the logo takes its own line
+  margin: 2rem auto 1rem auto; // Centered with spacing below it
+  width: 100%; // Allows it to scale
+  max-width: 400px; // Default max-width for smaller screens
+  height: auto; // Maintain aspect ratio
+  object-fit: contain; // Ensures logo scales within its container without cropping
+
+  @media (min-width: 768px) {
+    max-width: 600px; // Larger logo for tablets
+  }
+
+  @media (min-width: 1200px) {
+    max-width: 1400px; // Even larger for desktops
+  }
+}
+
+// Container for band information (e.g., about section, members, etc.)
 .band-info {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 2rem 0; // Add some padding to separate from hero if needed
+  max-width: 1500px; // Limits content width for better readability on large screens
+  margin: 0 auto; // Center the content horizontally
+  display: flex;
+  flex-direction: column; // Stacks sections vertically within band-info
+  align-items: center; // Centers sections horizontally
+  width: 100%; // Ensures it takes full width up to max-width
+}
 
-  .band-media-links-wrapper {
-    display: flex;
-    justify-content: center;
+// Container for About section and potential other social-related elements
+.about-and-social-container {
+  display: flex;
+  flex-direction: column; // Default stacking for smaller screens
+  align-items: center; // Center items horizontally
+  gap: 3rem; // Spacing between stacked sections
+  width: 100%;
+  margin: 3rem 0; // Vertical spacing for the container
+
+  @media (min-width: 900px) {
+    flex-direction: row; // Layout for larger screens: "About" section side-by-side
+    align-items: flex-start; // Align items to the top for the title/content
+    justify-content: center; // Center content horizontally within the available space
+    gap: 4rem; // Increased gap for desktop
+    flex-wrap: wrap; // Allows sections to wrap if space is limited
+  }
+}
+
+// The main "About" section box (dark background)
+.about-section {
+  display: flex;
+  flex-direction: row; // Arranges "About" title group and the content block side-by-side
+  align-items: flex-start; // Aligns items to the top
+  max-width: 1024px;
+  width: 100%;
+  padding: 4rem;
+  box-sizing: border-box;
+  background: rgba(0,0,0,0.6);
+  border-radius: 0;
+  box-shadow: -3px -4px 0 #7d7d7d;
+
+  @media (max-width: 768px) {
+    flex-direction: column; // Stack title group and content vertically on smaller screens
+    align-items: center; // Center content when stacked
+    padding: 2rem;
+    gap: 1.5rem;
+    border-radius: 0.5rem;
+  }
+}
+
+// NEW: Wrapper for the "About" title and its underline
+.about-title-wrapper {
+  display: flex;
+  flex-direction: column; // Stack the title and underline vertically
+  align-items: flex-start; // Align title and underline to the left within this column
+  flex-shrink: 0; // Prevent this whole wrapper from shrinking
+  padding-right: 6rem;
+
+  // On mobile, when .about-section becomes column, center this wrapper's content
+  @media (max-width: 768px) {
     align-items: center;
-    gap: 1rem;
-    margin-top: 1rem;
-    padding: 1rem;
-  }
-
-  .band-name {
-    font-size: clamp(3rem, 6vw, 7rem);
-    line-height: 1.2;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    // Consider softening text-shadow or using a subtle glow for 2025
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); // Slightly softer shadow
-  }
-
-  .band-description {
-    @include text-style-secondary(1rem, 1.5rem, 1.2, 500);
-    color: #e0e0e0;
-    margin-bottom: 2rem; // Add margin for spacing
   }
 }
 
-// --- Optional: Media Queries for Parallax Behavior ---
-@media (max-width: 768px) {
-  .band-hero {
-    // On smaller screens, background-attachment: fixed can cause issues
-    // or look unnatural, so it's often better to disable it.
-    background-attachment: scroll;
-    // You might also want to adjust min-height for mobile
-    min-height: 35vh;
-  }
+// Styles for the "About" title
+.band-description-title {
+  @include text-style-primary(clamp(2.5rem, 5vw, 4rem), clamp(3rem, 6vw, 5rem), 1.4, 700);
+  color: #7d7d7d;
+  padding-top: 0; // Removed previous padding-top for external alignment
+  padding-right: 0; // No right padding needed here, gap in .about-section handles spacing
+  padding-bottom: 0; // No bottom padding needed here, margin on underline handles it
+  padding-left: 0; // No left padding
+  text-align: left; // Left-align within its new wrapper
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+  // Keep your fine-tuned margin-top value here for precise vertical alignment.
+  margin-top: -0.625rem; 
 
-  .overlay {
-    min-height: 35vh;
+  @media (max-width: 768px) {
+    padding: 0;
+    text-align: center;
   }
 }
 
-// --- Accessibility consideration: Reduce motion ---
-@media (prefers-reduced-motion: reduce) {
-  .band-hero {
-    background-attachment: scroll; /* Disable parallax for users who prefer reduced motion */
+// Styles for the underline
+.title-underline {
+  width: 100%;
+  max-width: 100px; // Limit its width
+  height: 8px;
+  background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+  margin-top: 0.5rem; // Space between title and underline
+  margin-bottom: 1.25rem; // Space between underline and body description
+  
+  @media (max-width: 768px) {
+    margin-top: 0.25rem; // Adjust spacing for mobile
+    margin-bottom: 1rem; // Adjust spacing for mobile
   }
+}
+
+// Container for the description text and the social/streaming links
+.about-description-and-links {
+  display: flex;
+  flex-direction: column; // Stacks the description and links vertically
+  flex-grow: 1; // Allows this wrapper to take up available space next to the title
+  align-items: flex-start; // Align description and links to the left
+  width: 100%; // Ensures it takes full width of its parent when flex-direction is column
+}
+
+// Styles for the main body description text
+.band-description {
+  @include text-style-secondary(1rem, 1.5rem, 1.6, 500);
+  color: #e0e0e0; // Light gray color for readability
+  border-radius: 0; // Subtle rounded corners for the text block (if background was applied)
+  width: 100%; // Ensures it fills the available width within its parent
+  text-align: left; // Left-align the description text
+  box-sizing: border-box; // Include padding/border in width calculation
+  margin-bottom: 2rem; // Space below the description, before the media icons
+
+  @media (max-width: 768px) {
+    text-align: center; // Center text on mobile if it looks better
+  }
+}
+
+// Wrapper for social and streaming links
+.band-media-links-wrapper {
+  display: flex;
+  flex-wrap: wrap; // Allows icons to wrap to the next line if space is limited
+  gap: 0; // Spacing between individual icons
+  justify-content: flex-start; // Align icons to the left below the text
+  align-items: center; // Vertically center icons if they have different heights
+  width: 100%; // Ensures it takes full width within its parent (.about-content-wrapper)
+
+  @media (max-width: 768px) {
+    justify-content: center; // Center icons on smaller screens
+  }
+}
+
+// Styles for individual media blocks (containing app-social-links and app-streaming-links)
+.media-block {
+  display: flex;
+  flex-direction: column; // Ensures the app components stack if they were to render titles/labels
+  align-items: center; // Centers content within each media block
+  gap: 0.5rem; // Small gap if app-social-links or app-streaming-links had internal elements
+}
+
+// Band Members Section (assuming app-members-list handles its own internal layout)
+.band-members-section {
+  margin-top: 3rem; // Space between the "About" section and the members section
+  padding: 2rem 1rem; // Add some padding around the members list for spacing from screen edges
 }

@@ -18,14 +18,14 @@ export const createMailingListEntry = async (
       port: 465,
       secure: true, // SSL for port 465
       auth: {
-        user: process.env.NOTIFY_EMAIL,
-        pass: process.env.NOTIFY_EMAIL_PASSWORD
+        user: process.env.MAIL_USER,
+        pass: process.env.MAIL_PASS
       }
     });
 
     const mailOptions = {
-      from: `"MOSAICANVAS Website" <${process.env.NOTIFY_EMAIL}>`,
-      to: 'waynehite@yahoo.com', // Replace with your actual email
+      from: `"MOSAICANVAS Website" <${process.env.MAIL_USER}>`,
+      to: process.env.MAIL_USER,
       subject: 'New Mailing List Subscriber!',
       text: `You have a new subscriber:\n\nName: ${entry.name}\nEmail: ${entry.email}`
     };

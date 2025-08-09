@@ -1,15 +1,13 @@
 <div [ngClass]="class" class="mosaicanvas-logo-wrapper">
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 450 150"
+    viewBox="0 0 450 135"
     [attr.width]="width"
     [attr.height]="height"
     class="mosaicanvas-logo"
   >
-    <!-- Transparent Background -->
     <rect width="100%" height="100%" fill="none" />
 
-    <!-- Text with gradient fill in capital letters -->
     <defs>
       <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
         <stop offset="0%" style="stop-color:#4A90E2;stop-opacity:1" />
@@ -21,7 +19,7 @@
       x="50%"
       y="50%"
       font-family="Georgia, serif"
-      font-size="48"
+      font-size="100"
       text-anchor="middle"
       alignment-baseline="middle"
       fill="url(#gradient1)"
@@ -29,7 +27,6 @@
       MOSAI CANVAS
     </text>
 
-    <!-- Gradient Orange Underline -->
     <defs>
       <linearGradient id="underline-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
         <stop offset="0%" style="stop-color:#4A90E2;stop-opacity:1" />
@@ -38,7 +35,7 @@
     </defs>
 
     <path
-      d="M 75 105 Q 100 115, 150 105 T 200 115 Q 250 120, 300 105 T 350 100"
+      d="M 20 115 Q 45 125, 95 115 T 145 125 Q 195 130, 245 115 T 295 110 Q 345 105, 395 115 T 430 125"
       fill="none"
       stroke="url(#underline-gradient)"
       stroke-width="5"

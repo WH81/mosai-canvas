@@ -1,10 +1,18 @@
-$font-family-base: Impact, sans-serif;
-$font-family-secondary: Arial, sans-serif;
-$font-size-base: 1rem;
+$font-family-primary: 'Montserrat', sans-serif;
+$font-family-secondary: 'Lato', sans-serif;
+
+$font-size-base: 1.125rem; // Good for body text
+
 $text-color-light: #ffffff;
 $text-color-medium: #acacac;
-$primary-color: #0055ff;
-$secondary-color: #00c2ff;
+$primary-color: #00c2ff; // A vibrant blue for links and accents
+$secondary-color: #ff5722; // A contrasting accent color (orange)
+$background-dark: #121212; // A deep, dark background color
+
 $letter-spacing-base: 0px;
 $gradient-start: #4A90E2;
 $gradient-end: #50E3C2;
+
+// Additional variables for a cohesive theme
+$border-radius-base: 50%; // For the circular images
+$box-shadow-light: 0 4px 6px rgba(0, 0, 0, 0.2); // For modals and cards

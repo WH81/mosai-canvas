@@ -10,6 +10,6 @@ import { Component, Input } from '@angular/core';
 export class MosaicanvasLogoComponent {
   @Input() class: string = '';
   @Input() alt: string = 'MosaiCanvas Logo';
-  @Input() width: string = '450px'; // Default for header usage
+  @Input() width: string = '850px'; // Default for header usage
   @Input() height: string = '150px'; // Default for header usage
 }
