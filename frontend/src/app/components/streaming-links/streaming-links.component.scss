@@ -1,11 +1,12 @@
-@use 'variables' as *;
+// Imports global styles
+@use "index" as *;
+// @use 'variables' as *;
 
 .streaming-links {
   display: flex;
   gap: 1rem; // space between buttons horizontally
   justify-content: center;
   align-items: center;
-  //padding: 1rem;
 
   a.streaming-icon {
     position: relative;
@@ -19,9 +20,6 @@
     color: #ffffff;
     font-size: 20px;
     text-decoration: none;
-
-    // No direct background color here
-    // We'll create the background and border via pseudo-elements
 
     &::before {
       content: "";
@@ -54,18 +52,16 @@
       z-index: 1;
     }
 
-    &:hover::after {
-      background-color: rgba(0, 0, 0, 1);
-    }
+    // &:hover::after {
+    //   background-color: rgba(0, 0, 0, 1);
+    // }
 
     &:hover > * {
-      background: linear-gradient(to right, $gradient-start, $gradient-end);
+      background: var(--secondary-color);
       -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
       background-clip: text;
-      color: transparent;
-      transition: color 0.3s ease;
-      font-size: 32px;
+      -webkit-text-fill-color: transparent;
+      transition: background 0.3s ease, font-size 0.3s ease;
     }
 
     &.small {

@@ -1,0 +1,24 @@
+<svg width="300" height="120" viewBox="0 0 300 120" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fceabb; stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f8b500; stop-opacity:1" />
+    </linearGradient>
+    <filter id="flicker" x="-50%" y="-50%" width="200%" height="200%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.5" numOctaves="1" result="turb"/>
+      <feDisplacementMap in="SourceGraphic" in2="turb" scale="2" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+
+  <!-- Artistic Brush Background -->
+  <path d="M5,80 Q30,20 80,60 T160,60 T240,80 Q270,100 290,60"
+        fill="url(#grad1)" opacity="0.2" />
+
+  <!-- Flickering Canvas Text -->
+  <text x="20" y="70" font-family="Georgia, serif" font-size="32" fill="url(#grad1)" filter="url(#flicker)">
+    Flickering
+  </text>
+  <text x="20" y="105" font-family="Georgia, serif" font-size="28" fill="#333">
+    Canvas
+  </text>
+</svg>

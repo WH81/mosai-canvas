@@ -4,7 +4,7 @@
   font-size: clamp(#{$min}, 2vw, #{$max});
   line-height: $line-height;
   font-weight: $weight;
-  font-family: v.$font-family-base;
+  font-family: v.$font-family-primary;
   color: v.$text-color-light;
 }
 

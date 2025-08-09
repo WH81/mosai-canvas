@@ -1,8 +1,48 @@
-<div *ngIf="memberData" class="member-bio">
+<!-- <div *ngIf="memberData" class="member-bio">
   <h2>{{ memberData.name }}</h2>
   <p><strong>Instrument:</strong> {{ memberData.instrument }}</p>
   <p><strong>Band:</strong> {{ memberData.band }}</p>
   <img [src]="memberData.image" alt="{{ memberData.name }}">
+
+
+  <h3 class="bio-label">Bio</h3>
+
+
   <p>{{ memberData.bio }}</p>
+
   <app-social-links [links]="memberData?.socialLinks" size="small"></app-social-links>
 </div>
+
+-->
+<div *ngIf="memberData" class="member-bio">
+  <!-- Header: Thumbnail + Name -->
+  <div class="member-header">
+    <img
+      class="member-thumbnail"
+      [src]="memberData.image"
+      [alt]="'Thumbnail of ' + memberData.name"
+    />
+    <h2 class="member-name">{{ memberData.name }}</h2>
+  </div>
+
+  <!-- Instrument and Band -->
+  <p class="member-instrument">
+    <strong>Instrument:</strong> {{ memberData.instrument }}
+  </p>
+  <p class="member-band">
+    <strong>Band:</strong> {{ memberData.band }}
+  </p>
+
+  <!-- Bio Label -->
+  <h3 class="bio-label">Bio</h3>
+
+  <!-- Bio Content -->
+  <p class="bio-text">{{ memberData.bio }}</p>
+
+  <!-- Social Links -->
+  <app-social-links
+    [links]="memberData?.socialLinks"
+    size="small"
+  ></app-social-links>
+</div>
+

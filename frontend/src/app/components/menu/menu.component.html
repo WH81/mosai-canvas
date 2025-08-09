@@ -1,37 +1,69 @@
-<!-- <div class="navbar">
-  <ng-container *ngFor="let item of menuItems">
-    <div class="dropdown" *ngIf="item.submenu; else singleLink">
-      <button class="dropbtn">
-        {{ item.name }}
-        <i class="fa fa-caret-down"></i>
-      </button>
-      <div class="dropdown-content">
-        <a *ngFor="let sub of item.submenu" [routerLink]="sub.path">
-          {{ sub.name }}
-        </a>
-      </div>
-    </div>
-    <ng-template #singleLink>
-      <a [routerLink]="item.path">{{ item.name }}</a>
-    </ng-template>
-  </ng-container>
-</div> -->
+<!-- menu.component.html -->
+<div class="header-container">
+  <!-- Hamburger Icon for Mobile -->
+  <!-- This button will be visible only on mobile screens and will toggle the mobile menu. -->
+  <!-- The class 'open' will trigger the transformation to an 'X' -->
+  <button class="hamburger-icon" [class.open]="isMobileMenuOpen" (click)="toggleMobileMenu()" aria-label="Toggle mobile menu">
+    <span class="bar top-bar"></span>
+    <span class="bar middle-bar"></span>
+    <span class="bar bottom-bar"></span>
+  </button>
 
-<div class="navbar">
-  <ng-container *ngFor="let item of menuItems">
-    <div class="dropdown" *ngIf="item.submenu; else singleLink">
-      <button class="dropbtn">
-        {{ item.name }}
-        <i class="fa fa-caret-down chevron-icon" aria-hidden="true"></i>
-      </button>
-      <div class="dropdown-content">
-        <a *ngFor="let sub of item.submenu" [routerLink]="sub.path">
-          {{ sub.name }}
-        </a>
+  <!-- Desktop Navbar -->
+  <!-- This navigation bar is designed for larger screens and will be hidden on mobile. -->
+  <nav class="navbar desktop-nav">
+    <!-- Iterate over menu items to create navigation links -->
+    <ng-container *ngFor="let item of menuItems">
+      <!-- Check if the current item has a submenu -->
+      <div class="dropdown" *ngIf="item.submenu; else singleLink">
+        <!-- Dropdown button for menu items with submenus -->
+        <button class="dropbtn" aria-haspopup="true" aria-expanded="false">
+          {{ item.name }}
+          <!-- Chevron icon to indicate dropdown -->
+          <i class="fa fa-caret-down chevron-icon" aria-hidden="true"></i>
+        </button>
+        <!-- Dropdown content for submenu items -->
+        <div class="dropdown-content">
+          <a *ngFor="let sub of item.submenu" [routerLink]="sub.path">
+            {{ sub.name }}
+          </a>
+        </div>
       </div>
+      <!-- Template for single links (no submenu) -->
+      <ng-template #singleLink>
+        <a [routerLink]="item.path">{{ item.name }}</a>
+      </ng-template>
+    </ng-container>
+  </nav>
+
+  <!-- Mobile Menu Overlay -->
+  <!-- This menu will slide in from the left on mobile screens when toggled. -->
+  <nav class="mobile-menu" [class.open]="isMobileMenuOpen" aria-label="Mobile navigation">
+    <!-- Removed the separate close-mobile-menu button -->
+    <!-- The hamburger icon itself will now serve as the close button -->
+    <div class="mobile-menu-content">
+      <ng-container *ngFor="let item of menuItems">
+        <!-- Mobile dropdown for items with submenus -->
+        <div class="mobile-dropdown" *ngIf="item.submenu; else mobileSingleLink">
+          <!-- Button to toggle mobile dropdown content -->
+          <button class="mobile-dropbtn" (click)="toggleMobileDropdown(item.name)"
+                  [attr.aria-expanded]="isMobileDropdownOpen[item.name]" aria-haspopup="true">
+            {{ item.name }}
+            <!-- Chevron icon for mobile dropdown, rotates when open -->
+            <i class="fa fa-caret-down chevron-icon" [class.rotated]="isMobileDropdownOpen[item.name]" aria-hidden="true"></i>
+          </button>
+          <!-- Mobile dropdown content, slides open/closed -->
+          <div class="mobile-dropdown-content" [class.open]="isMobileDropdownOpen[item.name]">
+            <a *ngFor="let sub of item.submenu" [routerLink]="sub.path" (click)="closeMobileMenu()">
+              {{ sub.name }}
+            </a>
+          </div>
+        </div>
+        <!-- Template for single links in mobile menu -->
+        <ng-template #mobileSingleLink>
+          <a [routerLink]="item.path" (click)="closeMobileMenu()">{{ item.name }}</a>
+        </ng-template>
+      </ng-container>
     </div>
-    <ng-template #singleLink>
-      <a [routerLink]="item.path">{{ item.name }}</a>
-    </ng-template>
-  </ng-container>
+  </nav>
 </div>

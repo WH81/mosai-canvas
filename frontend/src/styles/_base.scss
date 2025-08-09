@@ -11,22 +11,5 @@ body {
   font-size: v.$font-size-base;
   color: v.$text-color-light;
   letter-spacing: v.$letter-spacing-base;
-  background-color: #121212;
   position: relative;
-  z-index: 0; // keep content above pseudo-element
-
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url('/assets/svgs/mosai-canvas-background.svg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-color: rgba(0, 0, 0, 1); // overlay effect
-    z-index: -1; // push it behind the content
-  }
 }

@@ -1,1 +1,75 @@
-<p>contact works!</p>
+<div class="contact-title-wrapper">
+  <h2 class="contact-title">Contact the Band</h2>
+</div>
+<div class="contact">
+  <!-- <h2 class="sr-only">Contact the Band</h2> -->
+  <form
+    [formGroup]="contactForm"
+    (ngSubmit)="onSubmit()"
+    aria-describedby="formStatus"
+    novalidate
+  >
+    <!-- Name -->
+    <label for="name">Name<span aria-hidden="true">*</span></label>
+    <input
+      id="name"
+      formControlName="name"
+      type="text"
+      autocomplete="name"
+      [attr.aria-invalid]="submitted && f['name'].invalid"
+      required
+    />
+    <p class="error" *ngIf="submitted && f['name'].invalid">
+      Name must be 2–50 characters.
+    </p>
+
+    <!-- Email -->
+    <label for="email">Email<span aria-hidden="true">*</span></label>
+    <input
+      id="email"
+      formControlName="email"
+      type="email"
+      autocomplete="email"
+      [attr.aria-invalid]="submitted && f['email'].invalid"
+      required
+    />
+    <p class="error" *ngIf="submitted && f['email'].invalid">
+      Please enter a valid email.
+    </p>
+
+    <!-- Subject -->
+    <label for="subject">Subject</label>
+    <input
+      id="subject"
+      formControlName="subject"
+      type="text"
+      maxlength="100"
+    />
+
+    <!-- Message -->
+    <label for="message">Message<span aria-hidden="true">*</span></label>
+    <textarea
+      id="message"
+      formControlName="message"
+      rows="5"
+      [attr.aria-invalid]="submitted && f['message'].invalid"
+      required
+    ></textarea>
+    <p class="error" *ngIf="submitted && f['message'].invalid">
+      Message must be 10–1000 characters.
+    </p>
+
+    <!-- Submit -->
+    <button type="submit" [disabled]="sending">
+      {{ sending ? 'Sending…' : 'Send Message' }}
+    </button>
+  </form>
+
+  <!-- Live region -->
+  <p id="formStatus" class="visually-hidden" aria-live="polite">
+    {{ successMessage }} {{ errorMessage }}
+  </p>
+
+  <p class="success" *ngIf="successMessage">{{ successMessage }}</p>
+  <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+</div>

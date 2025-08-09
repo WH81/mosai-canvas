@@ -1,16 +1,26 @@
 @use 'mixins' as m;
 @use 'variables' as v;
 
+// Use the primary font for headings
+h1, h2, h3, h4, h5, h6 {
+  font-family: v.$font-family-primary;
+}
+
+// Use the secondary font for body text
+p, small {
+  font-family: v.$font-family-secondary;
+}
+
 h1 { @include m.text-style-primary(3rem, 5rem, 1.2, 700); }
 h2 { @include m.text-style-primary(2rem, 3rem, 1.3, 600); }
 h3 { @include m.text-style-primary(1.5rem, 2rem, 1.4, 600); }
 h4 { @include m.text-style-primary(1rem, 1.125rem, 1.5, 500); }
 h5 { @include m.text-style-primary(0.875rem, 1rem, 1.6, 500); }
 h6 { @include m.text-style-primary(0.75rem, 0.875rem, 1.6, 400); }
+
 p  { @include m.text-style-secondary(1rem, 1.125rem, 1.7, 400); }
 
 small {
-  font-family: v.$font-family-secondary;
   font-size: 1rem;
   opacity: 0.8;
   line-height: 1.7;

@@ -3,9 +3,10 @@
 @use 'mixins' as m;
 
 .mailing-list {
-    max-width: 600px;
+    max-width: 800px;
     margin: auto;
     padding: 1rem;
+    margin-bottom: 5rem;
   
     h2 {
       @include text-style-primary(clamp(2.5rem, 5vw, 4rem), clamp(3rem, 6vw, 5rem), 1.4, 700);
@@ -71,7 +72,7 @@
         transition: all 0.3s ease; /* Smooth transition for hover effects */
         text-align: center; /* Center text inside the button */
         /* Gradient Border using border-image */
-        border-image: linear-gradient(to right, $gradient-start, $gradient-end) 1; /* '1' slices the image evenly */
+        border-image: linear-gradient(to right, var(--primary-color), var(--secondary-color)) 1; /* '1' slices the image evenly */
         border-image-slice: 1; /* Specifies how the image is sliced, '1' means no slicing */
         border-image-outset: 0; /* Ensures the border doesn't extend beyond the element's box */
         border-image-repeat: stretch; /* Stretches the image to fill the border area */
@@ -88,8 +89,8 @@
 
         &:focus {
           outline: none;
-          border-image: linear-gradient(to right, $gradient-end, $gradient-start) 1;
-          box-shadow: 0 0 0 3px rgba($gradient-start, 0.5), 0 4px 15px rgba(0, 0, 0, 0.3);
+          border-image: linear-gradient(to right, var(--secondary-color), var(--primary-color)) 1;
+          box-shadow: 0 0 0 3px rgba(var(--primary-color), 0.5), 0 4px 15px rgba(0, 0, 0, 0.3);
         }
       }
     }
