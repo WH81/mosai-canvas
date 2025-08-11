@@ -1,20 +1,49 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, Directive, ElementRef, AfterViewInit, OnDestroy, Renderer2 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MembersService } from '../../services/members-bio/members.service';
 import { Member } from '../../models/members-bio/member.model';
 import { SocialLinksComponent } from '../social-links/social-links.component';
 
+@Directive({
+  selector: '[appScrollAnimation]'
+})
+export class ScrollAnimationDirective implements AfterViewInit, OnDestroy {
+  private observer?: IntersectionObserver;
+
+  constructor(private el: ElementRef, private renderer: Renderer2) {}
+
+  ngAfterViewInit() {
+    this.observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            this.renderer.addClass(this.el.nativeElement, 'scrolled-in');
+            this.observer?.unobserve(this.el.nativeElement);
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+      }
+    );
+    this.observer.observe(this.el.nativeElement);
+  }
+
+  ngOnDestroy() {
+    this.observer?.disconnect();
+  }
+}
+
 @Component({
   selector: 'app-members-list',
   standalone: true,
-  imports: [CommonModule, SocialLinksComponent],
+  imports: [CommonModule, SocialLinksComponent, ScrollAnimationDirective],
   templateUrl: './members-list.component.html',
   styleUrls: ['./members-list.component.scss'],
 })
 export class MembersListComponent implements OnChanges {
   @Input() bandSlug: string = '';
   members: Member[] = [];
-  // keep a stable object reference to avoid re-renders
   expandedStates: Record<string, boolean> = {};
 
   constructor(private memberService: MembersService) {}
@@ -31,7 +60,6 @@ export class MembersListComponent implements OnChanges {
       (members: Member[]) => {
         this.members = members || [];
 
-        // Ensure each member has a stable expanded key (don't replace the object)
         if (!this.expandedStates) {
           this.expandedStates = {};
         }
@@ -40,9 +68,6 @@ export class MembersListComponent implements OnChanges {
             this.expandedStates[m.name] = false;
           }
         });
-        // Optionally remove stale keys (not required; uncomment if you want cleanup)
-        // Object.keys(this.expandedStates).forEach(k => { if (!this.members.find(m => m.name === k)) delete this.expandedStates[k]; });
-
       },
       (error: any) => {
         console.error('Error fetching members:', error);
@@ -50,15 +75,10 @@ export class MembersListComponent implements OnChanges {
     );
   }
 
-  /**
-   * Toggle expand for a single member.
-   * Mutates the existing expandedStates object (keeps reference stable).
-   */
   toggleExpand(memberKey: string): void {
     if (this.expandedStates[memberKey]) {
       this.expandedStates[memberKey] = false;
     } else {
-      // close others but keep same object reference
       Object.keys(this.expandedStates).forEach(k => this.expandedStates[k] = false);
       this.expandedStates[memberKey] = true;
     }
