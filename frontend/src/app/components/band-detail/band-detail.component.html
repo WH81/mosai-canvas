@@ -14,13 +14,22 @@
 
     <div class="band-info">
       <div class="about-and-social-container">
-        <div class="about-section">
+        <!-- add scroll animation to the about section -->
+        <div class="about-section" appScrollAnimation>
           <div class="about-title-wrapper">
             <h2 class="band-description-title">About</h2>
             <div class="title-underline"></div>
           </div>
           
           <div class="about-description-and-links">
+            <img 
+              *ngIf="band.aboutImage" 
+              [src]="band.aboutImage" 
+              [alt]="band.name + ' about image'" 
+              class="band-description-image" 
+              loading="lazy" 
+            />
+
             <p class="band-description">{{ band.description }}</p>
 
             <div class="band-media-links-wrapper">
@@ -38,11 +47,11 @@
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+        </div> <!-- .about-section -->
+      </div> <!-- .about-and-social-container -->
+    </div> <!-- .band-info -->
+  </div> <!-- .overlay -->
+</div> <!-- .band-hero -->
 
 <div class="band-members-section">
   <app-members-list [bandSlug]="band.slug"></app-members-list>
