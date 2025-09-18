@@ -1,0 +1,48 @@
+<div class="ringtones-container">
+  <div class="ringtone-title-wrapper">
+    <h2 class="ringtone-title"
+        appScrollAnimate
+        [animationType]="'fade-slide'"
+        [animationDelay]="'0s'">
+      Ringtones
+    </h2>
+  </div>
+  
+  <div *ngFor="let ringtone of ringtones; let i = index" class="ringtone-card"
+       appScrollAnimate
+       [animationType]="'fade-slide'"
+       [animationDelay]="(i * 0.1) + 's'">
+    <img
+      [src]="ringtone.thumbnailUrl"
+      [alt]="ringtone.songName + ' cover'"
+      class="ringtone-thumbnail"
+    />
+
+    <div class="ringtone-info">
+      <h3>{{ ringtone.songName }}</h3>
+      <p>{{ ringtone.bandName }}</p>
+
+      <div class="controls">
+        <button (click)="togglePlay(ringtone.previewUrl)" aria-label="Play preview">
+          ▶️ Preview
+        </button>
+        <a
+          [href]="ringtone.downloadAndroidUrl"
+          download
+          class="btn"
+          aria-label="Download for Android"
+        >
+          Android
+        </a>
+        <a
+          [href]="ringtone.downloadAppleUrl"
+          download
+          class="btn"
+          aria-label="Download for iPhone"
+        >
+          iPhone
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

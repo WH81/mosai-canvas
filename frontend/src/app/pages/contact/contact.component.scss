@@ -2,31 +2,16 @@
 @use 'index' as *;
 
 .contact-title-wrapper {
-  position: relative;
-  display: inline-block; // keeps SVG only as wide as the title
-  margin: auto;
+  display: flex;
+  justify-content: center;
   padding: clamp(1rem, 4vw, 2rem);
-
-  // &::before {
-  //   content: "";
-  //   position: absolute;
-  //   top: 50%;
-  //   left: 50%;
-  //   transform: translate(-50%, -50%);
-  //   width: 120%;
-  //   height: 120%;
-  //   background: url('/assets/svgs/mosai-canvas-background.svg') no-repeat center center;
-  //   background-size: cover;
-  //   opacity: 0.8; // subtle effect
-  //   pointer-events: none;
-  //   z-index: 0;
-  // }
 
   .contact-title {
     @include text-style-primary(clamp(2.5rem, 5vw, 4rem), clamp(3rem, 6vw, 5rem), 1.4, 700);
     color: #7d7d7d;
-    padding: clamp(1rem, 4vw, 2rem) 0;
+    padding: $spacing-title-vertical $spacing-title-horizontal;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    text-align: center;
   }
 }
 
@@ -45,68 +30,104 @@
 }
 
 .contact {
-  max-width: 800px;
+  max-width: 600px;
   margin-inline: auto;
-  padding: clamp(2rem, 5vw, 3rem); // increased outer padding
+  padding: 1rem;
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 3rem;
 
-  label {
-    display: block;
-    margin-top: 2rem; // more spacing between fields
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-  }
+    input,
+    textarea {
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid #666;
+      padding: 1rem 0 1rem 1rem;
+      width: 100%;
+      font-size: 1rem; // match inputs
+      font-family: inherit; // ensures same font as body or input
+      line-height: 1.5; // optional for consistent spacing
+      color: #fff;
+      border-radius: 4px;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
 
-  input,
-  textarea {
-    width: 100%;
-    padding: 0.85rem 1rem; // more internal padding
-    margin-top: 0.25rem;
-    border: 1px solid #444;
-    border-radius: 4px;
-    background: #111;
-    color: #fff;
-    font-size: 1.125rem;
+      &::placeholder {
+        color: #aaa;
+      }
 
-    &:focus {
-      outline: 2px solid #1db954;
-      outline-offset: 2px;
+      &:focus {
+        outline: none;
+        border-bottom: 2px solid #00e0ff;
+        background-color: #111;
+      }
+    }
+
+    textarea {
+      min-height: 6rem;
+      resize: vertical;
+    }
+
+    .error {
+      color: #ff0000;
+      font-size: 0.875rem;
+      margin-top: -1rem;
+      margin-bottom: 2rem;
+    }
+
+    .success {
+      color: #019801;
+      font-size: 1rem;
+      margin-top: 1rem;
+      padding: 0.5rem;
+      background-color: rgba(0, 224, 255, 0.1);
+      border-radius: 0.5rem;
+      text-align: center;
+    }
+
+    button {
+      display: inline-block;
+      padding: 0.75rem 1rem;
+      font-size: 1.125rem;
+      font-weight: 600;
+      width: fit-content;
+      color: #ccc;
+      background-color: transparent;
+      border: 3px solid transparent;
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      text-align: center;
+      border-image: linear-gradient(to right, var(--primary-color), var(--secondary-color)) 1;
+      border-image-slice: 1;
+      margin: 0 auto;
+
+      &:hover:not(:disabled) {
+        color: #ccc;
+        background-color: #1a1a1a;
+        border: 3px solid #ccc;
+        transform: scale(1.05);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      }
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      &:focus {
+        outline: none;
+        border-image: linear-gradient(to right, var(--secondary-color), var(--primary-color)) 1;
+        box-shadow: 0 0 0 3px rgba(var(--primary-color), 0.5), 0 4px 15px rgba(0, 0, 0, 0.3);
+      }
     }
   }
 
-  textarea {
-    min-height: 6rem;
-  }
-
-  button {
-    margin-top: 2rem; // increased spacing above button
-    padding: 0.85rem 1.5rem;
-    border: none;
-    border-radius: 4px;
-    font-weight: 600;
-    background: #1db954;
-    color: #fff;
-    cursor: pointer;
-    transition: filter 150ms;
-
-    &:hover:not(:disabled) {
-      filter: brightness(1.1);
-    }
-
-    &:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-  }
-
-  .error {
-    color: #ff6565;
-    font-size: 0.875rem;
-    margin-top: 0.4rem;
-  }
-
-  .success {
-    color: #4dff4d;
-    font-size: 0.9rem;
-    margin-top: 1rem;
+  @media (max-width: 768px) {
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 }

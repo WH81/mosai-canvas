@@ -17,20 +17,42 @@
       <div class="gradient-overlay"></div>
 
       <div class="carousel-content">
-        <h1 class="bandName">{{ item.bandName }}</h1>
-        <h2 class="songName">"{{ item.songName }}"</h2>
-        <h4 class="formattedDate">
+        <h1
+          class="bandName"
+          appScrollAnimate
+          [animationType]="'fade-slide'"
+          [animationDelay]="'0s'">
+          {{ item.bandName }}
+        </h1>
+      
+        <h2
+          class="songName"
+          appScrollAnimate
+          [animationType]="'fade-slide'"
+          [animationDelay]="'0.15s'">
+          "{{ item.songName }}"
+        </h2>
+      
+        <h4
+          class="formattedDate"
+          appScrollAnimate
+          [animationType]="'fade-slide'"
+          [animationDelay]="'0.3s'">
           <span class="releaseDate">OUT</span> {{ item.formattedDate }}
         </h4>
+      
         <a
           class="carousel-button animated-button"
           [href]="item.buttonLink"
           target="_blank"
           rel="noopener noreferrer"
-        >
+          appScrollAnimate
+          [animationType]="'fade-slide'"
+          [animationDelay]="'0.45s'">
           {{ item.buttonText }}
         </a>
       </div>
+      
     </div>
   </div>
 

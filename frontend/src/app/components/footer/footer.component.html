@@ -1,42 +1,21 @@
 <footer class="footer">
   <div class="footer__container">
-    <!-- Left Column -->
-    <div class="footer__left">
-      <!-- <div class="footer__brand">
-        <app-mosaicanvas-logo class="footer__logo" [width]="'300px'"></app-mosaicanvas-logo>
-      </div> -->
+    <!-- Center Column -->
+    <div class="footer__center">
+      <!-- Mosai Canvas logo -->
+      <div class="footer__brand">
+        <a routerLink="/">
+          <app-mosaicanvas-logo variant="footer"></app-mosaicanvas-logo>
+        </a>
+      </div>
 
       <div class="footer__links-row">
-        <app-social-links *ngIf="socialLinks" [socialLinks]="socialLinks" size="small"></app-social-links>
+        <app-social-links *ngIf="socialLinks" [socialLinks]="socialLinks" size="small" class="footer__social-link-icons"></app-social-links>
         <app-streaming-links *ngIf="streamingLinks" [streamingLinks]="streamingLinks" size="small"></app-streaming-links>
       </div>
 
     </div>
   </div>
-
-    <!-- Center Column -- Footer Links (commented out by user) -->
-    <!-- <div class="footer__center">
-      <div class="footer__links">
-        <ng-container *ngFor="let item of menuItems">
-          <ng-container *ngIf="item.submenu; else singleLink">
-            <div class="footer__link-group">
-              <span class="footer__link-title">{{ item.name }}</span>
-              <div class="footer__sublinks">
-                <a *ngFor="let sub of item.submenu" [routerLink]="sub.path" class="footer__sublink">
-                  {{ sub.name }}
-                </a>
-              </div>
-            </div>
-          </ng-container>
-          <ng-template #singleLink>
-            <a [routerLink]="item.path" class="footer__link">{{ item.name }}</a>
-          </ng-template>
-        </ng-container>
-      </div>
-    </div> -->
-
-    <!-- Right Column (commented out by user) -->
-    <!-- <app-mailing-list></app-mailing-list> -->
 
   <!-- Copyright -->
   <div class="footer__bottom">

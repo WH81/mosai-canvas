@@ -1,4 +1,5 @@
 @use "variables" as v;
+@use 'variables' as *;
 
 @mixin text-style-primary($min, $max, $line-height, $weight) {
   font-size: clamp(#{$min}, 2vw, #{$max});
@@ -14,4 +15,9 @@
   font-weight: $weight;
   font-family: v.$font-family-secondary;
   color: v.$text-color-light;
+}
+
+@mixin component-spacing {
+  margin-top: $spacing-xxxl;
+  margin-bottom: $spacing-xxxl;
 }

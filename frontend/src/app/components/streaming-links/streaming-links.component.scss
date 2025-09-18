@@ -4,7 +4,7 @@
 
 .streaming-links {
   display: flex;
-  gap: 1rem; // space between buttons horizontally
+  gap: 1rem;
   justify-content: center;
   align-items: center;
 
@@ -16,7 +16,6 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    // box-shadow: 0px 4px 7px #000000;
     color: #ffffff;
     font-size: 20px;
     text-decoration: none;
@@ -28,8 +27,6 @@
       left: -2px;
       width: calc(100% + 4px);
       height: calc(100% + 4px);
-      // border-radius: 50%;
-      // background: linear-gradient(to right, $gradient-start, $gradient-end);
       z-index: 0;
     }
 
@@ -40,8 +37,6 @@
       left: 0px;
       width: calc(100% - 0px);
       height: calc(100% - 0px);
-      // border-radius: 50%;
-      // background-color: rgba(0, 0, 0, 1);
       z-index: 0;
       transition: background-color 0.3s ease;
     }
@@ -52,12 +47,8 @@
       z-index: 1;
     }
 
-    // &:hover::after {
-    //   background-color: rgba(0, 0, 0, 1);
-    // }
-
     &:hover > * {
-      background: var(--secondary-color);
+      background: $gradient-mosai-canvas;
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;

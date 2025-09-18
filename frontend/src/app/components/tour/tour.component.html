@@ -1,8 +1,16 @@
-<h2 class="tour-title">Tour Dates</h2>
-<div class="tour-list">
-  <div *ngIf="tours.length === 0" class="no-tours">No upcoming shows.</div>
+<h2 class="tour-title" appScrollAnimate [animationType]="'fade-slide'" [animationDelay]="'0s'">
+  Tour Dates
+</h2>
 
-  <div class="tour-card" *ngFor="let tour of tours">
+<div class="tour-list">
+  <div *ngIf="tours.length === 0" class="no-tours" appScrollAnimate [animationType]="'fade-slide'" [animationDelay]="'0.2s'">
+    No upcoming shows.
+  </div>
+
+  <div class="tour-card" *ngFor="let tour of tours; let i = index"
+       appScrollAnimate
+       [animationType]="'fade-slide'"
+       [animationDelay]="(i * 0.1) + 's'">
     <div class="left">
       <div class="date">{{ tour.date | date: 'mediumDate' }}</div>
       <div class="band">{{ tour.band }}</div>
@@ -25,6 +33,7 @@
     </div>
   </div>
 </div>
+
 
 <!-- <div class="tour-list">
   <div *ngIf="tours.length === 0" class="no-tours">No tours available.</div>

@@ -4,11 +4,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { TourService } from '../../services/tour/tour.service';
 import { Tour } from '../../models/tour/tour.model';
 import { catchError, of } from 'rxjs';
+import { ScrollAnimateDirective } from '../../directives/scroll-animate.directive';
 
 @Component({
   selector: 'app-tour',
   standalone: true,
-  imports: [CommonModule, HttpClientModule],
+  imports: [CommonModule, HttpClientModule, ScrollAnimateDirective],
   templateUrl: './tour.component.html',
   styleUrls: ['./tour.component.scss']
 })

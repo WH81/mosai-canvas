@@ -11,13 +11,14 @@ import { RouterModule } from '@angular/router';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { CarouselService } from '../../services/carousel/carousel.service';
 import { CarouselItem } from '../../models/carousel/carousel.model';
+import { ScrollAnimateDirective } from '../../directives/scroll-animate.directive';
 
 @Component({
   selector: 'app-carousel',
   standalone: true,
   templateUrl: './carousel.component.html',
   styleUrls: ['./carousel.component.scss'],
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, ScrollAnimateDirective],
   providers: [DatePipe],
   animations: [
     trigger('slideUp', [

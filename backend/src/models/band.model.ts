@@ -7,6 +7,11 @@ const BandSchema = new Schema<IBand>({
   description: String,
   image: String, // main band image
   aboutImage: String, // NEW field for image above "About" description
+  logoType: {
+    type: String,
+    enum: ['svg', 'jpg'],
+    default: 'svg'
+  },
   members: [{ type: Schema.Types.ObjectId, ref: 'Member' }],
   socialLinks: { type: Schema.Types.ObjectId, ref: 'SocialLinks' },
   streamingLinks: { type: Schema.Types.ObjectId, ref: 'StreamingLinks' }

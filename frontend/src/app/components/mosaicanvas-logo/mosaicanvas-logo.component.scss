@@ -1,47 +1,31 @@
+@use "sass:map";
 @use 'index' as *;
 
-// .mosaicanvas-logo {
-//     // width: 600px;
-//     height: auto;
-//     display: flex;
-//     margin: 0 auto;
-//     justify-content: center;
-//     align-items: center;
-//     background-color: transparent;
-//     border-radius: 10px;
-//     cursor: pointer;
-//     transition: all 0.3s;
-  
-//     @include respond-max(lg) {
-//       width: 500px;
-//     }
-  
-//     @include respond-max(md) {
-//       width: 400px;
-//     }
-  
-//     @include respond-max(sm) {
-//       width: 300px;
-//     }
-  
-//     @include respond-max(xs) {
-//       width: 220px;
-//     }
-//   }
-  
-  .mosaicanvas-logo-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 auto;
-    padding: 3rem 1rem;
-    background-color: #121212;
+.mosaicanvas-logo-wrapper {
+  @include component-spacing;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  padding: 4rem;
+  background-color: transparent;
+
+  &.footer {
+    padding: 1rem;
+    .mosaicanvas-logo {
+      width: 400px !important;
+      font-size: 40px !important;
+
+      @media (max-width: map.get($breakpoints, md)) {
+        width: 300px !important;
+      }
+    }
   }
-  
-  .mosaicanvas-logo {
-    height: auto;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.3s;
-  }
-  
+}
+
+.mosaicanvas-logo {
+  height: auto;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
