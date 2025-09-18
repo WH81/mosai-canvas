@@ -14,6 +14,7 @@ import { MembersListComponent } from '../../components/members-list/members-list
 import { Subscription } from 'rxjs';
 import { SocialLinksComponent } from '../social-links/social-links.component';
 import { StreamingLinksComponent } from '../streaming-links/streaming-links.component';
+import { Band } from '../../models/band/band.model';
 
 /**
  * Directive: appScrollAnimation
@@ -79,8 +80,8 @@ export class ScrollAnimationDirective implements AfterViewInit, OnDestroy {
   styleUrls: ['./band-detail.component.scss'],
 })
 export class BandDetailComponent implements OnInit, OnDestroy {
-  band: any;
-  private routeSub: Subscription | undefined;
+  band: Band | null = null;            // Typed properly
+  private routeSub?: Subscription;
   imageLoaded = false;
 
   constructor(
@@ -89,37 +90,51 @@ export class BandDetailComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.routeSub = this.route.params.subscribe((params) => {
+    this.routeSub = this.route.params.subscribe(params => {
       const slug = params['bandSlug'];
       this.getBand(slug);
     });
   }
 
   getBand(slug: string): void {
-    this.bandService.getBandBySlug(slug).subscribe(
-      (data) => {
-        // Safely assign
+    this.band = null;
+    this.imageLoaded = false;
+  
+    this.bandService.getBandBySlug(slug).subscribe({
+      next: (data: Band) => {
         this.band = {
           ...data,
-          socialLinks: data.socialLinks || null,
-          streamingLinks: data.streamingLinks || null
+          socialLinks: data.socialLinks || undefined,
+          streamingLinks: data.streamingLinks || undefined
         };
   
-        const img = new Image();
-        img.src = this.band.image;
-        img.onload = () => {
-          this.imageLoaded = true;
-        };
+        if (this.band.image) {
+          const img = new Image();
+          img.src = this.band.image;
+          img.onload = () => {
+            this.imageLoaded = true;
+          };
+        }
       },
-      (error) => {
-        console.error('Error fetching band data:', error);
+      error: (err) => {
+        console.error('Error fetching band data:', err);
       }
-    );
+    });
+  }
+  
+
+  /**
+   * Returns the full logo path based on logoType (svg or jpg).
+   * Defaults to SVG if logoType is missing.
+   */
+  getBandLogo(): string {
+    if (!this.band) return '';
+    const ext = this.band.logoType || 'svg';
+    const folder = ext === 'jpg' ? 'jpgs' : 'svgs';
+    return `assets/${folder}/${this.band.slug}.${ext}`;
   }
 
   ngOnDestroy(): void {
-    if (this.routeSub) {
-      this.routeSub.unsubscribe();
-    }
+    this.routeSub?.unsubscribe();
   }
 }

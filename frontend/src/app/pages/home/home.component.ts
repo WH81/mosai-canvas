@@ -5,11 +5,12 @@ import { CarouselComponent } from '../../components/carousel/carousel.component'
 import { MosaicanvasLogoComponent } from '../../components/mosaicanvas-logo/mosaicanvas-logo.component';
 import { TourComponent } from '../../components/tour/tour.component';
 import { MailingListComponent } from '../../components/mailing-list/mailing-list.component';
+import { RingtonesComponent } from '../../components/ringtones/ringtones.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [AboutComponent, CarouselComponent, MosaicanvasLogoComponent, TourComponent, MailingListComponent],
+  imports: [AboutComponent, CarouselComponent, MosaicanvasLogoComponent, TourComponent, RingtonesComponent, MailingListComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })

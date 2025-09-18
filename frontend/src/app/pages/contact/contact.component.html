@@ -1,8 +1,8 @@
 <div class="contact-title-wrapper">
   <h2 class="contact-title">Contact the Band</h2>
 </div>
+
 <div class="contact">
-  <!-- <h2 class="sr-only">Contact the Band</h2> -->
   <form
     [formGroup]="contactForm"
     (ngSubmit)="onSubmit()"
@@ -10,54 +10,58 @@
     novalidate
   >
     <!-- Name -->
-    <label for="name">Name<span aria-hidden="true">*</span></label>
     <input
       id="name"
       formControlName="name"
       type="text"
       autocomplete="name"
+      placeholder="Full Name"
+      aria-label="Full Name"
       [attr.aria-invalid]="submitted && f['name'].invalid"
       required
     />
-    <p class="error" *ngIf="submitted && f['name'].invalid">
-      Name must be 2–50 characters.
-    </p>
+    <div class="error" *ngIf="submitted && f['name'].invalid">
+      Name must be 2–50 characters.
+    </div>
 
     <!-- Email -->
-    <label for="email">Email<span aria-hidden="true">*</span></label>
     <input
       id="email"
       formControlName="email"
       type="email"
       autocomplete="email"
+      placeholder="Email"
+      aria-label="Email"
       [attr.aria-invalid]="submitted && f['email'].invalid"
       required
     />
-    <p class="error" *ngIf="submitted && f['email'].invalid">
+    <div class="error" *ngIf="submitted && f['email'].invalid">
       Please enter a valid email.
-    </p>
+    </div>
 
     <!-- Subject -->
-    <label for="subject">Subject</label>
     <input
       id="subject"
       formControlName="subject"
       type="text"
       maxlength="100"
+      placeholder="Subject"
+      aria-label="Subject"
     />
 
     <!-- Message -->
-    <label for="message">Message<span aria-hidden="true">*</span></label>
     <textarea
       id="message"
       formControlName="message"
       rows="5"
+      placeholder="Message"
+      aria-label="Message"
       [attr.aria-invalid]="submitted && f['message'].invalid"
       required
     ></textarea>
-    <p class="error" *ngIf="submitted && f['message'].invalid">
-      Message must be 10–1000 characters.
-    </p>
+    <div class="error" *ngIf="submitted && f['message'].invalid">
+      Message must be 10–1000 characters.
+    </div>
 
     <!-- Submit -->
     <button type="submit" [disabled]="sending">
@@ -70,6 +74,10 @@
     {{ successMessage }} {{ errorMessage }}
   </p>
 
-  <p class="success" *ngIf="successMessage">{{ successMessage }}</p>
-  <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+  <div *ngIf="successMessage" class="success-message">
+    {{ successMessage }}
+  </div>
+  <div *ngIf="errorMessage" class="error">
+    {{ errorMessage }}
+  </div>
 </div>

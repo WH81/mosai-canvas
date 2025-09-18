@@ -9,15 +9,27 @@
   padding: 5rem;
   box-sizing: border-box;
   border-radius: 0.75rem;
-  background-color: rgba(0, 0, 0, 0.15); /* subtle dark overlay */
+  background-color: rgba(0, 0, 0, 0.15);
   backdrop-filter: blur(5px);
   box-shadow: 0 0 20rem rgba(0, 0, 0, 1);
   margin: 0 auto;
   gap: 10rem;
+  
 
-  @media (max-width: 900px) {
+  @include respond-min(xxl) {
+    gap: 6rem;
+  }
+
+  // Collapse for screens smaller than 1440px
+  @include respond-max(xxl) {
     flex-direction: column;
     align-items: center;
+    padding: 3rem;
+    gap: 2rem;
+  }
+
+  // Tablet and below
+  @include respond-max(lg) {
     padding: 2rem;
     gap: 1.5rem;
   }
@@ -28,57 +40,68 @@
     align-items: flex-start;
     flex-shrink: 0;
 
-    @media (max-width: 900px) {
+    @include respond-min(lg) {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 768px) {
       align-items: center;
-      position: relative;
-      width: 100%;
+      padding-bottom: 1.5rem;
     }
 
     .band-members-title {
       @include text-style-primary(
-        clamp(2.5rem, 5vw, 4rem), 
-        clamp(3rem, 6vw, 5rem), 1.4, 700
+        clamp(2.5rem, 5vw, 4rem),
+        clamp(3rem, 6vw, 5rem),
+        1.4,
+        700
       );
-      color: #7d7d7d;
+      color: #fff;
       text-align: left;
       text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-      margin-top: -0.625rem;
-
-      @media (max-width: 768px) {
-        // text-align: center;
-        // margin-top: 2rem;
+      display: inline-block;
+      position: relative;
+  
+      @include respond-max(md) {
         text-align: center;
-        margin-left: 0; /* reset any auto margin */
-        display: inline-block; /* shrink wrap text */
+        margin-left: 0;
+      }
+  
+      &::after {
+        content: "";
+        display: block;
+        width: 100%;
+        max-width: 100px;
+        height: 5px;
+        margin: 4px 0 15px;
+        background-color: #fff;
+        // background: linear-gradient(
+        //   to right,
+        //   var(--primary-color),
+        //   var(--secondary-color)
+        // );
+        @media (max-width: 768px) {
+          height: 0; // Hide underline on mobile to save space
+        }
       }
     }
-
+  
     .title-underline {
-      width: 100%;
-      max-width: 100px;
-      height: 8px;
-      background: linear-gradient(
-        to right, 
-        var(--primary-color), 
-        var(--secondary-color)
-      );
-      margin: 0.5rem 0 1.25rem;
-
-      @media (max-width: 768px) {
-        height: 0;
-      }
+      display: none;
     }
   }
+  
 
   .members-list-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 3rem;
+    gap: 0rem;
     margin-top: 0;
     flex-grow: 1;
-    max-width: 800px;
+    // max-width: 800px;
     width: 100%;
 
     .member-item-wrapper {
@@ -90,9 +113,10 @@
       width: 100%;
       max-width: 800px;
       min-height: 280px;
-      padding: 1rem;
+      padding: 10rem;
       box-sizing: border-box;
-      transition: transform 0.3s ease, opacity 0.6s ease, height 0.4s ease-in-out, padding 0.4s ease-in-out;
+      transition: transform 0.3s ease, opacity 0.6s ease,
+        height 0.4s ease-in-out, padding 0.4s ease-in-out;
       opacity: 0;
       transform: translateY(50px);
       will-change: transform, opacity;
@@ -110,7 +134,8 @@
         transform: translateY(-5px);
       }
 
-      @media (max-width: 768px) {
+      // Switch to stacked layout at 1440px and below
+      @include respond-max(xxl) {
         flex-direction: column;
         max-width: 320px;
         min-height: auto;
@@ -125,13 +150,12 @@
       align-items: center;
       gap: 2rem;
       position: absolute;
-      top: 0;
-      left: 0;
+      top: 8px;
+      left: 8px;
       transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s ease;
       z-index: 1;
-      cursor: pointer; /* small addition so users see it's clickable */
+      cursor: pointer;
 
-      // The glitch fix: We now smoothly hide the card when the modal is open.
       .member-item-wrapper.expanded & {
         opacity: 0;
         transform: translateY(-100%);
@@ -139,9 +163,11 @@
         visibility: hidden;
       }
 
-      @media (max-width: 768px) {
+      // Center/stack contents at 1440px and below
+      @include respond-max(xxl) {
         position: static;
         flex-direction: column;
+        align-items: center;
         gap: 0.5rem;
       }
     }
@@ -156,25 +182,23 @@
       display: flex;
       justify-content: center;
       align-items: center;
-    
+      box-shadow: 0px 0px 10px #000;
+
       &::before {
         content: '';
         position: absolute;
-        top: 0; 
-        right: 0;
-        bottom: 0;
-        left: 0;
+        inset: 0;
         border-radius: 50%;
-        background: linear-gradient(
-          to right,
-          var(--primary-color),
-          var(--secondary-color)
-        );
-        padding: 4px;
         z-index: -1;
         pointer-events: none;
+        // background-color: #fff;
+        // background: linear-gradient(
+        //   to right,
+        //   var(--primary-color),
+        //   var(--secondary-color)
+        // );
       }
-    
+
       img {
         width: 100%;
         height: 100%;
@@ -183,10 +207,10 @@
         object-position: top;
         border: 4px solid transparent;
       }
-    
-      @media (max-width: 768px) {
-        width: 140px;
-        height: 140px;
+
+      @include respond-max(md) {
+        width: 240px;
+        height: 240px;
         margin-bottom: 0.75rem;
       }
     }
@@ -196,24 +220,26 @@
       flex-direction: column;
       align-items: flex-start;
       justify-content: center;
-      width: auto;
       flex-grow: 1;
       text-align: left;
 
       h3.member-name {
-        margin: 0;
         @include text-style-primary(1.5rem, 2rem, 1.3, 600);
+        margin: 0;
         color: #fff;
         line-height: 1.2;
+        text-shadow: 0 0 12px rgba(0, 0, 0, 0.8);
       }
 
       p.member-instrument {
         @include text-style-secondary(1rem, 1.25rem, 1.7, 400);
         color: #ccc;
         margin: 0.1rem 0 0.5rem;
+        text-shadow: 0 0 12px rgba(0, 0, 0, 0.8);
       }
-      
-      @media (max-width: 768px) {
+
+      // Center text at 1440px and below
+      @include respond-max(xxl) {
         align-items: center;
         text-align: center;
       }
@@ -231,7 +257,8 @@
       opacity: 0;
       visibility: hidden;
       transform: scale(0.9);
-      transition: opacity 0.3s ease-out, visibility 0.3s ease-out, transform 0.3s ease-out;
+      transition: opacity 0.3s ease-out, visibility 0.3s ease-out,
+        transform 0.3s ease-out;
 
       &.expanded {
         opacity: 1;
@@ -246,7 +273,7 @@
         padding: 4rem;
         width: 90%;
         max-width: 1600px;
-        max-height: 90vh;
+        margin: auto;
         overflow-y: auto;
         display: flex;
         flex-direction: column;
@@ -255,7 +282,12 @@
         border: 1rem double #000;
         gap: 1.5rem;
 
-        @media (max-width: 768px) {
+        @include respond-max(xl) {
+          padding: 2rem;
+          max-width: 1000px;
+        }
+
+        @include respond-max(md) {
           padding: 1.5rem;
           width: 95%;
           max-width: 400px;
@@ -281,9 +313,14 @@
         &:hover {
           color: var(--cta-link-primary-hover);
           background: rgba(255, 255, 255, 0.1);
-          border-radius: 50%;
-          width: 50px;
-          height: 50px;
+        }
+
+        @include respond-max(sm) {
+          top: -0.5rem;
+          right: 1rem;
+          width: 35px;
+          height: 35px;
+          font-size: 4rem;
         }
       }
 
@@ -294,9 +331,13 @@
         justify-content: flex-start;
         gap: 3.5rem;
         width: 100%;
-        text-align: left; 
+        text-align: left;
 
-        @media (max-width: 768px) {
+        @include respond-max(lg) {
+          gap: 2rem;
+        }
+
+        @include respond-max(md) {
           flex-direction: column;
           align-items: center;
           text-align: center;
@@ -305,31 +346,28 @@
 
       .member-bio-image {
         position: relative;
-        width: 700px;
-        height: 700px;
+        width: 600px;
+        height: 600px;
         border-radius: 50%;
         overflow: hidden;
         flex-shrink: 0;
-        box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.8);
-      
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 1);
+
         &::before {
           content: '';
           position: absolute;
-          top: 0;
-          right: 0;
-          bottom: 0;
-          left: 0;
+          inset: 0;
           border-radius: 50%;
-          background: linear-gradient(
-            to right,
-            var(--primary-color),
-            var(--secondary-color)
-          );
           padding: 4px;
           z-index: 1;
           pointer-events: none;
+          // background: linear-gradient(
+          //   to right,
+          //   var(--primary-color),
+          //   var(--secondary-color)
+          // );
         }
-      
+
         img {
           width: 100%;
           height: 100%;
@@ -338,13 +376,18 @@
           object-position: top;
           border: 4px solid transparent;
           position: relative;
-          z-index: 2; /* keep the image on top of the gradient's padding area */
+          z-index: 2;
           background-clip: content-box;
         }
-      
-        @media (max-width: 768px) {
-          width: 150px;
-          height: 150px;
+
+        @include respond-max(xl) {
+          width: 400px;
+          height: 400px;
+        }
+
+        @include respond-max(md) {
+          width: 250px;
+          height: 250px;
           margin-bottom: 1rem;
         }
       }
@@ -356,7 +399,7 @@
         width: 100%;
         gap: 0.5rem;
 
-        @media (max-width: 768px) {
+        @include respond-max(md) {
           align-items: center;
         }
 
@@ -364,12 +407,14 @@
           @include text-style-primary(2rem, 3rem, 1.2, 700);
           color: #fff;
           margin: 0;
+          text-shadow: 0 0 12px rgba(0, 0, 0, 0.8);
         }
 
         p.member-instrument {
           @include text-style-secondary(1.125rem, 1.5rem, 1.5, 600);
           color: #ccc;
           margin: 0;
+          text-shadow: 0 0 12px rgba(0, 0, 0, 0.8);
         }
 
         app-social-links {
@@ -380,7 +425,7 @@
           width: 100%;
           margin-top: 1rem;
 
-          @media (max-width: 768px) {
+          @include respond-max(md) {
             justify-content: center;
           }
         }
@@ -388,8 +433,8 @@
         .bio-text {
           @include text-style-secondary(1rem, 1.125rem, 1.7, 400);
           color: #ccc;
-          margin-top: 1.5rem;
-          text-align: justify;
+          margin-top: 0.5rem;
+          text-align: left;
           line-height: 1.8;
           width: 100%;
         }

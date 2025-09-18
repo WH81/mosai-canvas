@@ -15,11 +15,13 @@ body {
   }
 
   body.bg-cloud-canvas {
-    background-image: url('/assets/pngs/cloud-canvas-bg.png');
+    //background-image: url('/assets/jpgs/cloud-canvas-bg-2.jpg');
+    background-color: #7795B3;
   }
 
   body.bg-rye-canvas {
-    background-image: url('/assets/pngs/rye-canvas-bg.png');
+    //background-image: url('/assets/jpgs/rye-canvas-bg.jpg');
+    background-color: #FFA804;
   }
 
   body.bg-wailing-canvas {
@@ -35,7 +37,16 @@ body {
   }
 
   body.bg-staind-glass-canvas {
-    background-image: url('/assets/pngs/staind-glass-canvas-bg.png');
+    background-image: url('/assets/jpgs/staind-glass-canvas-bg.jpg');
+  
+    .band-hero {
+      background-color: rgba(0, 0, 0, 1);
+
+      .band-logo {
+        width: 800px;
+        height: auto;
+      }
+    }
   }
   
   body.bg-home,

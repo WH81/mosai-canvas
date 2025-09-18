@@ -6,7 +6,8 @@ export interface IBand {
   slug: string;
   description?: string;
   image?: string;
-  aboutImage?: string;  // <-- add this line
+  aboutImage?: string;
+  logoType?: 'svg' | 'jpg';
   members?: Types.ObjectId[];
   streamingLinks?: Types.ObjectId;
   socialLinks?: Types.ObjectId;

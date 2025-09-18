@@ -11,7 +11,6 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  min-height: 70vh;
   opacity: 1; // Default opacity for initial render
   transition: opacity 0.8s ease-in; // Smooth transition for image loading
   background-attachment: fixed; // Parallax effect for desktop
@@ -34,9 +33,7 @@
 
 // Overlay for content over the hero image
 .overlay {
-  padding: 2rem; // Overall padding for the overlay content
   width: 100%;
-  min-height: 80vh; // Ensure overlay covers most of the hero section
   height: 100%; // Takes full height of its parent
   display: flex;
   flex-direction: column; // Stacks content vertically (logo, band-info)
@@ -57,7 +54,7 @@
 // Band Logo Styles
 .band-logo.full-width-logo {
   display: block; // Ensures the logo takes its own line
-  margin: 2rem auto 1rem auto; // Centered with spacing below it
+  margin: 0 auto 2rem auto; // Centered with spacing below it
   width: 100%; // Allows it to scale
   max-width: 400px; // Default max-width for smaller screens
   height: auto; // Maintain aspect ratio
@@ -69,17 +66,22 @@
 
   @media (min-width: 1200px) {
     max-width: 1400px; // Even larger for desktops
+    margin: 2rem auto 1rem auto;
   }
 }
 
 // Container for band information (e.g., about section, members, etc.)
 .band-info {
-  max-width: 1600px; // Limits content width for better readability on large screens
   margin: 0 auto; // Center the content horizontally
   display: flex;
   flex-direction: column; // Stacks sections vertically within band-info
   align-items: center; // Centers sections horizontally
   width: 100%; // Ensures it takes full width up to max-width
+  padding: 0rem 1rem 0rem; // Padding for spacing from screen edges
+
+  @media (max-width: 768px) {
+    padding: 0;
+  }
 }
 
 // Container for About section and potential other social-related elements
@@ -89,15 +91,15 @@
   align-items: center; // Center items horizontally
   gap: 3rem; // Spacing between stacked sections
   width: 100%;
-  margin: 3rem 0; // Vertical spacing for the container
 
-  @media (min-width: 900px) {
+  //@media (min-width: 900px) {
     flex-direction: row; // Layout for larger screens: "About" section side-by-side
     align-items: flex-start; // Align items to the top for the title/content
     justify-content: center; // Center content horizontally within the available space
     gap: 4rem; // Increased gap for desktop
     flex-wrap: wrap; // Allows sections to wrap if space is limited
-  }
+    margin: 1rem 0; // Vertical spacing for the container
+ // }
 }
 
 /* -----------------------
@@ -132,7 +134,7 @@
   @media (max-width: 768px) {
     flex-direction: column;
     align-items: center;
-    padding: 2rem;
+    padding: 1rem 2rem;
     gap: 1.5rem;
     border-radius: 0.5rem;
   }
@@ -157,20 +159,17 @@
   @media (max-width: 768px) {
     align-items: center;
     padding: 0;
+    padding-top: 2rem;
   }
 }
 
 // Styles for the "About" title
 .band-description-title {
   @include text-style-primary(clamp(2.5rem, 5vw, 4rem), clamp(3rem, 6vw, 5rem), 1.4, 700);
-  color: #7d7d7d;
-  padding-top: 0; // Removed previous padding-top for external alignment
-  padding-right: 0; // No right padding needed here, gap in .about-section handles spacing
-  padding-bottom: 0; // No bottom padding needed here, margin on underline handles it
-  padding-left: 0; // No left padding
-  text-align: left; // Left-align within its new wrapper
+  color: #fff;
+  padding: 0;
+  text-align: left;
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-  // Keep your fine-tuned margin-top value here for precise vertical alignment.
   margin-top: -0.625rem; 
 
   @media (max-width: 768px) {
@@ -182,11 +181,11 @@
 // Styles for the underline
 .title-underline {
   width: 100%;
-  max-width: 100px; // Limit its width
-  height: 8px;
+  max-width: 100px;
+  height: 5px;
+  margin: 4px 0 15px;
   background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-  margin-top: 0.5rem; // Space between title and underline
-  margin-bottom: 1.25rem; // Space between underline and body description
+  background: #fff;
   
   @media (max-width: 768px) {
     height: 0; // Hide underline on mobile to save space
@@ -205,12 +204,12 @@
 // Styles for the band description image (NEW)
 .band-description-image {
   width: 100%;
-  // max-width: 800px;
   height: auto;
   display: block;
   margin: 0 0 1.5rem 0; // spacing below image before text
   border-radius: 0.75rem;
   object-fit: contain; // keep aspect ratio, no cropping
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
 
   @media (max-width: 768px) {
     max-width: 100%;
@@ -221,7 +220,7 @@
 // Styles for the main body description text
 .band-description {
   @include text-style-secondary(1rem, 1.5rem, 1.6, 500);
-  color: #e0e0e0; // Light gray color for readability
+  color: #fff; // Light gray color for readability
   border-radius: 0; // Subtle rounded corners for the text block (if background was applied)
   width: 100%; // Ensures it fills the available width within its parent
   text-align: justify; // Left-align the description text
@@ -237,10 +236,9 @@
 .band-media-links-wrapper {
   display: flex;
   flex-wrap: wrap; // Allows icons to wrap to the next line if space is limited
-  gap: 0; // Spacing between individual icons
-  justify-content: flex-start; // Align icons to the left below the text
+  gap: 1rem; // Spacing between individual icons
+  justify-content: center; // Align icons to the left below the text
   align-items: center; // Vertically center icons if they have different heights
-  width: 100%; // Ensures it takes full width within its parent (.about-content-wrapper)
 
   @media (max-width: 768px) {
     justify-content: center; // Center icons on smaller screens
@@ -257,6 +255,9 @@
 
 // Band Members Section (assuming app-members-list handles its own internal layout)
 .band-members-section {
-  margin-top: 3rem; // Space between the "About" section and the members section
-  padding: 2rem 1rem; // Add some padding around the members list for spacing from screen edges
+  padding: 0rem 1rem 3rem; // Add some padding around the members list for spacing from screen edges
+
+  @media (max-width: 768px) {
+    padding: 1rem 1rem 2rem 1rem; 
+  }
 }

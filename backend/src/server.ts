@@ -14,6 +14,7 @@ import { errorHandler } from './middleware/error.middleware';
 import tourRoutes from './routes/tour.routes';
 import mailingListRoutes from './routes/mailing-list.routes';
 import contactRoutes from './routes/contact.routes';
+import ringtoneRoutes from "./routes/ringtone.routes";
 
 dotenv.config();
 connectDB();
@@ -33,6 +34,7 @@ app.use("/api/about", aboutRoutes);
 app.use('/api/tours', tourRoutes);
 app.use('/api/mailing-list', mailingListRoutes);
 app.use('/api', contactRoutes);
+app.use("/api/ringtones", ringtoneRoutes);
 
 app.use(errorHandler);
 

@@ -12,4 +12,5 @@ export class MosaicanvasLogoComponent {
   @Input() alt: string = 'MosaiCanvas Logo';
   @Input() width: string = '850px'; // Default for header usage
   @Input() height: string = '150px'; // Default for header usage
+  @Input() variant: 'default' | 'footer' = 'default';
 }

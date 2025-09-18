@@ -26,7 +26,8 @@
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
               "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
-              "src/styles/styles.scss"
+              "src/styles/styles.scss",
+              "src/styles/animations.scss"
             ],
             "stylePreprocessorOptions": {
               "includePaths": ["src/styles"]
@@ -96,7 +97,8 @@
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
               "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
-              "src/styles/styles.scss"
+              "src/styles/styles.scss",
+              "src/styles/animations.scss"
             ],
             "scripts": []
           }

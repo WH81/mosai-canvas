@@ -6,10 +6,11 @@
 >
   <div class="overlay">
     <img 
-      *ngIf="band?.slug" 
-      [src]="'assets/svgs/' + band.slug + '.svg'" 
-      alt="{{ band.name }} logo" 
+      *ngIf="band.slug" 
+      [src]="getBandLogo()" 
+      [alt]="band.name + ' logo'" 
       class="band-logo full-width-logo"
+      loading="lazy"
     />
 
     <div class="band-info">
@@ -35,14 +36,14 @@
             <div class="band-media-links-wrapper">
               <div class="media-block">
                 <app-social-links 
-                  [socialLinks]="band?.socialLinks" 
-                  size="large"
+                  [socialLinks]="band.socialLinks" 
+                  size="small"
                 ></app-social-links>
               </div>
               <div class="media-block">
                 <app-streaming-links 
-                  [streamingLinks]="band?.streamingLinks" 
-                  size="large"
+                  [streamingLinks]="band.streamingLinks" 
+                  size="small"
                 ></app-streaming-links>
               </div>
             </div>
@@ -53,6 +54,6 @@
   </div> <!-- .overlay -->
 </div> <!-- .band-hero -->
 
-<div class="band-members-section">
+<div class="band-members-section" *ngIf="band">
   <app-members-list [bandSlug]="band.slug"></app-members-list>
 </div>

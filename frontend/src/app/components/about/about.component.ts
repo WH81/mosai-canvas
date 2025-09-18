@@ -1,34 +1,35 @@
 import { Component, OnInit } from '@angular/core';
 import { AboutService } from '../../services/about/about.service';
 import { About } from '../../models/about/about.model';
-import { CommonModule } from '@angular/common'; // For common Angular directives like *ngIf
+import { CommonModule } from '@angular/common';
+import { ScrollAnimateDirective } from '../../directives/scroll-animate.directive';
 
 @Component({
   selector: 'app-about',
   standalone: true,
   templateUrl: './about.component.html',
   styleUrls: ['./about.component.scss'],
-  imports: [CommonModule],
+  imports: [CommonModule, ScrollAnimateDirective],
 })
 export class AboutComponent implements OnInit {
-  aboutList: About[] = []; // Store the fetched data
-  loading: boolean = true; // Show loading indicator while waiting for data
+  aboutList: About[] = [];
+  loading: boolean = true;
 
   constructor(private aboutService: AboutService) {}
 
   ngOnInit(): void {
-    this.getAboutData(); // Fetch the data when the component initializes
+    this.getAboutData();
   }
 
   getAboutData() {
     this.aboutService.getAboutData().subscribe({
       next: (data: About[]) => {
-        this.aboutList = data; // Store the fetched data in the about property
-        this.loading = false; // Stop loading when data is fetched
+        this.aboutList = data;
+        this.loading = false;
       },
       error: (error) => {
         console.error('Error fetching About data', error);
-        this.loading = false; // Stop loading even if there is an error
+        this.loading = false;
       },
     });
   }

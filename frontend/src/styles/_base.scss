@@ -1,4 +1,4 @@
-@use "variables" as v;
+@use "variables" as *;
 
 * {
   box-sizing: border-box;
@@ -7,9 +7,9 @@
 }
 
 body {
-  font-family: v.$font-family-secondary;
-  font-size: v.$font-size-base;
-  color: v.$text-color-light;
-  letter-spacing: v.$letter-spacing-base;
+  font-family: $font-family-secondary;
+  font-size: $font-size-base;
+  color: $text-color-light;
+  letter-spacing: $letter-spacing-base;
   position: relative;
 }
