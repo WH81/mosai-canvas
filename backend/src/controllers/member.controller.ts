@@ -44,26 +44,35 @@ export const getMemberById = async (req: Request, res: Response, next: NextFunct
 
 // POST /api/members
 export const createMember = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  const { name, instrument, band: bandName, image, bio, socialLinks } = req.body;
+  // Rename 'band' to 'bandId' to reflect its actual content
+  const { name, instrument, band: bandId, image, bio, socialLinks } = req.body;
 
-  if (!name || !instrument || !bandName || !image || !bio) {
+  // Check for bandId instead of bandName
+  if (!name || !instrument || !bandId || !image || !bio) {
     res.status(400).json({ message: 'Missing required fields: name, instrument, band, image, bio' });
     return;
   }
 
   try {
-    const bandDoc = await Band.findOne({ name: bandName });
+    // Use Band.findById() to find the band by its ID.
+    // Mongoose/MongoDB will automatically try to convert the string ID to an ObjectId here.
+    const bandDoc = await Band.findById(bandId);
+
+    // Update the error message for clarity
     if (!bandDoc) {
-      res.status(404).json({ message: `Band '${bandName}' not found` });
+      res.status(404).json({ message: `Band with ID '${bandId}' not found` });
       return;
     }
 
+    // Use the band's name for slug generation if needed, but the slug is often pre-calculated
+    // Since you are using bandDoc.slug later, we don't need to change this logic much.
+    const bandName = bandDoc.name;
     const bandSlug = bandDoc.slug || slugify(bandName, { lower: true });
 
     const newMember = new Member({
       name,
       instrument,
-      band: bandDoc._id,
+      band: bandDoc._id, // Assign the found ObjectId
       bandSlug,
       image,
       bio,
@@ -146,22 +155,23 @@ export const createMembersBatch = async (req: Request, res: Response, next: Next
 // PUT /api/members/:id
 export const updateMember = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const { id } = req.params;
-  const { name, instrument, band: bandName, image, bio, socialLinks } = req.body;
+  const { name, instrument, band: bandId, image, bio, socialLinks } = req.body;
 
-  if (!name || !instrument || !bandName || !image || !bio) {
+  // Validate required fields
+  if (!name || !instrument || !bandId || !image || !bio) {
     res.status(400).json({ message: 'Missing required fields: name, instrument, band, image, bio' });
     return;
   }
 
   try {
-    // Find the band by name
-    const bandDoc = await Band.findOne({ name: bandName });
+    // Find the band by ID
+    const bandDoc = await Band.findById(bandId);
     if (!bandDoc) {
-      res.status(404).json({ message: `Band '${bandName}' not found` });
+      res.status(404).json({ message: `Band with ID '${bandId}' not found` });
       return;
     }
 
-    const bandSlug = bandDoc.slug || slugify(bandName, { lower: true });
+    const bandSlug = bandDoc.slug || slugify(bandDoc.name, { lower: true });
 
     // Update member fields
     const updatedMember = await Member.findByIdAndUpdate(
@@ -182,7 +192,7 @@ export const updateMember = async (req: Request, res: Response, next: NextFuncti
       return;
     }
 
-    // Update or create socialLinks if provided
+    // Update or create social links if provided
     if (socialLinks && typeof socialLinks === 'object') {
       const updatedLinks = await SocialLinks.findOneAndUpdate(
         { member: updatedMember._id },
@@ -193,6 +203,7 @@ export const updateMember = async (req: Request, res: Response, next: NextFuncti
       await updatedMember.save();
     }
 
+    // Populate final updated member for clean response
     const populatedMember = await Member.findById(updatedMember._id)
       .populate('band', 'name slug')
       .populate('socialLinks');
@@ -203,7 +214,67 @@ export const updateMember = async (req: Request, res: Response, next: NextFuncti
   }
 };
 
+// export const updateMember = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+//   const { id } = req.params;
+//   const { name, instrument, band: bandName, image, bio, socialLinks } = req.body;
+
+//   if (!name || !instrument || !bandName || !image || !bio) {
+//     res.status(400).json({ message: 'Missing required fields: name, instrument, band, image, bio' });
+//     return;
+//   }
+
+//   try {
+//     // Find the band by name
+//     const bandDoc = await Band.findOne({ name: bandName });
+//     if (!bandDoc) {
+//       res.status(404).json({ message: `Band '${bandName}' not found` });
+//       return;
+//     }
+
+//     const bandSlug = bandDoc.slug || slugify(bandName, { lower: true });
+
+//     // Update member fields
+//     const updatedMember = await Member.findByIdAndUpdate(
+//       id,
+//       {
+//         name,
+//         instrument,
+//         band: bandDoc._id,
+//         bandSlug,
+//         image,
+//         bio,
+//       },
+//       { new: true }
+//     );
+
+//     if (!updatedMember) {
+//       res.status(404).json({ message: 'Member not found' });
+//       return;
+//     }
+
+//     // Update or create socialLinks if provided
+//     if (socialLinks && typeof socialLinks === 'object') {
+//       const updatedLinks = await SocialLinks.findOneAndUpdate(
+//         { member: updatedMember._id },
+//         { ...socialLinks, member: updatedMember._id },
+//         { new: true, upsert: true }
+//       );
+//       updatedMember.socialLinks = updatedLinks._id;
+//       await updatedMember.save();
+//     }
+
+//     const populatedMember = await Member.findById(updatedMember._id)
+//       .populate('band', 'name slug')
+//       .populate('socialLinks');
+
+//     res.json(populatedMember);
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+
 // DELETE /api/members/:id
+
 export const deleteMember = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const { id } = req.params;
 

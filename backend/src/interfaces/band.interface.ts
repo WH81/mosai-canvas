@@ -11,4 +11,5 @@ export interface IBand {
   members?: Types.ObjectId[];
   streamingLinks?: Types.ObjectId;
   socialLinks?: Types.ObjectId;
+  streamingPlayers?: Types.ObjectId;
 }

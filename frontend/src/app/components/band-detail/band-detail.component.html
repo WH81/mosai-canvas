@@ -4,56 +4,28 @@
   [class.image-loaded]="imageLoaded"
   [ngStyle]="{ 'background-image': 'url(' + band.image + ')' }"
 >
-  <div class="overlay">
-    <img 
-      *ngIf="band.slug" 
-      [src]="getBandLogo()" 
-      [alt]="band.name + ' logo'" 
-      class="band-logo full-width-logo"
-      loading="lazy"
-    />
+  <div class="band-logo-container">
+    <app-band-logo [band]="band"></app-band-logo>
+  </div>
+</div>
 
-    <div class="band-info">
-      <div class="about-and-social-container">
-        <!-- add scroll animation to the about section -->
-        <div class="about-section" appScrollAnimation>
-          <div class="about-title-wrapper">
-            <h2 class="band-description-title">About</h2>
-            <div class="title-underline"></div>
-          </div>
-          
-          <div class="about-description-and-links">
-            <img 
-              *ngIf="band.aboutImage" 
-              [src]="band.aboutImage" 
-              [alt]="band.name + ' about image'" 
-              class="band-description-image" 
-              loading="lazy" 
-            />
-
-            <p class="band-description">{{ band.description }}</p>
-
-            <div class="band-media-links-wrapper">
-              <div class="media-block">
-                <app-social-links 
-                  [socialLinks]="band.socialLinks" 
-                  size="small"
-                ></app-social-links>
-              </div>
-              <div class="media-block">
-                <app-streaming-links 
-                  [streamingLinks]="band.streamingLinks" 
-                  size="small"
-                ></app-streaming-links>
-              </div>
-            </div>
-          </div>
-        </div> <!-- .about-section -->
-      </div> <!-- .about-and-social-container -->
-    </div> <!-- .band-info -->
-  </div> <!-- .overlay -->
-</div> <!-- .band-hero -->
+<div class="band-info">
+  <div class="section-container"> <!-- shared container -->
+    <app-band-about *ngIf="band" [band]="band" appScrollAnimation></app-band-about>
+  </div>
+</div>
 
 <div class="band-members-section" *ngIf="band">
-  <app-members-list [bandSlug]="band.slug"></app-members-list>
+  <div class="section-container"> <!-- shared container -->
+    <app-members-list [bandSlug]="band.slug"></app-members-list>
+  </div>
+</div>
+
+<div class="band-streaming-players">
+  <div class="section-container"> <!-- shared container -->
+    <app-streaming-players
+      *ngIf="streamingPlayers.spotifyUrl || streamingPlayers.appleMusicUrl"
+      [links]="streamingPlayers">
+    </app-streaming-players>
+  </div>
 </div>

@@ -1,4 +1,5 @@
 export interface Band {
+  _id: any;
   name: string;
   slug: string;
   description: string;

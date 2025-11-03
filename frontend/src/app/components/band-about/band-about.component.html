@@ -1,0 +1,33 @@
+<div *ngIf="band" class="about-section">
+  <div class="about-title-wrapper">
+    <h2 class="band-description-title">About</h2>
+    <!-- <div class="title-underline"></div> -->
+  </div>
+  
+  <div class="about-description-and-links">
+    <img 
+      *ngIf="band.aboutImage" 
+      [src]="band.aboutImage" 
+      [alt]="band.name + ' about image'" 
+      class="band-description-image" 
+      loading="lazy" 
+    />
+
+    <p class="band-description">{{ band.description }}</p>
+
+    <div class="band-media-links-wrapper">
+      <div class="media-block">
+        <app-social-links 
+          [socialLinks]="band.socialLinks" 
+          size="small"
+        ></app-social-links>
+      </div>
+      <div class="media-block">
+        <app-streaming-links 
+          [streamingLinks]="band.streamingLinks" 
+          size="small"
+        ></app-streaming-links>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,14 +1,14 @@
 @use "sass:map";
 
 $breakpoints: (
-  xs: 375px,
-  sm: 430px,
-  md: 768px,
-  lg: 1024px,
-  xl: 1200px,
-  xxl: 1440px,
-  xxxl: 1600px,
-  xxxxl: 1920px,
+  xs: 375px, // iPhone SE
+  sm: 430px, // iPhone 14 Pro Max
+  md: 768px, // iPad Mini
+  lg: 1024px, // iPad Pro
+  xl: 1280px, // Next Hub Max
+  xxl: 1440px, // Desktop
+  xxxl: 1600px, // Desktop Large
+  xxxxl: 1920px, // Large Monitor
 );
 
 @mixin respond-min($breakpoint) {

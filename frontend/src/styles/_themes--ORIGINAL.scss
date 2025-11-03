@@ -1,0 +1,93 @@
+body.bg-home {
+    --primary-color: #4A90E2;
+    --secondary-color: #50E3C2;
+    --accent-color: #121212;
+    --gradient: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    --cta-link-primary: #4A90E2;
+    --cta-link-primary-hover: #4A90E2;
+}
+
+body.bg-contact {
+    --primary-color: #4A90E2;
+    --secondary-color: #50E3C2;
+    --accent-color: #121212;
+    --gradient: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    --cta-link-primary: #4A90E2;
+    --cta-link-primary-hover: #4A90E2;
+}
+
+body.bg-canvas-catalyst {
+    --primary-color: #504564;
+    --secondary-color: #dd6c34;
+    --accent-color: #1b1522;
+    --gradient: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+
+    --cta-link-primary: #E5C216;
+    --cta-link-primary-hover: #E5C216;
+
+    --gradient-primary-light: #DA97FF;
+    --gradient-primary-dark: #872DDA;
+    --gradient-bg: linear-gradient(to bottom, var(--gradient-primary-light), var(--gradient-primary-dark));
+
+    --gradient-secondary-light: #E5C216;
+    --gradient-secondary-dark: #A17F2B;
+    --gradient-fg: linear-gradient(to bottom, var(--gradient-secondary-light), var(--gradient-secondary-dark));
+
+    --gradient-tertiary-light: #04CF0F;
+    --gradient-tertiary-dark: #098B38;
+    --gradient-border: linear-gradient(to bottom, var(--gradient-tertiary-dark), var(--gradient-tertiary-light));
+}
+
+body.bg-cloud-canvas {
+    --primary-color: #D38497;
+    --secondary-color: #7795B3;
+    --accent-color: #FFC7EF;
+    --gradient: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    --cta-link-primary: #00eeff;
+    --cta-link-primary-hover: #00eeff;
+}
+
+body.bg-rye-canvas {
+    --primary-color: #3BBA43;
+    --secondary-color: #FFA804;
+    --accent-color: #fcffcf;
+    --gradient: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    --cta-link-primary: #af6b0b;
+    --cta-link-primary-hover: #af6b0b;
+}
+
+body.bg-wailing-canvas {
+    --primary-color: #c1c1c1;
+    --secondary-color: #e4ff1a;
+    --accent-color: #fcffcf;
+    --gradient: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    --cta-link-primary: #e4ff1a;
+    --cta-link-primary-hover: #e4ff1a;
+}
+
+body.bg-phosphorescent-canvas {
+    --primary-color: #0b1a12;
+    --secondary-color: #00ff8b;
+    --accent-color: #fcffcf;
+    --gradient: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    --cta-link-primary: #00ff8b;
+    --cta-link-primary-hover: #00ff8b;
+}
+
+body.bg-flickering-canvas {
+    --primary-color: #ff0000;
+    --secondary-color: #d4ff00;
+    --accent-color: #fcffcf;
+    --gradient: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    --cta-link-primary: #d4ff00;
+    --cta-link-primary-hover: #d4ff00;
+}
+
+body.bg-staind-glass-canvas {
+    --primary-color: #545454;
+    --secondary-color: #f8f8f8;
+    --accent-color: #fcffcf;
+    --gradient: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    --cta-link-primary: #f8f8f8;
+    --cta-link-primary-hover: #f8f8f8;
+}
