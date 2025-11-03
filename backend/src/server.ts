@@ -15,6 +15,7 @@ import tourRoutes from './routes/tour.routes';
 import mailingListRoutes from './routes/mailing-list.routes';
 import contactRoutes from './routes/contact.routes';
 import ringtoneRoutes from "./routes/ringtone.routes";
+import streamingPlayersRoutes from './routes/streaming-players.routes';
 
 dotenv.config();
 connectDB();
@@ -35,6 +36,7 @@ app.use('/api/tours', tourRoutes);
 app.use('/api/mailing-list', mailingListRoutes);
 app.use('/api', contactRoutes);
 app.use("/api/ringtones", ringtoneRoutes);
+app.use('/api/streaming-players', streamingPlayersRoutes);
 
 app.use(errorHandler);
 

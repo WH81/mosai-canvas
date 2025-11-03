@@ -111,7 +111,7 @@
   z-index: 1000;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
   border: 2px solid transparent;
   background-color: transparent;
   background-origin: border-box;
@@ -145,8 +145,8 @@
 
 .back-to-top:hover {
   background-color: #fff;
-  transform: scale(1.1);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+  transform: scale(1.2);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.5);
 }
 
 .back-to-top:focus {

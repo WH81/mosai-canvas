@@ -18,19 +18,19 @@
 
       <div class="carousel-content">
         <h1
+          class="songName"
+          appScrollAnimate
+          [animationType]="'fade-slide'"
+          [animationDelay]="'0.15s'">
+          {{ item.songName }}
+        </h1>
+
+        <h2
           class="bandName"
           appScrollAnimate
           [animationType]="'fade-slide'"
           [animationDelay]="'0s'">
           {{ item.bandName }}
-        </h1>
-      
-        <h2
-          class="songName"
-          appScrollAnimate
-          [animationType]="'fade-slide'"
-          [animationDelay]="'0.15s'">
-          "{{ item.songName }}"
         </h2>
       
         <h4
@@ -38,7 +38,7 @@
           appScrollAnimate
           [animationType]="'fade-slide'"
           [animationDelay]="'0.3s'">
-          <span class="releaseDate">OUT</span> {{ item.formattedDate }}
+            <span class="release-date">Out:</span> {{ item.formattedDate }}
         </h4>
       
         <a

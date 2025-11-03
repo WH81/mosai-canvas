@@ -1,0 +1,34 @@
+<div
+  class="member-bio-container"
+  [class.expanded]="isOpen"
+  aria-live="polite"
+  (click)="closeModal()"
+>
+  <div class="bio-modal-content-wrapper" (click)="$event.stopPropagation()">
+    <button
+      (click)="closeModal(); $event.stopPropagation()" 
+      class="modal-close-button"
+      title="Close bio"
+      aria-label="Close bio"
+    >
+      &times;
+    </button>
+
+    <div class="member-modal-top-section">
+      <div class="member-bio-image">
+        <img [src]="memberData?.image" alt="{{ memberData?.name }}'s image" />
+      </div>
+
+      <div class="member-details-modal-info">
+        <h3 class="member-name">{{ memberData?.name }}</h3>
+        <p class="member-instrument">{{ memberData?.instrument }}</p>
+
+        <app-social-links
+          [socialLinks]="memberData?.socialLinks || {}"
+        ></app-social-links>
+
+        <p class="bio-text">{{ memberData?.bio || 'No bio available' }}</p>
+      </div>
+    </div>
+  </div>
+</div>

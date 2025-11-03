@@ -57,3 +57,77 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+
+## ----------------------------------------------------------------------
+## Postman API Call Documentation
+## ----------------------------------------------------------------------
+
+## -----------------------------------
+## Postman Endpoint - Members
+## -----------------------------------
+PUT
+http://localhost:5001/api/members/<Members_Id_Here>
+
+## -----------------------------------
+## Postman Payload - Members
+## -----------------------------------
+{
+    "name": "firstname lastname",
+    "instrument": "instrument",
+    "band": "<Bands_Id_Here>",
+    "bandSlug": "band-canvas",
+    "image": "./assets/jpgs/image.jpg",
+    "bio": "bio message here",
+    "socialLinks": {
+        "instagram": "https://www.instagram.com/path"
+    }
+}
+
+
+## -----------------------------------
+## Postman Endpoint - Members
+## -----------------------------------
+POST
+http://localhost:5001/api/members
+
+## -----------------------------------
+## Postman Payload - Members
+## -----------------------------------
+{
+  "name": "firstname lastname",
+  "instrument": "instrument",
+  "band": "<Band_Id_Here>",
+  "bandSlug": "band-canvas",
+  "image": "./assets/jpgs/image.jpg",
+  "bio": "bio message here",
+  "socialLinks": {
+    "instagram": "https://www.instagram.com/path"
+  }
+}
+
+
+## -----------------------------------
+## Postman Endpoint - Members
+## -----------------------------------
+DELETE
+http://localhost:5001/api/members/<Member_Id_Here>
+
+
+## -----------------------------------
+## Postman Endpoint - Carousel
+## -----------------------------------
+PUT
+http://localhost:5001/api/carousel/<Carousel_Item_Id>
+
+## -----------------------------------
+## Postman Payload - Carousel
+## -----------------------------------
+{
+    "imageUrl": "domain address",
+    "bandName": "band name",
+    "songName": "song name",
+    "releaseDate": "2025-10-20",
+    "buttonText": "Listen Now",
+    "buttonLink": "https://youtube.com"
+}

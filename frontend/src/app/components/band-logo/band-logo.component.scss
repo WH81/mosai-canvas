@@ -1,0 +1,24 @@
+.band-logo-wrapper {
+    display: block;
+    margin: 0 auto 2rem auto;
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    object-fit: contain;
+
+    @media (min-width: 768px) {
+        max-width: 550px;
+    }
+
+    @media (min-width: 1200px) {
+        max-width: 650px;
+    }
+
+    img.band-logo-image {
+        display: flex;
+        margin: 0 auto;
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+    }
+}

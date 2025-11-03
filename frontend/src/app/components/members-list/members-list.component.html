@@ -1,19 +1,15 @@
 <section class="band-members-section"> 
   <div class="band-members-title-wrapper">
-    <h2 class="band-members-title">Band Members</h2>
-    <div class="title-underline"></div>
-  </div>
+    <h2 class="band-members-title">Contributors</h2>
+    </div>
 
   <div class="members-list-container">
-    <!-- trackBy to avoid re-renders -->
     <ng-container *ngFor="let member of members; trackBy: trackByName">
       <div
         class="member-item-wrapper"
-        [class.expanded]="isExpanded(member.name)"
-        appScrollAnimation
+        [class.expanded]="isExpanded(member.name)" appScrollAnimation
       >
 
-        <!-- Only the card-front opens the modal now -->
         <div
           class="card-front"
           role="button"
@@ -31,43 +27,13 @@
           </div>
         </div>
       </div>
-
-      <!-- Modal moved outside the wrapper so clicks on the backdrop won't bubble to the card -->
-      <div
-        class="member-bio-container"
-        [class.expanded]="isExpanded(member.name)"
-        aria-live="polite"
-        (click)="closeAllModals()"
-      >
-        <!-- Prevent clicks inside the modal from closing via propagation -->
-        <div class="bio-modal-content-wrapper" (click)="$event.stopPropagation()">
-          <button
-            (click)="closeModal(member.name); $event.stopPropagation()"
-            class="modal-close-button"
-            title="Close bio"
-            aria-label="Close bio"
-          >
-            &times;
-          </button>
-
-          <div class="member-modal-top-section">
-            <div class="member-bio-image">
-              <img [src]="member.image" alt="{{ member.name }}'s image" />
-            </div>
-
-            <div class="member-details-modal-info">
-              <h3 class="member-name">{{ member.name }}</h3>
-              <p class="member-instrument">{{ member.instrument }}</p>
-
-              <app-social-links
-                [socialLinks]="member.socialLinks || {}"
-              ></app-social-links>
-
-              <p class="bio-text">{{ member.bio || 'No bio available' }}</p>
-            </div>
-          </div>
-        </div>
-      </div>
     </ng-container>
+
+    <app-member-bio-modal
+      [memberData]="selectedMember"
+      [isOpen]="isModalOpen"
+      (closeEvent)="handleModalClose()">
+    </app-member-bio-modal>
+
   </div>
 </section>

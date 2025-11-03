@@ -14,7 +14,8 @@ const BandSchema = new Schema<IBand>({
   },
   members: [{ type: Schema.Types.ObjectId, ref: 'Member' }],
   socialLinks: { type: Schema.Types.ObjectId, ref: 'SocialLinks' },
-  streamingLinks: { type: Schema.Types.ObjectId, ref: 'StreamingLinks' }
+  streamingLinks: { type: Schema.Types.ObjectId, ref: 'StreamingLinks' },
+  streamingPlayers: { type: Schema.Types.ObjectId, ref: 'StreamingPlayers' }
 }, { timestamps: true });
 
 export const Band = mongoose.model<IBand>('Band', BandSchema);

@@ -2,10 +2,15 @@ import { Component, Input, OnChanges, SimpleChanges, Directive, ElementRef, Afte
 import { CommonModule } from '@angular/common';
 import { MembersService } from '../../services/members-bio/members.service';
 import { Member } from '../../models/members-bio/member.model';
-import { SocialLinksComponent } from '../social-links/social-links.component';
 
+// --- Imports for Standalone Components ---
+import { SocialLinksComponent } from '../social-links/social-links.component';
+import { MemberBioModalComponent } from '../member-bio-modal/member-bio-modal.component';
+
+// --- Scroll Animation Directive (Remains Standalone or is made Standalone) ---
 @Directive({
-  selector: '[appScrollAnimation]'
+  selector: '[appScrollAnimation]',
+  standalone: true
 })
 export class ScrollAnimationDirective implements AfterViewInit, OnDestroy {
   private observer?: IntersectionObserver;
@@ -34,16 +39,23 @@ export class ScrollAnimationDirective implements AfterViewInit, OnDestroy {
   }
 }
 
+// --- Members List Component (Parent) ---
 @Component({
   selector: 'app-members-list',
   standalone: true,
-  imports: [CommonModule, SocialLinksComponent, ScrollAnimationDirective],
+  imports: [CommonModule, ScrollAnimationDirective, MemberBioModalComponent],
   templateUrl: './members-list.component.html',
   styleUrls: ['./members-list.component.scss'],
 })
 export class MembersListComponent implements OnChanges {
   @Input() bandSlug: string = '';
   members: Member[] = [];
+
+  // --- MODAL STATE ---
+  selectedMember: Member | null = null;
+  isModalOpen: boolean = false;
+
+  // --- RESTORED CARD STATE (Fixes "no members show" issue) ---
   expandedStates: Record<string, boolean> = {};
 
   constructor(private memberService: MembersService) {}
@@ -59,7 +71,7 @@ export class MembersListComponent implements OnChanges {
     this.memberService.getMembersByBand(this.bandSlug).subscribe(
       (members: Member[]) => {
         this.members = members || [];
-
+        // Restore logic to initialize expandedStates
         if (!this.expandedStates) {
           this.expandedStates = {};
         }
@@ -75,25 +87,41 @@ export class MembersListComponent implements OnChanges {
     );
   }
 
+  /**
+   * Manages both the card's visual state and the modal's state.
+   */
   toggleExpand(memberKey: string): void {
-    if (this.expandedStates[memberKey]) {
-      this.expandedStates[memberKey] = false;
-    } else {
-      Object.keys(this.expandedStates).forEach(k => this.expandedStates[k] = false);
-      this.expandedStates[memberKey] = true;
+    const member = this.members.find(m => m.name === memberKey);
+
+    // If the modal is already open for THIS member, close both modal and card
+    if (this.selectedMember && this.selectedMember.name === memberKey) {
+        this.handleModalClose();
+    }
+    // If a different member is clicked, open the modal and update card states
+    else if (member) {
+        // 1. Modal Logic
+        this.selectedMember = member;
+        this.isModalOpen = true;
+
+        // 2. Card Visual State Logic
+        Object.keys(this.expandedStates).forEach(k => this.expandedStates[k] = false);
+        this.expandedStates[memberKey] = true;
     }
   }
 
-  closeAllModals(): void {
+  /**
+   * Resets both modal and card states when the modal emits a close event.
+   */
+  handleModalClose(): void {
+    this.isModalOpen = false;
+    this.selectedMember = null;
+    // Reset all card states to closed
     Object.keys(this.expandedStates).forEach(k => this.expandedStates[k] = false);
   }
 
-  closeModal(memberKey: string): void {
-    if (this.expandedStates[memberKey]) {
-      this.expandedStates[memberKey] = false;
-    }
-  }
-
+  /**
+   * Logic required by the member card HTML binding (fixes rendering issue).
+   */
   isExpanded(memberKey: string): boolean {
     return !!this.expandedStates[memberKey];
   }
