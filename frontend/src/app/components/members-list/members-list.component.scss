@@ -1,244 +1,696 @@
+// @use "sass:color";
+// @use "index" as *;
+
+// .band-members-title-wrapper {
+//   margin-bottom: $spacing-xl;
+//   text-align: left;
+
+//   .section-title {
+//     // Gradient text with the professional refined shadow we discussed
+//     background: var(--frame-bg);
+//     -webkit-background-clip: text;
+//     background-clip: text;
+//     -webkit-text-fill-color: transparent;
+//     color: transparent;
+//     filter: drop-shadow(0 2px 0px rgba(0, 0, 0, 0.4));
+//     margin: 0;
+//   }
+// }
+
+// .members-list-container {
+//   display: flex;
+//   flex-direction: column;
+//   gap: 3rem;
+//   width: max-content;
+
+//   @include respond-min(lg) {
+//     display: grid;
+//     // Two columns to match the "Tour Dates" density on large screens
+//     // grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+//     gap: 4rem;
+//   }
+// }
+
+// .member-item-wrapper {
+//   width: 100%;
+//   transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+//   opacity: 0;
+//   transform: translateY(30px);
+
+//   &.scrolled-in {
+//     opacity: 1;
+//     transform: translateY(0);
+//   }
+// }
+
+// .card-front {
+//   display: flex;
+//   flex-direction: column;
+//   gap: 1.5rem;
+//   cursor: pointer;
+
+//   @include respond-min(md) {
+//     flex-direction: row;
+//     align-items: center;
+//     gap: 2.5rem;
+//   }
+// }
+
+// .member-image {
+//   position: relative;
+//   width: 330px;
+//   height: 420px;
+//   flex-shrink: 0;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   border: 4px solid transparent;
+//   background: $background-gradient-dark padding-box,
+//     var(--frame-border) border-box;
+//   transition: all 0.4s ease;
+//   padding: 20px;
+//   box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.7), 0 15px 7px 0px rgba(0, 0, 0, 0.3);
+//   outline: 6px ridge var(--accent);
+//   outline-offset: 20%;
+
+//   &::after {
+//     content: "";
+//     position: absolute;
+//     inset: -2px;
+//     border: 1px solid rgba(255, 255, 255, 0.1);
+//     pointer-events: none;
+//     z-index: 2;
+//   }
+
+//   img {
+//     width: 100%;
+//     height: 100%;
+//     object-fit: cover;
+//     border: 3px ridge transparent;
+//     background: var(--frame-bg);
+
+//     /* Applying the border as well */
+//     border-image: var(--frame-border);
+//     border-image-slice: 1;
+//   }
+
+//   &:hover {
+//     transform: scale(1.03);
+//     filter: brightness(1.15);
+//     background: linear-gradient(#000, #000) padding-box, var(--frame-border-hover, var(--frame-border)) border-box;
+//     box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
+//     border: 0 solid transparent;
+//     padding: 0;
+//   }
+// }
+
+// .member-details {
+//   text-align: left;
+
+//   h3.member-name {
+//     @include text-style-primary(1.8rem, 2.2rem, 1.2, 900);
+//     background: var(--section-text);
+//     -webkit-background-clip: text;
+//     background-clip: text;
+//     -webkit-text-fill-color: transparent;
+//     color: transparent;
+//     margin-bottom: 0.5rem;
+//   }
+
+//   p.member-instrument {
+//     @include text-style-secondary(1rem, 1.1rem, 1, 600);
+//     background: var(--section-text);
+//     -webkit-background-clip: text;
+//     background-clip: text;
+//     -webkit-text-fill-color: transparent;
+//     color: transparent;
+//     text-transform: uppercase;
+//     letter-spacing: 0.1em;
+//   }
+// }
+
+// THIS IS THE NEWER FRAME DESIGN STARTS HERE
+// @use "sass:color";
+// @use "index" as *;
+
+// .artist-section {
+//   position: relative;
+//   overflow: hidden;
+//   background: var(--background);
+//   padding: 120px 0;
+//   display: flex;
+//   justify-content: center;
+
+//   &.full-bleed-glass {
+//     background: rgba(0, 0, 0, 0.15);
+//     backdrop-filter: blur(35px) saturate(160%);
+//     -webkit-backdrop-filter: blur(35px) saturate(160%);
+//     border-top: 1px solid rgba(255, 255, 255, 0.15);
+//     border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+//   }
+// }
+
+// .paint-overlay {
+//   position: absolute;
+//   top: 50%;
+//   left: 50%;
+//   transform: translate(-50%, -50%);
+//   width: 120%;
+//   height: 100%;
+//   z-index: -1;
+//   pointer-events: none;
+//   filter: blur(20px);
+
+//   .brush-stroke-primary {
+//     stroke: rgba(255, 255, 255, 0.08);
+//   }
+//   .brush-stroke-accent {
+//     stroke: var(--accent);
+//     opacity: 0.1;
+//   }
+// }
+
+// .band-members-title-wrapper {
+//   margin-bottom: 6rem;
+
+//   .section-title {
+//     text-transform: uppercase;
+//     letter-spacing: 2px;
+//   }
+// }
+
+// .members-list-container {
+//   display: flex;
+//   flex-direction: column;
+//   gap: 8rem;
+//   width: 100%;
+// }
+
+// .member-item-wrapper {
+//   width: 100%;
+//   transition: all 0.7s cubic-bezier(0.165, 0.84, 0.44, 1);
+//   opacity: 0;
+//   transform: translateY(50px);
+
+//   &.scrolled-in {
+//     opacity: 1;
+//     transform: translateY(0);
+//   }
+
+//   @include respond-min(md) {
+//     &.stagger-right {
+//       display: flex;
+//       justify-content: flex-end;
+//       .card-front {
+//         flex-direction: row-reverse;
+//         text-align: right;
+//         .member-details {
+//           text-align: right;
+//         }
+//       }
+//     }
+//   }
+// }
+
+// .card-front {
+//   display: flex;
+//   flex-direction: column;
+//   gap: 2.5rem;
+//   cursor: pointer;
+//   outline: none;
+
+//   &:focus-visible .member-image {
+//     outline-color: #ffffff;
+//     outline-offset: 25%;
+//   }
+
+//   @include respond-min(md) {
+//     flex-direction: row;
+//     align-items: center;
+//     gap: 6rem;
+//   }
+// }
+
+// .member-image {
+//   position: relative;
+//   width: 330px;
+//   height: 420px;
+//   flex-shrink: 0;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   background: var(--frame-border) padding-box, var(--frame-border) border-box;
+//   transition: all 0.5s ease;
+//   padding: 12px;
+//   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.6), 0 15px 7px 0px rgba(0, 0, 0, 0.1);
+//   outline: 6px ridge var(--accent);
+//   outline-offset: 15%;
+//   box-shadow: inset 5px 5px 10px rgba(0, 0, 0, 0.4),
+//     inset -2px -2px 5px rgba(255, 255, 255, 0.1);
+
+//   &::before {
+//     content: "";
+//     position: absolute;
+//     top: 0;
+//     left: 0;
+//     right: 0;
+//     bottom: 0;
+//     border: 6px ridge transparent; /* Simulate ridge */
+//     background: var(--frame-border); /* Gradient */
+//     border-image: var(--frame-border);
+//     border-image-slice: 1;
+//     z-index: -1; /* Place behind the content */
+//   }
+
+//   img {
+//     width: 100%;
+//     height: 100%;
+//     object-fit: cover;
+//     border: 2px ridge transparent; /* Fallback for browsers that don't support border-image */
+//     border-image: var(--frame-border); /* Dynamic gradient */
+//     border-image-slice: 1;
+//     box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+
+//     &:hover {
+//       border-radius: 0;
+//       border: none;
+//     }
+//   }
+
+//   &:hover {
+//     transform: scale(1.15);
+//     filter: brightness(1.15);
+//     background: linear-gradient(var(--background), var(--background))
+//         padding-box,
+//       var(--frame-border-hover, var(--frame-border)) border-box;
+//     box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
+//     padding: 0px;
+//     border: 0;
+//     outline: 3px ridge var(--accent);
+//     background: var(--frame-border) padding-box, var(--frame-border) border-box;
+//   }
+// }
+
+// .member-details {
+//   h2.member-name {
+//     display: flex;
+//     flex-direction: column;
+//     line-height: 0.85;
+//     margin: 0;
+
+//     .first-name {
+//       font-size: 2rem;
+//       font-weight: 800;
+//       text-transform: uppercase;
+//       letter-spacing: 0.25em;
+//       color: #ffffff;
+//       text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+//     }
+
+//     .last-name {
+//       font-size: clamp(4.5rem, 12vw, 8rem);
+//       font-weight: 900;
+//       text-transform: uppercase;
+//       letter-spacing: -5px;
+//       color: #ffffff;
+//       background: linear-gradient(to bottom, #ffffff 60%, #e0e0e0 100%);
+//       -webkit-background-clip: text;
+//       background-clip: text;
+//       -webkit-text-fill-color: transparent;
+//       filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.6));
+//       padding-right: 10px;
+//     }
+//   }
+
+//   p.member-instrument {
+//     font-family: "Montserrat", sans-serif;
+//     font-size: 0.9rem;
+//     font-weight: 500;
+//     text-transform: uppercase;
+//     letter-spacing: 0.45em;
+//     color: #ffffff;
+
+//     /* The Clean Safety Net Shadow */
+//     /* This uses a tight blur (4px) so it doesn't look muddy */
+//     text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+
+//     display: block;
+//     opacity: 0.9;
+
+//     margin-top: 18px;
+//     letter-spacing: 0.5em;
+//   }
+// }
+
 @use "index" as *;
 
-.band-members-section {
+.artist-section {
+  position: relative;
+  background: $background-dark;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  max-width: 1600px;
-  width: 100%;
-  padding: 2rem;
-  box-sizing: border-box;
-  border-radius: 0rem;
-  backdrop-filter: blur(5px);
-  box-shadow: 0 0 2rem rgba(0, 0, 0, 0.8);
-  margin: 0 auto;
-  gap: 1.5rem;
-  height: auto;
+  color: $text-color-light;
+  overflow: hidden;
 
-  // Tablet and up
-  @include respond-min(lg) {
-    padding: 3rem;
-    gap: 2rem;
-  }
+  &__header {
+    width: 100%;
+    position: relative;
+    z-index: 10;
+    background: transparent;
 
-  // Desktop and up
-  @include respond-min(xxl) {
-    flex-direction: row;
-    align-items: flex-start;
-    padding: 5rem;
-  }
-
-  .band-members-title-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex-shrink: 0;
-    padding-bottom: 1.5rem;
-
-    @include respond-min(md) {
-      align-items: center;
-    }
+    // Move this declaration above the nested rule
+    padding-block: $spacing-lg;
 
     @include respond-min(lg) {
-      flex-direction: column;
-      align-items: flex-start;
+      padding-block: clamp($spacing-xxl, 10vh, $spacing-xxxxl);
       padding-bottom: 0;
-    }
-
-    .band-members-title {
-      @include text-style-primary(
-        clamp(2.5rem, 5vw, 4rem),
-        clamp(3rem, 6vw, 5rem),
-        1.4,
-        700
-      );
-      color: #fff;
-      text-align: center;
-      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-      display: inline-block;
-      position: relative;
-
-      @include respond-min(md) {
-        text-align: center;
-      }
-
-      @include respond-min(lg) {
-        text-align: left;
-      }
-
-      &::after {
-        content: "";
-        display: block;
-        width: 100%;
-        max-width: 100px;
-        height: 5px;
-        margin: 0.5rem auto;
-        background-color: #fff;
-
-        @include respond-min(lg) {
-          margin: 4px 0 15px;
-        }
-      }
-    }
-
-    .title-underline {
-      width: 100%;
-      max-width: 50px;
-      height: 4px;
-      margin: 4px 0 15px;
-      background: #fff;
-
-      @include respond-min(md) {
-        height: 5px;
-      }
     }
   }
 
-  .members-list-container {
+  &__title {
+    // 1. Use the fluid brand sizing from your .vertical-brand logic
+    // but adjusted for horizontal display
+    font-family: $font-family-secondary;
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 950;
+    text-transform: uppercase;
+    line-height: 0.8; // Tighter leading used in .vertical-brand
+
+    // 2. Color Sync:
+    // In your screenshot, ABOUT is green.
+    // Use the variable that holds that green (likely var(--primary) or var(--color-text-medium))
+    color: var(--primary);
+    margin: 0;
+    letter-spacing: 0.01em;
+
+    // Ensure it matches the alignment of the about-text-wrapper
+    max-width: 68ch;
+  }
+
+  &__paint-overlay {
+    position: absolute;
+    inset: 0;
+    opacity: 0.15;
+    z-index: 1;
+    pointer-events: none;
+
+    .brush-stroke-primary {
+      stroke: var(--primary);
+      stroke-width: 50;
+    }
+
+    .brush-stroke-accent {
+      stroke: var(--accent);
+      stroke-width: 30;
+    }
+  }
+}
+
+.members-list-container {
+  display: flex;
+  flex: 1;
+  width: 100%;
+  border-top: 1px ridge rgba(255, 255, 255, 0.2);
+  border-bottom: 1px ridge rgba(255, 255, 255, 0.2);
+
+  @media (max-width: 992px) {
+    flex-direction: column;
+    height: auto;
+    padding-bottom: 60px; // Space for the collapsed footer trigger
+  }
+}
+
+.member-column {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  cursor: pointer;
+  overflow: hidden;
+  transition: flex 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+  min-height: 80vh;
+
+  // State: Active/Selected Member
+  &.is-active {
+    flex: 3; // Enlarge the selected member
+
+    @media (max-width: 992px) {
+      flex: 1;
+    }
+
+    .img-main-fit {
+      filter: grayscale(0%) brightness(1.1);
+      transform: scale(1.05);
+    }
+
+    .vertical-divider {
+      opacity: 1;
+      background: var(--primary);
+      box-shadow: 0 0 15px var(--primary);
+    }
+  }
+
+  &:hover:not(.is-active) {
+    flex: 1.5;
+
+    @media (max-width: 992px) {
+      flex: 1;
+    }
+
+    .img-main-fit {
+      filter: grayscale(50%) brightness(0.9);
+    }
+  }
+
+  &:last-child .vertical-divider {
+    display: none;
+  }
+}
+
+.member-image-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: #000;
+
+  .img-blur-fill {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: blur(40px) brightness(0.3) grayscale(100%);
+    opacity: 0.4;
+  }
+
+  .img-main-fit {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 2;
+    filter: grayscale(100%) brightness(0.75);
+    transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, transparent 60%);
+    z-index: 3;
+  }
+}
+
+.member-content {
+  position: relative;
+  z-index: 5;
+  // Standardize padding using the same spacing tokens as about-content
+  padding: $spacing-lg $spacing-md;
+  max-width: 100%;
+  transition: transform 0.5s ease;
+
+  @include respond-min(md) {
+    padding: $spacing-xl;
+  }
+
+  .member-name-title {
+    // Using the fluid sizing logic from About page titles
+    font-family: $font-family-secondary;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+
+    // editorial leading (line-height) from about styles
+    line-height: 0.9;
+    text-transform: uppercase;
+    margin: 0;
+
+    // Switch to the variable-based colors used in about.scss
+    color: var(--color-text-light);
+
+    // Match the 950 weight found in .vertical-brand for consistency
+    font-weight: 950;
+    letter-spacing: -0.02em;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+    word-break: break-word;
+  }
+
+  .instrument-subtitle {
+    font-family: $font-family-primary;
+    // Standardized fluid size
+    font-size: clamp(0.75rem, 1.2vw, 0.875rem);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+
+    // Use the spacing-sm token for consistent gaps
+    margin-top: $spacing-sm;
+
+    color: var(--primary); // Usually brand color should match primary accent
+    font-weight: 700;
+    opacity: 0.9;
+  }
+}
+
+// .vertical-divider {
+//   position: absolute;
+//   right: 0;
+//   top: 10%;
+//   bottom: 10%;
+//   width: 2px;
+//   background: var(--frame-border);
+//   opacity: 0.3;
+//   z-index: 4;
+//   transition: all 0.4s ease;
+
+//   @media (max-width: 992px) {
+//     width: 100%;
+//     height: 1px;
+//     bottom: 0;
+//     top: auto;
+//     left: 0;
+//   }
+// }
+
+// --- NEW EXPANDING FOOTER / BIO SECTION ---
+.artist-section__footer {
+  position: relative;
+  display: flex;
+  flex-direction: column; // Allow vertical growth
+  padding: 0;
+  background: rgba(0, 0, 0, 0.95);
+  border-top: 12px solid rgba(255, 255, 255, 0.1);
+  z-index: 20;
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+
+  // Mobile Bottom Sheet behavior
+  @media (max-width: 992px) {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    transform: translateY(calc(100% - 60px)); // Show only the 'Learn More' bar
+    &.is-expanded {
+      transform: translateY(0);
+    }
+  }
+
+  &.is-expanded {
+    .bio-container {
+      max-height: fit-content;
+      padding: 40px;
+      opacity: 1;
+    }
+  }
+
+  .footer-top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    // padding: 20px 40px;
+    width: 100%;
+  }
+
+  .bio-container {
+    display: flex;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: all 0.5s ease;
+    gap: 40px;
+    border-bottom: 1px ridge rgba(255, 255, 255, 0.2);
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: 20px;
+    }
+  }
+
+  .bio-text-column {
+    flex: 2;
+
+    .bio-name {
+      font-family: $font-family-primary;
+      color: var(--primary);
+      text-transform: uppercase;
+      margin-bottom: 15px;
+    }
+
+    .bio-description {
+      font-family: $font-family-secondary;
+      color: $text-color-light;
+    }
+  }
+
+  .bio-social-column {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 0rem;
-    margin-top: 0;
-    flex-grow: 1;
-    width: 100%;
+    border-left: 1px solid rgba(255, 255, 255, 0.2);
+    padding-left: 40px;
 
-    .member-item-wrapper {
-      position: relative;
-      overflow: hidden;
+    @media (max-width: 768px) {
+      border-left: none;
+      padding-left: 0;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .social-group {
       display: flex;
       flex-direction: column;
-      align-items: center;
+      gap: 15px;
       width: 100%;
-      max-width: 320px;
-      min-height: auto;
-      padding: 0.75rem 1rem;
-      box-sizing: border-box;
-      transition: transform 0.3s ease, opacity 0.6s ease,
-        height 0.4s ease-in-out, padding 0.4s ease-in-out;
-      opacity: 0;
-      transform: translateY(50px);
-      will-change: transform, opacity;
-
-      &.scrolled-in {
-        opacity: 1;
-        transform: translateY(0);
-      }
-
-      &.expanded {
-        transform: none;
-      }
-
-      &:not(.expanded):hover {
-        transform: translateY(-5px);
-      }
-
-      @include respond-min(xxl) {
-        flex-direction: row;
-        max-width: 800px;
-        min-height: 280px;
-        padding: 1rem;
-      }
+      align-items: flex-start;
     }
 
-    .card-front {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-      position: relative;
-      transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s ease;
-      z-index: 1;
-      cursor: pointer;
-
-      .member-item-wrapper.expanded & {
-        opacity: 0;
-        transform: translateY(-100%);
-        pointer-events: none;
-        visibility: hidden;
-      }
-
-      @include respond-min(xxl) {
-        position: relative;
-        flex-direction: row;
-        align-items: center;
-        gap: 2rem;
-      }
+    .social-title {
+      font-family: $font-family-secondary;
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      font-weight: 950;
+      text-transform: uppercase;
+      color: var(--primary);
+      line-height: 1;
+      letter-spacing: 0.02em;
+      margin-bottom: 5px;
     }
+  }
 
-    .member-image {
-      position: relative;
-      flex-shrink: 0;
-      width: 300px;
-      height: 300px;
-      margin-bottom: 0.75rem;
-      overflow: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+  .close-bio {
+    background: none;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: $text-color-light;
+    padding: 5px 15px;
+    font-family: $font-family-primary;
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-left: auto;
+    align-self: flex-end;
 
-      /* --- Frame STYLES START --- */
-      /* Base color for depth */
-      background-color: $frame-background-color;
-
-      /* Padding creates the inner border/mat */
-      padding: 20px;
-
-      /* Layered shadows for 3D recess and lift */
-      box-shadow:
-        inset 0 0 15px rgba(0, 0, 0, 0.7),
-        0 15px 7px 0px rgba(0, 0, 0, 0.3);
-
-      /* The metallic accent border */
-      outline: 4px ridge $frame-border-color;
-      outline-offset: 20%;
-      /* --- Frame STYLES END --- */
-
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center;
-        border: none;
-        border: 3px ridge rgb(0, 0, 0);
-      }
-
-
-      &:hover {
-        transform: rotate(2deg);
-        background-color: #ffffff;
-      }
-    }
-
-    .member-details {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      flex-grow: 1;
-      text-align: center;
-      padding: 1rem;
-
-      @include respond-min(xxl) {
-        align-items: flex-start;
-        text-align: left;
-      }
-
-      h3.member-name {
-        @include text-style-primary(1.5rem, 2rem, 1.3, 600);
-        margin: 0;
-        color: #fff;
-        line-height: 1.2;
-        text-shadow: 0 0 12px rgba(0, 0, 0, 0.8);
-      }
-
-      p.member-instrument {
-        @include text-style-secondary(1rem, 1.25rem, 1.7, 400);
-        color: #ccc;
-        text-shadow: 0 0 12px rgba(0, 0, 0, 0.8);
-      }
+    &:hover {
+      background: $text-color-light;
+      color: #000;
     }
   }
 }

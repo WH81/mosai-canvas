@@ -1,0 +1,21 @@
+<div class="releases-container">
+  <div *ngIf="loading" class="loading">Loading releases…</div>
+  <div *ngIf="!loading && error" class="error">{{ error }}</div>
+
+  <ng-container *ngIf="!loading && !error">
+    <app-latest-releases
+      [latestReleases]="latestReleases"
+      (action)="onCardAction($event)"
+    >
+    </app-latest-releases>
+
+    <app-pre-releases [releases]="preReleases" (action)="onCardAction($event)">
+    </app-pre-releases>
+
+    <app-past-releases
+      [releases]="pastReleases"
+      (action)="onCardAction($event)"
+    >
+    </app-past-releases>
+  </ng-container>
+</div>

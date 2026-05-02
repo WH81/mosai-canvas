@@ -1,0 +1,45 @@
+<section class="l-section youtube-section" *ngIf="videos.length > 0">
+  <div class="container">
+    <h2 class="section-title">Videos</h2>
+
+    <div class="youtube">
+      <div class="youtube__featured animate-fade-in" #featured>
+        <div class="video-wrapper" *ngIf="featuredVideo">
+          <iframe
+            [src]="getSafeVideoUrl(featuredVideo.videoId)"
+            frameborder="0"
+            allowfullscreen
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          ></iframe>
+        </div>
+        
+        <div class="featured-info" *ngIf="featuredVideo">
+          <small class="youtube__band-label">{{ getBandDisplayName(bandSlug) }}</small>
+          <h3 class="section-title-alt__tertiary">{{ featuredVideo.title }}</h3>
+        </div>
+      </div>
+
+      <div class="youtube__grid">
+        <div
+          class="youtube__item animate-zoom-in"
+          *ngFor="let video of videos; let i = index"
+          (click)="selectVideo(video)"
+          [class.youtube__item--active]="video.videoId === featuredVideo?.videoId"
+          [style.animation-delay]="i * 0.1 + 's'"
+        >
+          <div class="thumbnail-wrapper">
+            <img [src]="video.thumbnail" [alt]="video.title" loading="lazy" />
+            <div class="play-overlay">
+              <i class="fas fa-play"></i>
+            </div>
+          </div>
+          
+          <div class="youtube__item-info">
+            <small class="youtube__item-band">{{ getBandDisplayName(bandSlug) }}</small>
+            <div class="youtube__item-title">{{ video.title }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "types": ["@types/node"],                           /* Include type definitions for Node.js. */
     /* Language and Environment */
     "target": "ES2022",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
     "module": "CommonJS",                                /* Specify what module code is generated. */
@@ -35,7 +36,6 @@
     "isolatedModules": true,                             /* Ensure that each file can be safely transpiled without relying on other imports. */
 
     /* Type Checking */
-    "skipLibCheck": true,                                /* Skip type checking all .d.ts files. */
     "noEmitOnError": true,                               /* Disable emitting files if any type checking errors are reported. */
     
     /* Advanced options (commented for clarity) */

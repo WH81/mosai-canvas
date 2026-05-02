@@ -1,1 +1,95 @@
-<p>art works!</p>
+<!-- <section class="l-section">
+  <div class="art-page" @galleryAnimation>
+    <header class="art-page__header">
+      <span class="art-page__subtitle">MOSAIC CANVAS // ARTISTRY</span>
+      <h1 class="art-page__title section-title">COLLECTIVE<br />GALLERY</h1>
+    </header>
+
+    <main class="art-gallery">
+      @if (isLoading()) {
+      <div class="art-gallery__loading">INITIALIZING VISUALS...</div>
+      } @else { @for (item of artCollection(); track item._id) {
+      <article class="art-card" [class.art-card--featured]="$index % 7 === 0">
+        <div class="art-card__visual">
+          <img
+            class="art-card__img"
+            [ngSrc]="item.imageUrl"
+            [alt]="item.altText"
+            width="800"
+            height="1000"
+            priority="{{ $index < 2 }}"
+          />
+        </div>
+
+        <div class="art-card__info">
+          <span class="art-card__tag">{{ item.category }}</span>
+          <h3 class="art-card__name">{{ item.title }}</h3>
+          <p class="art-card__creator">ARTIST: {{ item.artist }}</p>
+        </div>
+      </article>
+      } @empty {
+      <div class="art-gallery__empty">
+        <p>THE VAULT IS CURRENTLY EMPTY.</p>
+      </div>
+      } }
+    </main>
+  </div>
+</section> -->
+
+
+<section class="l-section">
+  <div class="art-page" @galleryAnimation>
+    <header class="art-page__header">
+      <span class="art-page__subtitle">MOSAIC CANVAS // ARTISTRY</span>
+      <h1 class="art-page__title section-title">COLLECTIVE<br />GALLERY</h1>
+    </header>
+
+    <main class="art-gallery">
+      @if (isLoading()) {
+        <div class="art-gallery__loading">INITIALIZING VISUALS...</div>
+      } @else { 
+        @for (item of artCollection(); track item._id) {
+          <article 
+            class="art-card" 
+            [class.art-card--featured]="$index % 7 === 0"
+            (click)="openModal(item)"
+          >
+            <div class="art-card__visual">
+              <img
+                class="art-card__img"
+                [ngSrc]="item.imageUrl"
+                [alt]="item.altText"
+                width="800"
+                height="1000"
+                priority="{{ $index < 2 }}"
+              />
+            </div>
+
+            <div class="art-card__info">
+              <span class="art-card__tag">{{ item.category }}</span>
+              <h3 class="art-card__name">{{ item.title }}</h3>
+              <p class="art-card__creator">ARTIST: {{ item.artist }}</p>
+            </div>
+          </article>
+        } @empty {
+          <div class="art-gallery__empty">
+            <p>THE VAULT IS CURRENTLY EMPTY.</p>
+          </div>
+        } 
+      }
+    </main>
+  </div>
+
+  @if (selectedArt(); as item) {
+    <div class="art-modal" (click)="closeModal()" @fadeInOut>
+      <div class="art-modal__content" (click)="$event.stopPropagation()">
+        <button class="art-modal__close" (click)="closeModal()">&times;</button>
+        <img [src]="item.imageUrl" [alt]="item.altText" class="art-modal__img" />
+        <div class="art-modal__caption">
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.category }} | {{ item.artist }}</p>
+        </div>
+      </div>
+    </div>
+  }
+</section>

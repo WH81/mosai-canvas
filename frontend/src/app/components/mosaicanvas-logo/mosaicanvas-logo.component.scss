@@ -7,13 +7,15 @@
   justify-content: center;
   align-items: center;
   margin: 0 auto;
-  padding: 4rem;
+  padding-block: clamp(2rem, 3vw, 4rem);
+  padding-inline: $spacing-lg;
   background-color: transparent;
 
   &.footer {
     padding: 1rem;
+
     .mosaicanvas-logo {
-      width: 400px !important;
+      width: 350px !important;
       font-size: 40px !important;
 
       @media (max-width: map.get($breakpoints, md)) {
@@ -24,8 +26,10 @@
 }
 
 .mosaicanvas-logo {
+  width: clamp(260px, 90vw, 50%);
   height: auto;
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.3s;
+  filter: drop-shadow(0 4px 2px rgb(0, 0, 0));
 }

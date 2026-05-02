@@ -1,0 +1,18 @@
+<section class="pre-releases l-section" aria-labelledby="pre-title">
+  <div class="container"> <div class="section-header">
+      <h3 class="section-title pre-title">Coming soon</h3>
+    </div>
+
+    <div class="grid" *ngIf="releases.length; else noPre">
+      <app-release-card
+        *ngFor="let r of releases"
+        [release]="r"
+        (action)="onCardAction($event)">
+      </app-release-card>
+    </div>
+
+    <ng-template #noPre>
+      <div class="empty-message">No upcoming releases — stay tuned.</div>
+    </ng-template>
+  </div>
+</section>

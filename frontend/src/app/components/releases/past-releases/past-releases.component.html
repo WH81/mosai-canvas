@@ -1,0 +1,19 @@
+<section class="l-section past-releases" aria-labelledby="past-title">
+  <div class="container">
+    <div class="section-header">
+      <h3 class="section-title past-title">Discography</h3>
+    </div>
+
+    <div class="grid" *ngIf="releases.length; else noPast">
+      <app-release-card
+        *ngFor="let r of releases"
+        [release]="r"
+        (action)="onCardAction($event)">
+      </app-release-card>
+    </div>
+
+    <ng-template #noPast>
+      <div class="empty-message">No discography available.</div>
+    </ng-template>
+  </div>
+</section>

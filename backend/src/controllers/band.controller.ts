@@ -2,6 +2,7 @@ import { Request, Response, RequestHandler } from 'express';
 import { Band } from '../models/band.model';
 import { StreamingLinks } from '../models/streaming-links.model';
 import { SocialLinks } from '../models/social-links.model';
+import mongoose from 'mongoose';
 
 // Create a new band
 export const createBand: RequestHandler = async (req: Request, res: Response): Promise<void> => {
@@ -90,13 +91,32 @@ export const getSocialLinksByBand: RequestHandler<{ bandId: string }> = async (
   req: Request<{ bandId: string }>,
   res: Response
 ): Promise<void> => {
-  const { bandId } = req.params;
+  const { bandId } = req.params; 
+  
   try {
-    const socialLinks = await SocialLinks.findOne({ band: bandId });
-    if (!socialLinks) {
-      res.status(404).json({ message: 'Social links not found for this band' });
+    let band;
+
+    // 1. Check if the bandId is a valid MongoDB ObjectId
+    if (mongoose.Types.ObjectId.isValid(bandId)) {
+      band = await Band.findById(bandId);
+    } else {
+      // 2. If it's not a valid ID, treat it as a slug
+      band = await Band.findOne({ slug: bandId });
+    }
+    
+    if (!band) {
+      res.status(404).json({ message: 'Band not found' });
       return;
     }
+
+    const socialLinks = await SocialLinks.findOne({ band: band._id });
+    
+    if (!socialLinks) {
+      // Return empty links instead of erroring out
+      res.json({ facebook: '', instagram: '', twitter: '', spotify: '' });
+      return;
+    }
+
     res.json(socialLinks);
   } catch (err) {
     res.status(500).json({ message: 'Error fetching social links', error: err });
@@ -169,12 +189,30 @@ export const getStreamingLinksByBand: RequestHandler<{ bandId: string }> = async
   res: Response
 ): Promise<void> => {
   const { bandId } = req.params;
+
   try {
-    const streamingLinks = await StreamingLinks.findOne({ band: bandId });
-    if (!streamingLinks) {
-      res.status(404).json({ message: 'Streaming links not found for this band' });
+    let band;
+    
+    if (mongoose.Types.ObjectId.isValid(bandId)) {
+      band = await Band.findById(bandId);
+    } else {
+      band = await Band.findOne({ slug: bandId });
+    }
+
+    if (!band) {
+      res.status(404).json({ message: 'Band not found' });
       return;
     }
+
+    const streamingLinks = await StreamingLinks.findOne({ band: band._id });
+    
+    // CHANGE THIS BLOCK:
+    if (!streamingLinks) {
+      // Return 200 with empty strings so the frontend doesn't throw an error
+      res.json({ spotify: '', appleMusic: '', youtube: '', soundcloud: '' });
+      return;
+    }
+    
     res.json(streamingLinks);
   } catch (err) {
     res.status(500).json({ message: 'Error fetching streaming links', error: err });

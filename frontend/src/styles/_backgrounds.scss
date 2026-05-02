@@ -1,67 +1,128 @@
 @use "sass:map";
-@use "./themes" as th;
+@use "themes" as th; // This MUST match the file name
+
+:root {
+  @each $key, $value in th.$default-theme {
+    --#{$key}: #{$value};
+  }
+}
 
 body {
   margin: 0;
   min-height: 100vh;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  transition: background-image 0.4s ease-in-out;
+  width: 100%;
+  background-color: #121212; 
+  background: var(--background) !important;
+  background-attachment: fixed !important;
+  background-size: cover !important;
+  transition: background 0.4s ease-in-out;
+
+  &::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    // background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.2) 100%);
+    pointer-events: none;
+    z-index: -1;
+  }
 }
 
-// Loop through the themes map
 @each $name, $settings in th.$themes {
   body.bg-#{$name} {
-    // background-image
-    @if map.has-key($settings, background-image) {
-      background-image: map.get($settings, background-image);
-    }
-
-    // background-color
-    @if map.has-key($settings, background-color) {
-      background-color: map.get($settings, background-color);
-    }
-
-    // background shorthand
-    @if map.has-key($settings, background) {
-      background: map.get($settings, background);
-    }
-
-    // overlay ::after
-    @if map.has-key($settings, overlay) {
-      &::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: map.get($settings, overlay);
-        z-index: -1;
-      }
-    }
-
-    // nested example: cloud-canvas band-logo-container
-    @if map.has-key($settings, logo-bg) {
-      .band-logo-container {
-        background-image: map.get($settings, logo-bg);
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: cover;
-        width: 100%;
-        height: 100%;
-        align-items: center;
-      }
-    }
-
-    // nested example: staind-glass band hero overrides
-    @if map.has-key($settings, band-hero-bg) {
-      .band-hero {
-        .band-logo-container {
-          background-color: map.get($settings, band-hero-bg);
-        }
-      }
+    @each $key, $value in $settings {
+      --#{$key}: #{$value};
     }
   }
 }
+
+// @use "sass:map";
+// @use "./themes" as th;
+
+// // Define fallback defaults at :root
+// :root {
+//   --primary: #000;
+//   --secondary: #666;
+//   --tertiary: #b5b5b5;
+//   --background-image: none;
+//   --background-color: #fff;
+//   --background: none;
+//   --overlay: transparent;
+// }
+
+// // Base body styles
+// body {
+//   margin: 0;
+//   min-height: 100vh;
+//   background-size: cover;
+//   background-repeat: no-repeat;
+//   background-position: center;
+//   transition: background-image 0.4s ease-in-out;
+//   position: relative;
+// }
+
+// // Loop through the themes map
+// @each $name, $settings in th.$themes {
+//   body.bg-#{$name} {
+
+//     // Set CSS variables for theme
+//     @if map.has-key($settings, primary) {
+//       --primary: #{map.get($settings, primary)};
+//     }
+//     @if map.has-key($settings, secondary) {
+//       --secondary: #{map.get($settings, secondary)};
+//     }
+//     @if map.has-key($settings, tertiary) {
+//       --tertiary: #{map.get($settings, tertiary)};
+//     }
+//     @if map.has-key($settings, background-image) {
+//       --background-image: #{map.get($settings, background-image)};
+//       background-image: var(--background-image);
+//     }
+//     @if map.has-key($settings, background-color) {
+//       --background-color: #{map.get($settings, background-color)};
+//       background-color: var(--background-color);
+//     }
+//     @if map.has-key($settings, background) {
+//       --background: #{map.get($settings, background)};
+//       background: var(--background);
+//     }
+
+//     // Optional overlay
+//     @if map.has-key($settings, overlay) {
+//       &::after {
+//         content: "";
+//         position: absolute;
+//         top: 0;
+//         left: 0;
+//         width: 100%;
+//         height: 100%;
+//         background-color: map.get($settings, overlay);
+//         z-index: -1;
+//       }
+//     }
+
+//     // Logo background
+//     @if map.has-key($settings, logo-bg) {
+//       .band-logo-container {
+//         background-image: map.get($settings, logo-bg);
+//         background-repeat: no-repeat;
+//         background-position: center;
+//         background-size: cover;
+//       }
+//     }
+
+//     // Band hero background
+//     @if map.has-key($settings, band-hero-bg) {
+//       .band-hero {
+//         .band-logo-container {
+//           background-color: map.get($settings, band-hero-bg);
+//         }
+//       }
+//     }
+//   }
+// }
+
+// // Example: components using tertiary color
+// .icon, .btn-tertiary, .highlight {
+//   color: var(--tertiary);
+// }

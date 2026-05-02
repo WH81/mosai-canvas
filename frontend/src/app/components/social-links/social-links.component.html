@@ -1,37 +1,96 @@
-<div *ngIf="socialLinks" class="social-links">
-  <a *ngIf="socialLinks.facebook" 
-     [href]="socialLinks.facebook" 
-     target="_blank" 
-     aria-label="Facebook" 
-     [ngClass]="['social-icon', 'facebook', size]">
-    <i class="fa-brands fa-facebook"></i>
-  </a>
-  <a *ngIf="socialLinks.instagram" 
-     [href]="socialLinks.instagram" 
-     target="_blank" 
-     aria-label="Instagram" 
-     [ngClass]="['social-icon', 'instagram', size]">
-    <i class="fa-brands fa-instagram"></i>
-  </a>
-  <a *ngIf="socialLinks.x" 
-     [href]="socialLinks.x" 
-     target="_blank" 
-     aria-label="X" 
-     [ngClass]="['social-icon', 'x', size]">
-    <i class="fa-brands fa-x-twitter"></i>
-  </a>
-  <a *ngIf="socialLinks.youtube" 
-     [href]="socialLinks.youtube" 
-     target="_blank" 
-     aria-label="YouTube" 
-     [ngClass]="['social-icon', 'youtube', size]">
-    <i class="fa-brands fa-youtube"></i>
-  </a>
-  <a *ngIf="socialLinks.tiktok" 
-     [href]="socialLinks.tiktok" 
-     target="_blank" 
-     aria-label="TikTok" 
-     [ngClass]="['social-icon', 'tiktok', size]">
-    <i class="fa-brands fa-tiktok"></i>
+<!-- <div class="social-links" *ngIf="socialLinks" role="list">
+  
+  <ng-container *ngIf="socialLinks.facebook">
+    <a [href]="socialLinks.facebook" 
+       target="_blank" 
+       rel="noopener noreferrer"
+       class="social-icon"
+       [ngClass]="size"
+       aria-label="Follow us on Facebook"
+       role="listitem">
+      <i class="fa-brands fa-facebook" aria-hidden="true"></i>
+    </a>
+    <span *ngIf="socialLinks.instagram || socialLinks.x || socialLinks.youtube || socialLinks.tiktok" 
+          class="internal-divider" 
+          aria-hidden="true">
+    </span>
+  </ng-container>
+
+  <ng-container *ngIf="socialLinks.instagram">
+    <a [href]="socialLinks.instagram" 
+       target="_blank" 
+       rel="noopener noreferrer"
+       class="social-icon"
+       [ngClass]="size"
+       aria-label="Follow us on Instagram"
+       role="listitem">
+      <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+    </a>
+    <span *ngIf="socialLinks.x || socialLinks.youtube || socialLinks.tiktok" 
+          class="internal-divider" 
+          aria-hidden="true">
+    </span>
+  </ng-container>
+
+  <ng-container *ngIf="socialLinks.x">
+    <a [href]="socialLinks.x" 
+       target="_blank" 
+       rel="noopener noreferrer"
+       class="social-icon"
+       [ngClass]="size"
+       aria-label="Follow us on X"
+       role="listitem">
+      <i class="fa-brands fa-x-twitter" aria-hidden="true"></i>
+    </a>
+    <span *ngIf="socialLinks.youtube || socialLinks.tiktok" 
+          class="internal-divider" 
+          aria-hidden="true">
+    </span>
+  </ng-container>
+
+  <ng-container *ngIf="socialLinks.youtube">
+    <a [href]="socialLinks.youtube" 
+       target="_blank" 
+       rel="noopener noreferrer"
+       class="social-icon"
+       [ngClass]="size"
+       aria-label="Watch our videos on YouTube"
+       role="listitem">
+      <i class="fa-brands fa-youtube" aria-hidden="true"></i>
+    </a>
+    <span *ngIf="socialLinks.tiktok" 
+          class="internal-divider" 
+          aria-hidden="true">
+    </span>
+  </ng-container>
+
+  <ng-container *ngIf="socialLinks.tiktok">
+    <a [href]="socialLinks.tiktok" 
+       target="_blank" 
+       rel="noopener noreferrer"
+       class="social-icon"
+       [ngClass]="size"
+       aria-label="Follow us on TikTok"
+       role="listitem">
+      <i class="fa-brands fa-tiktok" aria-hidden="true"></i>
+    </a>
+  </ng-container>
+
+</div> -->
+
+
+<div class="social-links-container" 
+     *ngIf="activeLinks.length > 0" 
+     [ngClass]="[variant, size]" 
+     role="list">
+  
+  <a *ngFor="let link of activeLinks"
+     [href]="link.url"
+     target="_blank"
+     rel="noopener noreferrer"
+     class="social-link-item"
+     [attr.aria-label]="'Follow on ' + link.label"
+     role="listitem">
+    <i [class]="link.icon" aria-hidden="true"></i>
   </a>
 </div>

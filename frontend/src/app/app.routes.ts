@@ -1,9 +1,5 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './pages/home/home.component';
-import { MembersListComponent } from './components/members-list/members-list.component';
-import { ArtComponent } from './pages/art/art.component';
-import { ContactComponent } from './pages/contact/contact.component';
-import { BandDetailComponent } from './components/band-detail/band-detail.component';
+// import { BandDetailComponent } from './components/band-detail/band-detail.component';
 
 export const routes: Routes = [
   {
@@ -12,15 +8,25 @@ export const routes: Routes = [
       import('./pages/home/home.component').then((m) => m.HomeComponent),
   },
   {
-    path: 'bands',
-    children: [
-      {
-        path: ':bandSlug',  // Dynamic band slug
-        component: BandDetailComponent,  // Show members for the specific band
-      },
-    ],
+    path: 'band/:bandSlug',
+    loadComponent: () =>
+      import('./pages/band-page/band-page.component')
+        .then(m => m.BandPageComponent)
+  },  
+  // {
+  //   path: 'bands',
+  //   children: [
+  //     {
+  //       path: ':bandSlug',
+  //       component: BandDetailComponent,
+  //     },
+  //   ],
+  // },
+  {
+    path: 'art',
+    loadComponent: () =>
+      import('./pages/art/art.component').then((m) => m.ArtComponent),
   },
-  { path: 'art', component: ArtComponent },
   {
     path: 'contact',
     loadComponent: () =>

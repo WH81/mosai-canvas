@@ -1,0 +1,21 @@
+@use "index" as *;
+
+.past-releases {
+  .past-title {
+    margin-bottom: $spacing-lg;
+    color: $text-color-light;
+  }
+  
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(401px, 1fr));
+    gap: 0.5rem;
+    padding: 0;
+  }
+
+  .empty-message {
+    font-size: 0.95rem;
+    color: $text-color-light;
+    font-style: italic;
+  }
+}

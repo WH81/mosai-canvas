@@ -3,9 +3,11 @@
 
 .footer {
   background-color: rgba(17, 17, 17, 1);
-  color: #fff;
-  padding: 4rem 1rem 2rem;
+  color: $text-color-light;
+  padding: 2rem 1rem;
   font-size: 1rem;
+
+  /* Gradient border from SCSS variable */
   border-top: 3px solid transparent;
   border-image: $gradient-mosai-canvas 1;
   border-image-slice: 1;
@@ -79,12 +81,12 @@
 
   &__bottom {
     text-align: center;
-    margin-top: 2rem;
-    padding-top: 1rem;
+    padding-top: 2rem;
 
     p {
       color: #ccc;
       font-size: 1rem;
+      margin-bottom: 0;
     }
   }
 
@@ -95,61 +97,159 @@
       gap: 0.5rem;
     }
   }
+
+  /* FOOTER ICON GRADIENT OVERRIDE */
+  .footer__social-link-icons,
+  .social-links {
+    a.social-icon > * {
+      // --- MODIFIED: NON-HOVER STATE (Gradient) ---
+      background: $gradient-mosai-canvas;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      transition: background 0.3s ease, font-size 0.3s ease;
+
+      // Ensures gradient fill on SVG icons
+      svg path {
+        fill: currentColor; // Inherits the transparent color for gradient effect
+        transition: fill 0.3s ease;
+      }
+    }
+
+    a.social-icon:hover > * {
+      svg path {
+        fill: $text-color-light;
+      }
+    }
+  }
 }
 
+/* Back to Top Button Styles */
+// .back-to-top {
+//   position: fixed;
+//   bottom: 20px;
+//   right: 20px;
+//   width: 3rem;
+//   height: 3rem;
+//   font-size: 1.8rem;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   border-radius: 50%;
+//   z-index: 1000;
+//   cursor: pointer;
+//   transition: all 0.3s ease-in-out;
+//   box-shadow: 0 0 0px rgba(0, 0, 0, 0.8);
+//   border: 0px solid rgba(0, 0, 0, 0.4);
+//   background-color: transparent;
+//   background-origin: border-box;
+//   background-clip: padding-box, border-box;
+//   opacity: 0;
+//   visibility: hidden;
+//   pointer-events: none;
+
+//   svg {
+//     width: 150%;
+//     height: 150%;
+//     //background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+//     -webkit-background-clip: text;
+//     background-clip: text;
+//     -webkit-text-fill-color: transparent;
+//   }
+
+//   @media screen and (max-width: 768px) {
+//     width: 2rem;
+//     height: 2rem;
+//     bottom: 0.75rem;
+//     right: 0.75rem;
+//   }
+// }
+
+// .back-to-top.active {
+//   opacity: 1;
+//   visibility: visible;
+//   pointer-events: auto;
+// }
+
+// .back-to-top:hover {
+//   background-color: $text-color-light;
+//   border: 2px solid rgba(255, 255, 255, 1);
+//   transform: scale(1.2);
+//   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.5);
+// }
+
+// .back-to-top:focus {
+//   outline: none;
+//   //box-shadow: 0 0 0 1px rgba($text-color-light, 0.6);
+// }
 .back-to-top {
   position: fixed;
   bottom: 20px;
   right: 20px;
   width: 3rem;
   height: 3rem;
-  font-size: 1.8rem;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   border-radius: 50%;
-  z-index: 1000;
   cursor: pointer;
-  transition: all 0.3s ease-in-out;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
-  border: 2px solid transparent;
+  z-index: 1000;
+
+  /* DEFAULT STATE */
   background-color: transparent;
-  background-origin: border-box;
-  background-clip: padding-box, border-box;
+  border: 2px solid transparent; // Set a transparent border here to prevent "jumping"
+  color: $text-color-light;
+  
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
 
-  svg {
-    width: 150%;
-    height: 150%;
-    background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
-  @media screen and (max-width: 768px) {
-    width: 2rem;
-    height: 2rem;
-    bottom: 0.75rem;
-    right: 0.75rem;
-  }
-}
-
-.back-to-top.active {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-}
-
-.back-to-top:hover {
-  background-color: #fff;
-  transform: scale(1.2);
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.5);
-}
-
-.back-to-top:focus {
+  appearance: none;
+  -webkit-appearance: none;
   outline: none;
-  box-shadow: 0 0 0 1px rgba(#fff, 0.6);
+
+  /* SMOOTH TRANSITION */
+  // Transition all properties with a slight "snappy" curve
+  transition: 
+    opacity 0.4s ease, 
+    visibility 0.4s ease, 
+    background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.3s ease,
+    box-shadow 0.3s ease;
+
+  svg {
+    width: 80%;
+    height: 80%;
+    display: block;
+    fill: currentColor;
+    
+    /* Hardware acceleration for the arrow scale */
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); 
+    backface-visibility: hidden;
+    will-change: transform;
+  }
+
+  /* HOVER STATE */
+  &:hover {
+    background-color: $text-color-light;
+    color: #000;
+    border-color: $text-color-light; // Only change the color, not the width
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+
+    svg {
+      /* Only the arrow scales up, using a "pop" effect */
+      transform: scale(1.1);
+    }
+  }
+
+  /* ACTIVE (When scrolling down) */
+  &.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
 }

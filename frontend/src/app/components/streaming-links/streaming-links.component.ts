@@ -11,5 +11,24 @@ import { StreamingLinks } from '../../models/streaming-links/streaming-links.mod
 })
 export class StreamingLinksComponent {
   @Input() streamingLinks?: StreamingLinks;
-  @Input() size: 'small' | 'large' = 'small';
+  @Input() size: 'small' | 'large' = 'large';
+  @Input() variant: 'default' | 'divided' | 'glass' = 'default';
+
+  get activeStreaming() {
+    if (!this.streamingLinks) return [];
+    
+    const mapping = [
+      { key: 'spotify', icon: 'fa-brands fa-spotify', label: 'Spotify' },
+      { key: 'appleMusic', icon: 'fab fa-itunes', label: 'Apple Music' },
+      { key: 'soundCloud', icon: 'fa-brands fa-soundcloud', label: 'SoundCloud' }
+    ];
+
+    return mapping
+      .filter(item => !!this.streamingLinks![item.key as keyof StreamingLinks])
+      .map(item => ({
+        url: this.streamingLinks![item.key as keyof StreamingLinks],
+        icon: item.icon,
+        label: item.label
+      }));
+  }
 }

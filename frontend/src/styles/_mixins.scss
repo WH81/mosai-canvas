@@ -1,23 +1,44 @@
-@use "variables" as v;
 @use 'variables' as *;
 
+// Primary Typography Mixin
 @mixin text-style-primary($min, $max, $line-height, $weight) {
-  font-size: clamp(#{$min}, 2vw, #{$max});
+  font-size: clamp(#{$min}, 4vw, #{$max});
   line-height: $line-height;
   font-weight: $weight;
-  font-family: v.$font-family-primary;
-  color: v.$text-color-light;
+  font-family: $font-family-primary; // No v. prefix needed
+  color: $text-color-medium;
 }
 
+// Secondary Typography Mixin
 @mixin text-style-secondary($min, $max, $line-height, $weight) {
   font-size: clamp(#{$min}, 2vw, #{$max});
   line-height: $line-height;
   font-weight: $weight;
-  font-family: v.$font-family-secondary;
-  color: v.$text-color-light;
+  font-family: $font-family-secondary; // No v. prefix needed
+  color: $text-color-light;
 }
 
+// Structural spacing helper
 @mixin component-spacing {
-  margin-top: $spacing-xxxl;
-  margin-bottom: $spacing-xxxl;
+  padding: $spacing-xl; // 3rem
+  margin-left: auto;
+  margin-right: auto;
+}
+
+// Aspect Ratio Helper (Rockstar layout utility)
+@mixin aspect-ratio($width, $height) {
+  position: relative;
+  &:before {
+    display: block;
+    content: "";
+    width: 100%;
+    padding-top: ($height / $width) * 100%;
+  }
+  > div {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
 }

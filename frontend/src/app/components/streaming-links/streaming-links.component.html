@@ -1,23 +1,15 @@
-<div *ngIf="streamingLinks" class="streaming-links">
-  <a *ngIf="streamingLinks.appleMusic" 
-     [href]="streamingLinks.appleMusic" 
-     target="_blank" 
-     aria-label="Apple Music" 
-     [ngClass]="['streaming-icon', 'apple-music', size]">
-    <i class="fa-brands fa-apple"></i>
-  </a>
-  <a *ngIf="streamingLinks.spotify" 
-     [href]="streamingLinks.spotify" 
-     target="_blank" 
-     aria-label="Spotify" 
-     [ngClass]="['streaming-icon', 'spotify', size]">
-    <i class="fa-brands fa-spotify"></i>
-  </a>
-  <a *ngIf="streamingLinks.soundCloud" 
-     [href]="streamingLinks.soundCloud" 
-     target="_blank" 
-     aria-label="SoundCloud" 
-     [ngClass]="['streaming-icon', 'soundcloud', size]">
-    <i class="fa-brands fa-soundcloud"></i>
+<div class="streaming-links-container" 
+     *ngIf="activeStreaming.length > 0" 
+     [ngClass]="[variant, size]" 
+     role="list">
+  
+  <a *ngFor="let link of activeStreaming"
+     [href]="link.url"
+     target="_blank"
+     rel="noopener noreferrer"
+     class="streaming-link-item"
+     [attr.aria-label]="'Listen on ' + link.label"
+     role="listitem">
+    <i [class]="link.icon" aria-hidden="true"></i>
   </a>
 </div>

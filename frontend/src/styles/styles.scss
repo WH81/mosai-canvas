@@ -1,11 +1,5 @@
-@use 'variables' as v;
-@use 'mixins' as m;
-@use 'typography' as t;
-@use 'breakpoints' as bp;
-@use 'utilities' as u;
-@use 'components' as c;
-@use 'layout' as l;
-@use 'base' as b;
-@use 'backgrounds' as bg;
-//@use 'themes' as th;
-@use './themes' as th;
+@use 'base';
+@use 'layout';
+@use 'themes';
+@use 'backgrounds';
+@use 'components';

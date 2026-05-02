@@ -1,0 +1,42 @@
+<section class="latest-drops latest-drops--full-bleed">
+  <div class="latest-drops__bg-overlay"></div>
+  
+  <header class="latest-header" *ngIf="latestReleases.length > 0">
+    <span class="eyebrow">NEW MUSIC // {{ displayYear }}</span>
+    <h2 class="section-title">Latest release</h2>
+  </header>
+
+  <div class="magazine-grid">
+    <article class="magazine-card" *ngFor="let release of latestReleases">
+      <div class="magazine-card__glow" [style.backgroundImage]="'url(' + release.coverUrl + ')'"></div>
+      
+      <div class="magazine-card__inner">
+        <div class="magazine-card__media">
+          <div class="magazine-banner">OUT NOW</div>
+          <img [src]="release.coverUrl" [alt]="release.title" class="magazine-card__img" loading="eager">
+        </div>
+
+        <div class="magazine-card__body">
+          <div class="magazine-card__info">
+            <h3 class="magazine-card__title">{{ release.title }}</h3>
+            <p class="magazine-card__artist">
+              <span class="by-label">PERFORMED BY</span>
+              <span class="artist-name">{{ release.artist }}</span>
+            </p>
+            <p class="magazine-card__release-date">
+              RELEASED • {{ release.releaseDate | date:'MMM d, y' }}
+            </p>
+          </div>
+
+          <div class="magazine-card__divider"></div>
+
+          <div class="magazine-card__actions">
+            <a *ngIf="release.spotifyUrl" [href]="release.spotifyUrl" target="_blank" class="btn-rockstar">SPOTIFY</a>
+            <a *ngIf="release.appleMusicUrl" [href]="release.appleMusicUrl" target="_blank" class="btn-rockstar">APPLE</a>
+            <a *ngIf="release.youtubeUrl" [href]="release.youtubeUrl" target="_blank" class="btn-rockstar">YOUTUBE</a>
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>

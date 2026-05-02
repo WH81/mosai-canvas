@@ -1,21 +1,45 @@
-<div class="about-container">
-  <div class="about-content">
-    <div *ngIf="loading">Loading...</div>
+<section class="l-section" aria-labelledby="about-title">
+  <div class="container">
+    <div class="about-content">
+      <div class="about-text-wrapper">
+        <h2 class="section-title" appScrollAnimate animationType="fade-slide">
+          About
+        </h2>
 
-    <div *ngFor="let about of aboutList; let i = index">
-      <h2 
-        appScrollAnimate
-        [animationType]="'fade-slide'" 
-        [animationDelay]="(i * 0.1) + 's'">
-        {{ about.title }}
-      </h2>
+        <ng-container *ngIf="band; else homeAbout">
+          <p
+            class="about-body"
+            appScrollAnimate
+            animationType="fade-slide"
+            animationDelay="0.1s"
+            aria-live="polite"
+            title="Band biography"
+          >
+            {{ band.bio }}
+          </p>
+        </ng-container>
 
-      <p 
-        appScrollAnimate 
-        [animationType]="'fade-slide'" 
-        [animationDelay]="(i * 0.15) + 's'">
-        {{ about.body }}
-      </p>
+        <ng-template #homeAbout>
+          <div *ngIf="loading" class="loading">Loading...</div>
+          <div *ngFor="let about of aboutList; let i = index">
+            <p
+              class="about-body"
+              appScrollAnimate
+              [animationType]="'fade-slide'"
+              [animationDelay]="i * 0.15 + 's'"
+              title="About the band"
+            >
+              {{ about.body }}
+            </p>
+          </div>
+        </ng-template>
+      </div>
+
+      <div class="about-visual-accent" aria-hidden="true">
+        <span #parallaxText class="vertical-brand">
+          {{ band ? band.name : "MOSAI CANVAS" }}
+        </span>
+      </div>
     </div>
   </div>
-</div>
+</section>

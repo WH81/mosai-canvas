@@ -8,9 +8,9 @@ import {
 
 const router = express.Router();
 
-router.post('/:bandId', createStreamingLinks);
-router.put('/:bandId', updateStreamingLinks);
-router.get('/:bandId', getStreamingLinks);
-router.delete('/:bandId', deleteStreamingLinks);
+router.get('/band/:bandId', getStreamingLinks);
+router.post('/band/:bandId', createStreamingLinks);
+router.put('/band/:bandId', updateStreamingLinks);
+router.delete('/band/:bandId', deleteStreamingLinks);
 
 export default router;

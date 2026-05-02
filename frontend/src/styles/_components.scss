@@ -1,6 +1,10 @@
-@use 'sass:color';
-@use 'variables' as v;
+@use "sass:color";
+@use "variables" as v;
+@use "index" as *;
 
+/* =================================================
+   BLOCK: SHARED BUTTONS
+   ================================================= */
 .button {
   padding: 0.75rem 1.5rem;
   background-color: v.$primary-color;
@@ -13,5 +17,86 @@
 
   &:hover {
     background-color: color.scale(v.$primary-color, $lightness: -10%);
+  }
+}
+
+/* =================================================
+   BLOCK: C-BAND-LINK-BAR
+   ================================================= */
+.c-band-link-bar {
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  background: rgba(255, 255, 255, 0.1);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 12px 24px;
+  display: flex;
+  gap: 1rem;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+
+  app-social-links,
+  app-streaming-links {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    a {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      color: rgba(255, 255, 255, 0.85);
+      text-decoration: none;
+      opacity: 0.85;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+
+      // Hardware acceleration to stop flickering
+      backface-visibility: hidden;
+      transform: translateZ(0);
+
+      // THE FIX: Move hover background to a separate layer
+      &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: 1;
+      }
+
+      &:hover {
+        opacity: 1;
+
+        &::before {
+          opacity: 1;
+        }
+      }
+
+      &:focus-visible {
+        outline: 2px solid rgba(255, 255, 255, 0.7);
+        outline-offset: 2px;
+        border-radius: 6px;
+      }
+
+      i,
+      svg {
+        position: relative;
+        z-index: 2;
+        font-size: 1.25rem;
+        line-height: 1;
+        display: block;
+        transition: transform 0.3s ease;
+      }
+    }
+  }
+
+  @media (max-width: 480px) {
+    gap: 1.5rem;
+    justify-content: space-around;
+    padding-inline: 20px;
   }
 }
