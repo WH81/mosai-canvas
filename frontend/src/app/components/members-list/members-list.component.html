@@ -1,39 +1,196 @@
-<section class="band-members-section"> 
-  <div class="band-members-title-wrapper">
-    <h2 class="band-members-title">Contributors</h2>
+<!-- <section class="l-section"> 
+  <div class="container">
+    
+    <div class="band-members-title-wrapper">
+      <h2 class="section-title">Artists</h2>
     </div>
 
-  <div class="members-list-container">
-    <ng-container *ngFor="let member of members; trackBy: trackByName">
-      <div
-        class="member-item-wrapper"
-        [class.expanded]="isExpanded(member.name)" appScrollAnimation
-      >
-
+    <div class="members-list-container">
+      <ng-container *ngFor="let member of members; trackBy: trackByName">
         <div
-          class="card-front"
-          role="button"
-          tabindex="0"
-          (click)="toggleExpand(member.name)"
-          (keydown.enter)="toggleExpand(member.name)"
+          class="member-item-wrapper"
+          [class.expanded]="isExpanded(member.name)" 
+          appScrollAnimation
         >
-          <div class="member-image">
-            <img [src]="member.image" alt="{{ member.name }}'s image" />
-          </div>
+          <div
+            class="card-front"
+            role="button"
+            tabindex="0"
+            (click)="toggleExpand(member.name)"
+            (keydown.enter)="toggleExpand(member.name)"
+          >
+            <div class="member-image">
+              <img [src]="member.image" alt="{{ member.name }}'s image" />
+            </div>
 
-          <div class="member-details">
-            <h3 class="member-name">{{ member.name }}</h3>
-            <p class="member-instrument">{{ member.instrument }}</p>
+            <div class="member-details">
+              <h3 class="member-name">{{ member.name }}</h3>
+              <p class="member-instrument">{{ member.instrument }}</p>
+            </div>
           </div>
         </div>
-      </div>
-    </ng-container>
-
-    <app-member-bio-modal
-      [memberData]="selectedMember"
-      [isOpen]="isModalOpen"
-      (closeEvent)="handleModalClose()">
-    </app-member-bio-modal>
+      </ng-container>
+    </div>
 
   </div>
+
+  <app-member-bio-modal
+    [memberData]="selectedMember"
+    [isOpen]="isModalOpen"
+    (closeEvent)="handleModalClose()">
+  </app-member-bio-modal>
+</section> -->
+
+<!-- Last version -->
+<!-- <section class="l-section artist-section full-bleed-glass"> 
+  <svg class="paint-overlay" viewBox="0 0 500 200" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M-10,120 C100,70 300,150 510,80" 
+          class="brush-stroke-primary"
+          stroke-width="65" 
+          stroke-linecap="round" 
+          fill="none" />
+    <path d="M-10,130 C150,90 350,140 510,100" 
+          class="brush-stroke-accent"
+          stroke-width="35" 
+          stroke-linecap="round" 
+          fill="none" />
+  </svg>
+
+  <div class="container">
+    <div class="band-members-title-wrapper">
+      <h1 class="section-title">Artists Profiles</h1>
+    </div>
+
+    <div class="members-list-container">
+      <ng-container *ngFor="let member of members; let i = index; trackBy: trackByName">
+        <div
+          class="member-item-wrapper"
+          [class.stagger-right]="i % 2 !== 0"
+          [class.expanded]="isExpanded(member.name)" 
+          appScrollAnimation
+        >
+          <div
+            class="card-front"
+            role="button"
+            [attr.aria-label]="'View biography for ' + member.name"
+            tabindex="0"
+            (click)="toggleExpand(member.name)"
+            (keydown.enter)="toggleExpand(member.name)"
+          >
+            <div class="member-image">
+              <img [src]="member.image" [alt]="member.name + ' - ' + member.instrument" />
+            </div>
+
+            <div class="member-details">
+              <h2 class="member-name">
+                <span class="first-name">{{ member.name.split(' ')[0] }}</span>
+                <span class="last-name">{{ member.name.split(' ')[1] }}</span>
+              </h2>
+              <p class="member-instrument">{{ member.instrument }}</p>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+  <app-member-bio-modal
+    [memberData]="selectedMember"
+    [isOpen]="isModalOpen"
+    (closeEvent)="handleModalClose()">
+  </app-member-bio-modal>
+</section> -->
+
+<section class="artist-section">
+  <svg
+    class="artist-section__paint-overlay"
+    viewBox="0 0 500 200"
+    preserveAspectRatio="none"
+    aria-hidden="true"
+  >
+    <path
+      d="M-10,120 C100,70 300,150 510,80"
+      class="brush-stroke-primary"
+      fill="none"
+    />
+    <path
+      d="M-10,130 C150,90 350,140 510,100"
+      class="brush-stroke-accent"
+      fill="none"
+    />
+  </svg>
+
+  <header class="artist-section__header container">
+    <h2 class="section-title">Artists</h2>
+  </header>
+
+  <div class="members-list-container">
+    <div
+      *ngFor="let member of members; trackBy: trackByName"
+      class="member-column"
+      [class.is-active]="selectedMember?.name === member.name"
+      appScrollAnimation
+      (click)="toggleExpand(member.name)"
+      role="button"
+      tabindex="0"
+    >
+      <div class="member-image-bg">
+        <img [src]="member.image" class="img-blur-fill" aria-hidden="true" />
+        <img [src]="member.image" [alt]="member.name" class="img-main-fit" />
+      </div>
+
+      <div class="member-content">
+        <div class="text-group">
+          <h2 class="member-name-title">{{ member.name }}</h2>
+          <p class="instrument-subtitle">{{ member.instrument }}</p>
+        </div>
+      </div>
+
+      <div class="vertical-divider"></div>
+    </div>
+  </div>
+
+  <footer class="artist-section__footer" [class.is-expanded]="selectedMember">
+    <div class="footer-top-bar">
+      <button
+        *ngIf="selectedMember"
+        class="close-bio"
+        (click)="selectedMember = null; $event.stopPropagation()"
+      >
+        Close Bio
+      </button>
+    </div>
+
+    <div class="bio-container">
+      <div class="bio-text-column" *ngIf="selectedMember">
+        <h3 class="bio-name">
+          {{ selectedMember.name }} — {{ selectedMember.instrument }}
+        </h3>
+        <p class="bio-description">{{ selectedMember.bio }}</p>
+      </div>
+
+      <div
+        class="bio-social-column"
+        *ngIf="selectedMember?.socialLinks || selectedMember?.streamingLinks"
+      >
+        <div class="social-group">
+          <div class="social-title">Follow Me</div>
+          
+          <app-social-links
+            *ngIf="selectedMember?.socialLinks"
+            [socialLinks]="selectedMember?.socialLinks"
+            variant="divided"
+            size="large"
+          ></app-social-links>
+
+          <app-streaming-links
+            *ngIf="selectedMember?.streamingLinks"
+            [streamingLinks]="selectedMember?.streamingLinks"
+            variant="divided"
+            size="large"
+          ></app-streaming-links>
+        </div>
+      </div>
+    </div>
+  </footer>
 </section>

@@ -9,24 +9,30 @@
         </a>
       </div>
 
-      <div class="footer__links-row">
+      <!-- <div class="footer__links-row">
         <app-social-links *ngIf="socialLinks" [socialLinks]="socialLinks" size="small" class="footer__social-link-icons"></app-social-links>
         <app-streaming-links *ngIf="streamingLinks" [streamingLinks]="streamingLinks" size="small"></app-streaming-links>
-      </div>
-
+      </div> -->
     </div>
   </div>
 
   <!-- Copyright -->
   <div class="footer__bottom">
     <p>&copy; {{ currentYear }} Mosai Canvas. All rights reserved.</p>
-    <p>Website design & developed by Wayne Hite.</p>
+    <p>Website designed & developed by Wayne Hite.</p>
   </div>
 </footer>
 
 <!-- Back to Top Button -->
-<button id="backToTopBtn" #backToTopBtn class="back-to-top" (click)="scrollToTop()">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+<button
+  id="backToTopBtn"
+  #backToTopBtn
+  class="back-to-top"
+  (click)="scrollToTop()"
+  aria-label="Back to top"
+  title="Back to top"
+>
+  <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
         <defs>
             <linearGradient id="arrowGradient" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" stop-color="#4A90E2" />
@@ -37,5 +43,9 @@
             d="M12 4L4 12H9V20H15V12H20L12 4Z"
             fill="url(#arrowGradient)"
         />
-    </svg>
+    </svg> -->
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M12 4L4 12H9V20H15V12H20L12 4Z" fill="currentColor" />
+  </svg>
 </button>

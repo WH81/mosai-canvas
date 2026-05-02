@@ -1,28 +1,242 @@
-@use 'mixins' as m;
-@use 'variables' as v;
+// @use "variables" as *;
+// @use "mixins" as *;
+// @use "breakpoints" as *;
 
-// Use the primary font for headings
+// // 1. BASE ELEMENT DEFINITIONS
+// h1,
+// h2,
+// h3,
+// h4,
+// h5,
+// h6 {
+//   font-family: $font-family-primary;
+// }
+
+// p,
+// small {
+//   font-family: $font-family-secondary;
+// }
+
+// // 2. STANDARD SCALING (Syncing with your variable tokens)
+// h1 {
+//   @include text-style-primary(3.5rem, $font-xxxxxl, 1.1, 900);
+// }
+
+// h2 {
+//   @include text-style-primary(2.5rem, $font-xxxl, 1.2, 800);
+// }
+
+// h3 {
+//   @include text-style-primary(1.75rem, $font-xxl, 1.3, 700);
+// }
+
+// h4 {
+//   @include text-style-primary(1.25rem, $font-xl, 1.4, 600);
+// }
+
+// p {
+//   @include text-style-secondary(1rem, $font-size-base, 1.7, 400);
+// }
+
+// small {
+//   font-size: $font-xs;
+//   opacity: 0.8;
+//   line-height: 1.7;
+//   color: $text-color-light;
+// }
+
+// // 3. THE GLOBAL SECTION TITLE
+// // This matches your ABOUT section exactly for 1:1 parity
+// .section-title {
+//   @include text-style-primary($font-xxxl, $font-xxxxxl, 0.9, 900);
+//   text-transform: uppercase;
+//   letter-spacing: -0.04rem;
+//   margin-bottom: $spacing-md;
+//   padding-left: 0.05rem;
+//   overflow: visible;
+
+//   // Your Mosaic Canvas brand gradient
+//   background: var(--frame-bg);
+//   -webkit-background-clip: text;
+//   background-clip: text;
+//   -webkit-text-fill-color: transparent;
+//   color: transparent;
+//   filter: drop-shadow(0 2px 0px rgba(0, 0, 0, 0.4));
+//   paint-order: fill markers stroke;
+//   -webkit-text-stroke: 0;
+//   text-align: center;
+
+//   @include respond-min(md) {
+//     text-align: left;
+//     margin-left: -0.02em;
+//     margin-bottom: $spacing-xl;
+//   }
+// }
+
+// .section-title__secondary {
+//   @include text-style-primary($font-xxl, $font-xxxl, 0.9, 900);
+//   text-transform: uppercase;
+//   letter-spacing: -0.04rem;
+//   margin-bottom: $spacing-xl;
+//   padding-left: 0.05rem;
+//   overflow: visible;
+
+//   // Your Mosaic Canvas brand gradient
+//   background: var(--frame-bg);
+//   -webkit-background-clip: text;
+//   background-clip: text;
+//   -webkit-text-fill-color: transparent;
+//   color: transparent;
+//   filter: drop-shadow(0 2px 0px rgba(0, 0, 0, 0.4));
+//   paint-order: fill markers stroke;
+//   -webkit-text-stroke: 0;
+//   text-align: center;
+
+//   @include respond-min(md) {
+//     text-align: left;
+//     margin-left: -0.02em;
+//     margin-bottom: $spacing-sm;
+//   }
+// }
+
+// .section-title-alt__tertiary {
+//   @include text-style-primary($font-xxl, $font-xxxl, 0.9, 900);
+//   text-transform: uppercase;
+//   letter-spacing: -0.04rem;
+//   margin-bottom: $spacing-sm;
+//   padding-left: 0.05rem;
+//   overflow: visible;
+
+//   // Your Mosaic Canvas brand gradient
+//   background: var(--frame-bg);
+//   -webkit-background-clip: text;
+//   background-clip: text;
+//   -webkit-text-fill-color: transparent;
+//   color: transparent;
+//   filter: drop-shadow(0 2px 0px rgba(0, 0, 0, 0.4));
+//   paint-order: fill markers stroke;
+//   -webkit-text-stroke: 0;
+//   text-align: center;
+
+//   @include respond-min(md) {
+//     text-align: left;
+//     margin-left: -0.02em;
+//     margin-bottom: $spacing-sm;
+//   }
+// }
+
+
+
+
+@use "variables" as *;
+@use "mixins" as *;
+@use "breakpoints" as *;
+
+// 1. BASE ELEMENT DEFINITIONS
 h1, h2, h3, h4, h5, h6 {
-  font-family: v.$font-family-primary;
+  font-family: $font-family-primary;
+  margin: 0; // Best practice: Reset margins to prevent layout shifts
 }
 
-// Use the secondary font for body text
 p, small {
-  font-family: v.$font-family-secondary;
+  font-family: $font-family-secondary;
 }
 
-h1 { @include m.text-style-primary(3rem, 5rem, 1.2, 700); }
-h2 { @include m.text-style-primary(2rem, 3rem, 1.3, 600); }
-h3 { @include m.text-style-primary(1.5rem, 2rem, 1.4, 600); }
-h4 { @include m.text-style-primary(1rem, 1.125rem, 1.5, 500); }
-h5 { @include m.text-style-primary(0.875rem, 1rem, 1.6, 500); }
-h6 { @include m.text-style-primary(0.75rem, 0.875rem, 1.6, 400); }
+// 2. STANDARD SCALING (Fluid & Responsive)
+// We use clamp(min, fluid-rate, max) to bridge your variable tokens.
+h1 {
+  // Scales from $font-xxxl on mobile to $font-xxxxxl on desktop
+  @include text-style-primary(clamp(2.5rem, 8vw, 4.5rem), $font-xxxxxl, 1.05, 900);
+  letter-spacing: -0.02em;
+}
 
-p  { @include m.text-style-secondary(1rem, 1.125rem, 1.7, 400); }
+h2 {
+  // Scales from $font-xxl to $font-xxxl
+  @include text-style-primary(clamp(2rem, 6vw, 3rem), $font-xxxl, 1.1, 800);
+}
+
+h3 {
+  @include text-style-primary(clamp(1.5rem, 4vw, 2.25rem), $font-xxl, 1.2, 700);
+}
+
+h4 {
+  @include text-style-primary(clamp(1.2rem, 3vw, 1.75rem), $font-xl, 1.3, 600);
+}
+
+p {
+  // Body text: Minimum 1rem (16px) for accessibility, scales slightly on large screens
+  @include text-style-secondary(clamp(1rem, 1.2vw, 1.125rem), $font-size-base, 1.6, 400);
+  margin-bottom: $spacing-md;
+}
 
 small {
-  font-size: 1rem;
+  font-size: $font-xs;
   opacity: 0.8;
-  line-height: 1.7;
-  color: v.$text-color-light;
+  line-height: 1.6;
+  color: $text-color-light;
+}
+
+// 3. THE GLOBAL SECTION TITLE
+// Optimized for your "Mosaic Canvas" editorial design
+.section-title {
+  // Fluid font size scaling for a heavy editorial look
+  @include text-style-primary(clamp(2.2rem, 10vw, 5.5rem), $font-xxxxxl, 0.9, 900);
+  text-transform: uppercase;
+  letter-spacing: -0.04rem;
+  margin-bottom: $spacing-md;
+  padding-left: 0.05rem;
+  
+  // Responsive Alignment
+  text-align: center;
+  word-break: break-word; // Prevents overflow on mobile for long names
+
+  // Brand Styling (Mosaic Canvas)
+  background: var(--frame-bg);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  filter: drop-shadow(0 2px 0px rgba(0, 0, 0, 0.4));
+  paint-order: fill markers stroke;
+
+  @include respond-min(md) {
+    text-align: left;
+    margin-left: -0.04em; // Tighter optical alignment for large text
+    margin-bottom: $spacing-xl;
+  }
+}
+
+.section-title__secondary {
+  @include text-style-primary(clamp(1.8rem, 6vw, 3.5rem), $font-xxxl, 0.9, 900);
+  text-transform: uppercase;
+  letter-spacing: -0.04rem;
+  margin-bottom: $spacing-xl;
+  text-align: center;
+
+  background: var(--frame-bg);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  @include respond-min(md) {
+    text-align: left;
+    margin-bottom: $spacing-sm;
+  }
+}
+
+.section-title-alt__tertiary {
+  @include text-style-primary(clamp(1.5rem, 4vw, 2.5rem), $font-xxxl, 0.9, 900);
+  text-transform: uppercase;
+  letter-spacing: -0.04rem;
+  margin-bottom: $spacing-sm;
+  text-align: center;
+
+  background: var(--frame-bg);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  @include respond-min(md) {
+    text-align: left;
+  }
 }

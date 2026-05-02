@@ -1,36 +1,77 @@
-$font-family-primary: 'Montserrat', sans-serif;
-$font-family-secondary: 'Lato', sans-serif;
+// Spacing scale
+$spacing-xxs: 0.25rem; // 4px
+$spacing-xs: 0.5rem; // 8px
+$spacing-sm: 1rem; // 16px
+$spacing-md: 1.5rem; // 24px
+$spacing-lg: 2rem; // 32px
+$spacing-xl: 3rem; // 48px
+$spacing-xxl: 4rem; // 64px
+$spacing-xxxl: 5rem; // 96px
+$spacing-xxxxl: 6rem; // 128px
+
+// Font size scale
+$font-xxs: 0.625rem; // 10px - micro labels, timestamps
+$font-xs: 0.75rem;   // 12px - subtle UI text
+$font-sm: 0.875rem;  // 14px - compact body text
+$font-md: 1rem;      // 16px - main body text
+$font-lg: 1.25rem;   // 20px - section subtitles / highlights
+$font-xl: 1.5rem;    // 24px - component titles (carousel, mailing list titles)
+$font-xxl: 2rem;     // 32px - hero labels, band section headers
+$font-xxxl: 3rem;    // 48px - major page titles / about headers
+$font-xxxxl: 4rem;   // 64px - feature headings / high-impact editorial titles
+$font-xxxxxl: 5rem;  // 80px - optional: large hero text or landing page titles
+
+$font-family-primary: "Montserrat", sans-serif;
+$font-family-secondary: "Lato", sans-serif;
 
 $font-size-base: 1.125rem; // Good for body text
 
 $text-color-light: #ffffff;
 $text-color-medium: #acacac;
+$text-color-dark: #000000;
 $primary-color: #00c2ff; // A vibrant blue for links and accents
 $secondary-color: #ff5722; // A contrasting accent color (orange)
 $background-dark: #121212; // A deep, dark background color
 
+$dark-gradient-start: #121212;
+$dark-gradient-mid: #212121;
+$dark-gradient-end: #121212;
+$background-gradient-dark: linear-gradient(
+  90deg,
+  $dark-gradient-start,
+  $dark-gradient-mid,
+  $dark-gradient-end
+);
+$light-gradient-end: #ffffff;
+$background-gradient-dark-light: linear-gradient(
+  135deg,
+  $dark-gradient-start,
+  $light-gradient-end
+);
+
 $letter-spacing-base: 0px;
-$gradient-start: #4A90E2;
-$gradient-end: #50E3C2;
-$gradient-mosai-canvas: linear-gradient(90deg, $gradient-start, $gradient-end);
+$gradient-start: #4a90e2;
+$gradient-end: #50e3c2;
+$gradient-mosai-canvas: linear-gradient(to bottom, $gradient-start, $gradient-end);
 
 // Additional variables for a cohesive theme
-$border-radius-base: 50%; // For the circular images
+$border-radius-rounded: 0.75rem; // For cards and sections
 $box-shadow-light: 0 4px 6px rgba(0, 0, 0, 0.2); // For modals and cards
 
-// Use a modular scale based on a base unit, like 16px (1rem)
-$spacing-xxs: 0.25rem; // 4px
-$spacing-xs: 0.5rem;   // 8px
-$spacing-sm: 1rem;     // 16px
-$spacing-md: 1.5rem;   // 24px
-$spacing-lg: 2rem;     // 32px
-$spacing-xl: 3rem;     // 48px
-$spacing-xxl: 4rem;    // 64px
-$spacing-xxxl: 6rem;   // 96px
-
 $spacing-title-vertical: clamp(1rem, 4vw, 2rem);
-$spacing-title-horizontal: 1rem;
+$spacing-title-horizontal: clamp(1rem, 2vw, 1.5rem);
 
 // Contributor member image frame
 $frame-background-color: #2c2c2c;
 $frame-border-color: #000000;
+
+// LAYOUT TOKENS (Variables specific to layout)
+// These usually pull from your _variables.scss, but defined here for clarity
+:root {
+  --container-max-width: 90rem;
+  --container-gutter: #{$spacing-lg}; // Uses your 1.5rem variable
+  --section-spacing: #{$spacing-xl}; // Uses your 3rem variable
+
+  // Clamp for section spacing here!
+  --section-spacing-fluid: clamp(2rem, 8vw, 5rem);
+}

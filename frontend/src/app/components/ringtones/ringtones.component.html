@@ -1,48 +1,71 @@
-<div class="ringtones-container">
-  <div class="ringtone-title-wrapper">
-    <h2 class="ringtone-title"
-        appScrollAnimate
-        [animationType]="'fade-slide'"
-        [animationDelay]="'0s'">
-      Ringtones
-    </h2>
-  </div>
-  
-  <div *ngFor="let ringtone of ringtones; let i = index" class="ringtone-card"
-       appScrollAnimate
-       [animationType]="'fade-slide'"
-       [animationDelay]="(i * 0.1) + 's'">
-    <img
-      [src]="ringtone.thumbnailUrl"
-      [alt]="ringtone.songName + ' cover'"
-      class="ringtone-thumbnail"
-    />
+<section class="ringtones l-section">
+  <div class="container">
+    
+    <header class="ringtones__title-wrapper">
+      <h2 class="section-title">Ringtones</h2>
+    </header>
 
-    <div class="ringtone-info">
-      <h3>{{ ringtone.songName }}</h3>
-      <p>{{ ringtone.bandName }}</p>
+    <div class="ringtones__slider" #ringtoneSlider (scroll)="updateButtonStates()">
+      <div *ngFor="let ringtone of ringtones; let i = index" class="ringtones__card">
+        
+        <div class="ringtones__media-container">
+          <img
+            [src]="ringtone.thumbnailUrl"
+            [alt]="ringtone.songName"
+            class="ringtones__thumbnail"
+          />
+          
+          <div class="ringtones__overlay" 
+               [class.ringtones__overlay--active]="ringtone.showMenu || currentlyPlayingRingtoneUrl === ringtone.previewUrl">
+            <div class="ringtones__overlay-footer">
+              <button 
+                class="ringtones__action-btn" 
+                (click)="togglePlay(ringtone); $event.stopPropagation()"
+                [attr.aria-label]="ringtone.previewUrl === currentlyPlayingRingtoneUrl ? 'Pause' : 'Play'">
+                
+                <svg *ngIf="ringtone.previewUrl !== currentlyPlayingRingtoneUrl" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+                
+                <svg *ngIf="ringtone.previewUrl === currentlyPlayingRingtoneUrl" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M6 5h4v14H6V5zm8 0h4v14h-4V5z"/>
+                </svg>
+              </button>
 
-      <div class="controls">
-        <button (click)="togglePlay(ringtone.previewUrl)" aria-label="Play preview">
-          ▶️ Preview
-        </button>
-        <a
-          [href]="ringtone.downloadAndroidUrl"
-          download
-          class="btn"
-          aria-label="Download for Android"
-        >
-          Android
-        </a>
-        <a
-          [href]="ringtone.downloadAppleUrl"
-          download
-          class="btn"
-          aria-label="Download for iPhone"
-        >
-          iPhone
-        </a>
+              <div class="ringtones__download-container">
+                <button 
+                  class="ringtones__action-btn" 
+                  (click)="toggleDownloadMenu($event, ringtone)"
+                  aria-label="Download Options">
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                  </svg>
+                </button>
+
+                <div class="ringtones__popover" [class.ringtones__popover--active]="ringtone.showMenu">
+                  <a [href]="ringtone.downloadAppleUrl" target="_blank" class="ringtones__popover-item">iPhone (iOS)</a>
+                  <a [href]="ringtone.downloadAndroidUrl" target="_blank" class="ringtones__popover-item">Android</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ringtones__info">
+          <h3 class="ringtones__name">{{ ringtone.songName }}</h3>
+          <p class="ringtones__meta">{{ ringtone.bandName }}</p>
+        </div>
       </div>
     </div>
+
+    <div class="ringtones__nav-container">
+      <button class="ringtones__nav-btn" (click)="scrollLeft()" [disabled]="isAtStart" aria-label="Scroll Left">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <button class="ringtones__nav-btn" (click)="scrollRight()" [disabled]="isAtEnd" aria-label="Scroll Right">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+    </div>
+    
   </div>
-</div>
+</section>

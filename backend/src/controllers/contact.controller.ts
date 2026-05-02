@@ -70,6 +70,4 @@ export const sendContactMessage = async (req: Request, res: Response) => {
       error: error instanceof Error ? error.message : error,
     });
   }
-  console.log('MAIL_USER:', process.env.MAIL_USER);
-  console.log('MAIL_PASS:', process.env.MAIL_PASS ? 'Set' : 'Missing');
 };

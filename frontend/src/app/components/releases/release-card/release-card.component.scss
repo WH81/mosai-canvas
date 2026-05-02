@@ -1,0 +1,210 @@
+@use "index" as *;
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+/* =========================
+   Release Card (Grid-based)
+   ========================= */
+.card {
+  display: grid;
+  // Standardized columns to match the "invisible line" across the site
+  grid-template-columns: 72px 1fr auto; 
+  column-gap: 12px;
+  align-items: start;
+  // height: 100%;
+  // Subtle top border for list-style separation
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-block: $spacing-md;
+  padding: $spacing-sm;
+  transition: background 0.2s ease;
+  border-left: 1px outset transparent;
+  border-right: 1px outset transparent;
+  border-bottom: 1px outset transparent;
+
+  // Desktop adjustment: Matches the visual weight of Tour and About sections
+  @media (min-width: 860px) {
+    grid-template-columns: 130px 1fr auto;
+    column-gap: $spacing-sm;
+  }
+
+  &:hover {
+    box-shadow: 0 0 16px rgba(0, 0, 0, 0.6);
+    border: 1px outset rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* =========================
+   Featured / Latest modifier
+   ========================= */
+.card.featured {
+  // Maintaining grid consistency even for featured items
+  grid-template-columns: 72px 1fr auto;
+
+  @media (min-width: 860px) {
+    grid-template-columns: 120px 1fr auto;
+  }
+
+  .left .cover {
+    width: 72px;
+    height: 72px;
+
+    @media (min-width: 860px) {
+      width: 120px;
+      height: 120px;
+    }
+  }
+
+  .body {
+    gap: $spacing-xs;
+
+    .title {
+      @include text-style-primary($font-md, $font-lg, 1.2, 800);
+    }
+
+    .band {
+      color: var(--color-text-light);
+    }
+  }
+}
+
+/* =========================
+   Left / Cover
+   ========================= */
+.left {
+  .cover {
+    width: 72px;
+    height: 72px;
+    object-fit: cover;
+    display: block;
+    border-radius: 2px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+
+    // &:hover { margin-left: 1rem; }
+
+    @media (min-width: 860px) {
+      width: 125px;
+      height: 125px;
+    }
+  }
+}
+
+/* =========================
+   Body (Content Alignment)
+   ========================= */
+.body {
+  min-width: 0; // Prevents overflow in flex/grid containers
+
+  .meta-top {
+    .date {
+      font-family: $font-family-secondary;
+      font-size: $font-xs;
+      font-weight: 800;
+      color: rgba($text-color-light, 0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+    }
+
+    .title {
+      @include text-style-primary($font-sm, $font-md, 1.2, 600);
+      color: #ffffff;
+      margin-bottom: 6px;
+    }
+
+    .band {
+      @include text-style-secondary($font-xs, $font-sm, 1.4, 400);
+      text-transform: uppercase;
+      color: rgba($text-color-light, 0.7);
+      letter-spacing: 0.05em;
+    }
+
+    .album {
+      font-size: $font-xs;
+      color: rgba($text-color-light, 0.4);
+      margin-top: 4px;
+    }
+  }
+
+  .badges {
+    margin-top: $spacing-sm;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+
+    .badge {
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+      
+      &:hover { opacity: 0.8; }
+
+      img {
+        height: 24px;
+        @media (min-width: 860px) { height: 28px; }
+      }
+    }
+  }
+}
+
+/* =========================
+   Actions (Ellipsis Menu)
+   ========================= */
+.actions {
+  justify-self: end;
+  align-self: start;
+  position: relative;
+
+  .ellipsis {
+    background: transparent;
+    border: none;
+    padding: 0.5rem 1rem;
+    margin-right: -15px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+
+    &:hover { opacity: 1; }
+
+    .dot {
+      width: 4px;
+      height: 4px;
+      background: $text-color-light;
+      border-radius: 50%;
+    }
+  }
+
+  .menu {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    min-width: 180px;
+    background: #1a1a1a;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    z-index: 100;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+
+    li { list-style: none; }
+
+    button {
+      width: 100%;
+      padding: 10px 16px;
+      border: none;
+      background: transparent;
+      color: $text-color-light;
+      text-align: left;
+      font-size: $font-xs;
+      font-family: $font-family-secondary;
+      line-height: 1.7;
+      text-transform: uppercase;
+      cursor: pointer;
+
+      &:hover { background: rgba(255, 255, 255, 0.1); }
+    }
+  }
+}

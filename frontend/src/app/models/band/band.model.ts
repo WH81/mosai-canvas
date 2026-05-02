@@ -2,7 +2,7 @@ export interface Band {
   _id: any;
   name: string;
   slug: string;
-  description: string;
+  // description: string;
   image: string;
   logoType?: 'svg' | 'jpg';
   aboutImage?: string;
@@ -18,4 +18,7 @@ export interface Band {
     appleMusic?: string;
     soundCloud?: string;
   };
+  heroImage?: string;
+  bio: string;
+  members: string[];
 }

@@ -1,0 +1,63 @@
+<article class="card" [class.featured]="featured" [attr.aria-label]="release.title + ' by ' + release.artist">
+  <div class="left">
+    <!-- FIX: Changed coverArtUrl to coverUrl -->
+    <img class="cover" [src]="release.coverUrl || 'assets/placeholder.png'" [alt]="release.title + ' cover'">
+  </div>
+
+  <div class="body">
+    <div class="meta-top">
+      <div class="date" *ngIf="release.releaseDate">
+        {{ release.releaseDate | date:'MMM d, y':'UTC' | uppercase }}
+      </div>      
+      <div class="title">{{ release.title }}</div>
+      <div class="band">{{ release.artist }}</div>
+      <div class="album" *ngIf="release.calendarDescription">{{ release.calendarDescription }}</div>
+    </div>
+
+    <!-- streaming badges for featured/latest -->
+    <!-- Added isReleased() check to badges -->
+    <div class="badges" *ngIf="featured && isReleased()">
+      <a *ngIf="release?.appleMusicUrl || release.platforms?.appleMusic" class="badge" (click)="emit('listen_apple')" role="button" tabindex="0" aria-label="Listen on Apple Music">
+        <img src="/assets/apple-music-badge.svg" alt="Apple Music">
+      </a>
+      <a *ngIf="release?.spotifyUrl || release.platforms?.spotify" class="badge" (click)="emit('listen_spotify')" role="button" tabindex="0" aria-label="Listen on Spotify">
+        <img src="/assets/spotify-badge.svg" alt="Spotify">
+      </a>
+      <a *ngIf="release?.youtubeUrl || release.platforms?.youtube" class="badge" (click)="emit('listen_youtube')" role="button" tabindex="0" aria-label="Listen on YouTube">
+        <img src="/assets/youtube-badge.svg" alt="YouTube">
+      </a>
+    </div>
+  </div>
+
+  <div class="actions">
+    <!-- Ellipsis menu -->
+    <button class="ellipsis" (click)="toggleMenu()" [attr.aria-expanded]="menuOpen" aria-haspopup="menu" aria-label="More actions">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+    </button>
+
+    <ul *ngIf="menuOpen" class="menu" role="menu" aria-label="Release options">
+      <!-- Pre-release menu (if release date in future) -->
+      <ng-container *ngIf="isPreRelease()">
+        <li *ngIf="release.releaseDate">
+          <button (click)="emit('ics')">Add to Apple Calendar</button>
+        </li>
+        <li *ngIf="release.releaseDate">
+          <button (click)="emit('google')">Add to Google Calendar</button>
+        </li>
+      </ng-container>
+
+      <!-- Past/Listen options (if release date is past) -->
+      <ng-container *ngIf="isReleased()">
+        <li *ngIf="release.appleMusicUrl || release.platforms?.appleMusic">
+          <button (click)="emit('listen_apple')">Listen on Apple Music</button>
+        </li>
+        <li *ngIf="release.spotifyUrl || release.platforms?.spotify">
+          <button (click)="emit('listen_spotify')">Listen on Spotify</button>
+        </li>
+        <li *ngIf="release.youtubeUrl || release.platforms?.youtube">
+          <button (click)="emit('listen_youtube')">Listen on YouTube</button>
+        </li>
+      </ng-container>
+    </ul>
+  </div>
+</article>

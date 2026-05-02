@@ -12,47 +12,37 @@
       class="carousel-slide"
       *ngFor="let item of carouselItems; let i = index"
       [class.active]="i === currentIndex"
-      [ngStyle]="{ 'background-image': 'url(' + item.imageUrl + ')' }"
     >
+      <img
+        class="carousel-image"
+        [src]="item.imageUrl"
+        [alt]="item.songName || 'Carousel Image'"
+        draggable="false"
+      />
+
       <div class="gradient-overlay"></div>
 
-      <div class="carousel-content">
-        <h1
-          class="songName"
-          appScrollAnimate
-          [animationType]="'fade-slide'"
-          [animationDelay]="'0.15s'">
-          {{ item.songName }}
-        </h1>
-
-        <h2
-          class="bandName"
-          appScrollAnimate
-          [animationType]="'fade-slide'"
-          [animationDelay]="'0s'">
-          {{ item.bandName }}
-        </h2>
-      
-        <h4
-          class="formattedDate"
-          appScrollAnimate
-          [animationType]="'fade-slide'"
-          [animationDelay]="'0.3s'">
-            <span class="release-date">Out:</span> {{ item.formattedDate }}
+      <!-- Animate this block as a whole -->
+      <div
+        class="carousel-content"
+        appScrollAnimate
+        [animationType]="'fade-slide'"
+        [animationDelay]="'0s'"
+      >
+        <h1 class="songName">{{ item.songName }}</h1>
+        <h2 class="bandName">{{ item.bandName }}</h2>
+        <h4 class="formattedDate">
+          <span class="release-date">Out:</span> {{ item.formattedDate }}
         </h4>
-      
         <a
           class="carousel-button animated-button"
           [href]="item.buttonLink"
           target="_blank"
           rel="noopener noreferrer"
-          appScrollAnimate
-          [animationType]="'fade-slide'"
-          [animationDelay]="'0.45s'">
+        >
           {{ item.buttonText }}
         </a>
       </div>
-      
     </div>
   </div>
 
@@ -61,11 +51,10 @@
       *ngFor="let item of originalItems; let i = index"
       class="pagination-dot"
       [class.active]="activePaginationIndex === i"
-      (click)="selectSlide(i)">
-    </span>
+      (click)="selectSlide(i)"
+    ></span>
   </div>
 
-  <!-- Invisible click‑zones: left = prev, right = next -->
   <div class="carousel-click-zones">
     <div class="click-zone prev-zone" (click)="prevSlide()"></div>
     <div class="click-zone next-zone" (click)="nextSlide()"></div>

@@ -1,136 +1,246 @@
-@use 'index' as *;
-@use 'variables' as *;
-@use 'mixins' as m;
-@use 'mixins' as *;
+@use "index" as *;
 
 .mailing-list {
-  max-width: 800px;
-  margin: 0 auto;
-  @include component-spacing;
-  
-    h2 {
-      @include text-style-primary(clamp(2.5rem, 5vw, 4rem), clamp(3rem, 6vw, 5rem), 1.4, 700);
-      color: #7d7d7d;
-      padding: $spacing-title-vertical $spacing-title-horizontal;
+  position: relative;
+  overflow: hidden;
+  background: $background-dark;
+  padding: 6rem 0;
+
+  /* ===== READABILITY OVERLAY ===== */
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to right,
+      rgba($background-dark, 0.2) 0%,
+      rgba($background-dark, 0.6) 45%,
+      rgba($background-dark, 0.9) 65%,
+      rgba($background-dark, 1) 100%
+    );
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  /* ===== LAYOUT ===== */
+  &__wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $spacing-xl;
+    align-items: center;
+    position: relative;
+    z-index: 3;
+
+    @include respond-max(md) {
+      grid-template-columns: 1fr;
       text-align: center;
-      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+      gap: $spacing-lg;
     }
+  }
 
-    p {
-      @include m.text-style-secondary(1rem, 1.125rem, 1.7, 400);
-      color: #7d7d7d;
-      text-align: center;
-      margin-bottom: 3.5rem;
-      line-height: 1.6;
+  &__content {
+    .section-title {
+      margin-bottom: $spacing-md;
+      text-align: left;
+
+      @include respond-max(md) {
+        text-align: center;
+      }
     }
+  }
 
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-      margin-bottom: 5rem;
-      max-width: 500px;
-      margin: 0 auto;;
+  &__desc {
+    @include text-style-secondary($font-sm, $font-md, 1.6, 400);
+    color: rgba($text-color-light, 0.6);
+    max-width: 420px;
 
-      input {
-        background: transparent;
-        border: none;
-        border-bottom: 2px solid #666;
-        padding: 1rem 0;
-        color: #fff;
-        font-size: 1rem;
-        width: 100%;
-        margin-bottom: 1.5rem;
-        padding-left: 1rem;
+    @include respond-max(md) {
+      margin: 0 auto $spacing-xl;
+    }
+  }
 
-        &::placeholder {
-          color: #aaa;
-        }
+  /* ===== FORM CONTAINER (GLASS) ===== */
+  &__form-container {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(24px);
+    padding: $spacing-xl;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 8px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+  }
 
-        &:focus {
-          outline: none;
-          border-bottom: 2px solid #00e0ff; // Accent color
-        }
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+  }
+
+  /* ===== INPUTS ===== */
+  .form-group {
+    position: relative;
+    margin-bottom: $spacing-lg;
+
+    input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 1.8rem 0 0.5rem;
+      color: $text-color-light;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+
+      &:focus {
+        outline: none;
+        border-bottom-color: $gradient-start;
       }
 
-      .error {
-        color: #ff0000;
-        margin-top: -1rem;
-        margin-bottom: 2rem;
-      }
-
-      button {
-         /* Base styles for the button */
-        display: inline-block;
-        padding: 0.75rem 1rem;
-        font-size: 1.125rem;
-        font-weight: 600;
-        width: fit-content;
-        color: #ccc; /* Changed to white for better contrast with the gradient */
-        background-color: transparent; /* Makes the button background transparent */
-        border: 3px solid transparent; /* Required for border-image to work properly */
-        border-radius: 6px;
-        cursor: pointer;
-        text-decoration: none;
-        transition: all 0.3s ease; /* Smooth transition for hover effects */
-        text-align: center; /* Center text inside the button */
-        /* Gradient Border using border-image */
-        border-image: linear-gradient(to right, var(--primary-color), var(--secondary-color)) 1; /* '1' slices the image evenly */
-        border-image-slice: 1; /* Specifies how the image is sliced, '1' means no slicing */
-        border-image-outset: 0; /* Ensures the border doesn't extend beyond the element's box */
-        border-image-repeat: stretch; /* Stretches the image to fill the border area */
-        margin: auto;
-
-        &:hover {
-          color: #ccc;
-          background-color: #1a1a1a; /* Slightly visible background on hover */
-          border: 3px solid #ccc;
-          transform: scale(1.05); /* Slightly enlarge the button */
-          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-          transition: all 0.3s ease;
-        }
-
-        &:focus {
-          outline: none;
-          border-image: linear-gradient(to right, var(--secondary-color), var(--primary-color)) 1;
-          box-shadow: 0 0 0 3px rgba(var(--primary-color), 0.5), 0 4px 15px rgba(0, 0, 0, 0.3);
-        }
+      &:-webkit-autofill {
+        -webkit-text-fill-color: #fff;
+        -webkit-box-shadow: 0 0 0px 1000px $background-dark inset;
       }
     }
 
-    ul {
-      list-style: none;
-      padding: 0;
-
-      li {
-        background: #fafafa;
-        border: 1px solid #eee;
-        padding: 0.5rem;
-        border-radius: 0.5rem;
-        margin-bottom: 0.5rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
+    label {
+      position: absolute;
+      top: 1.8rem;
+      left: 0;
+      color: rgba(255, 255, 255, 0.4);
+      transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+      pointer-events: none;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-size: 0.85rem;
     }
+
+    input:focus + label,
+    input:not(:placeholder-shown) + label {
+      top: 0.3rem;
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: $gradient-start;
+      letter-spacing: 0.15em;
+    }
+
+    .required {
+      color: $gradient-start;
+      margin-left: 2px;
+    }
+
+    .error {
+      position: absolute;
+      right: 0;
+      top: -15px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #ff6b6b;
+      animation: fadeInError 0.3s ease forwards;
+    }
+  }
+
+  /* ===== BUTTON ===== */
+  &__submit {
+    width: 100%;
+    padding: $spacing-md;
+    background: transparent;
+    border: 1px solid $text-color-light;
+    color: $text-color-light;
+    text-transform: uppercase;
+    font-weight: 900;
+    letter-spacing: 0.2em;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+
+    &:hover:not(:disabled) {
+      background: $text-color-light;
+      color: $background-dark;
+      transform: translateY(-3px);
+    }
+
+    &:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+  }
+
+  /* ===== STATUS MESSAGES ===== */
+  .error-message {
+    margin-top: $spacing-md;
+    text-align: center;
+    font-size: 0.8rem;
+    color: #ff6b6b;
+    padding: $spacing-sm;
+    border: 1px solid rgba(255, 107, 107, 0.2);
+    background: rgba(255, 107, 107, 0.05);
+    text-transform: uppercase;
   }
 
   .success-message {
+    margin-top: $spacing-md;
     text-align: center;
-    font-size: 1.125rem;
-    color: #00e0ff; // Accent color
-    margin-top: 1rem;
-    padding: 1rem;
-    background-color: rgba(0, 224, 255, 0.1); // Light background for visibility
-    border-radius: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: $gradient-start;
+    padding: $spacing-sm;
+    border: 1px solid rgba($gradient-start, 0.3);
+    background: rgba($gradient-start, 0.05);
+    text-transform: uppercase;
   }
 
-  @media (max-width: 768px) {
-    .mailing-list h2, 
-    .mailing-list p, 
-    .mailing-list__details,
-    .mailing-list__form {
-      padding-left: 1rem;
-      padding-right: 1rem;
+  /* ===== PREMIUM WATERMARK (FIXED) ===== */
+  &__bg-text {
+    position: absolute;
+    right: -10%;
+    bottom: -15%;
+
+    /* KEY CHANGE: single letter instead of word */
+    font-size: 40vw;
+    font-weight: 900;
+    content: "C";
+    color: rgba(255, 255, 255, 0.025);
+    pointer-events: none;
+    z-index: 0;
+    line-height: 1;
+
+    /* premium depth */
+    filter: blur(4px);
+
+    /* fade edges */
+    mask-image: radial-gradient(
+      circle at center,
+      rgba(0, 0, 0, 0.6) 0%,
+      transparent 70%
+    );
+
+    transform: translateX(calc(var(--scroll-parallax, 0px) * 0.3));
+    transition: transform 0.2s ease-out;
+
+    @include respond-max(md) {
+      font-size: 60vw;
+      right: -20%;
+      bottom: -10%;
     }
   }
+}
+
+/* ===== ANIMATION ===== */
+@keyframes fadeInError {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.section-title-override { 
+  font-size: 4.5rem;
+  font-weight: bold;
+  line-height: 1.2;
+}

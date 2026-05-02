@@ -1,0 +1,47 @@
+.band-hero {
+  /* Increased height slightly to give the logo more "stage" */
+  min-height: 400px;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  height: 80vh;
+}
+
+.hero-overlay {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-container {
+  width: 95%;
+  /* Increased from 500px to 800px to let the wide text breathe */
+  max-width: 1200px; 
+  display: flex;
+  justify-content: center;
+  /* Removed padding to let the image use the full container width */
+}
+
+.hero-brand-logo {
+  width: 100%;
+  height: auto;
+  /* Increased max-height so it fills more of the vertical space */
+  max-height: 65vh; 
+  object-fit: contain;
+  
+  /* Standard brand elevation: helps the chrome/metal texture pop against the teal */
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.3));
+  
+  /* Soft entry animation for better UX */
+  animation: fadeInLogo 1s ease-out;
+}
+
+@keyframes fadeInLogo {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

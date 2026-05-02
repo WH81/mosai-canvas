@@ -1,9 +1,13 @@
-@use "variables" as *;
+@use 'index' as *;
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+html, body {
+  height: 100%;
 }
 
 body {
@@ -12,4 +16,6 @@ body {
   color: $text-color-light;
   letter-spacing: $letter-spacing-base;
   position: relative;
+  display: flex;
+  flex-direction: column;
 }

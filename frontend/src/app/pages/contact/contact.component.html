@@ -1,5 +1,5 @@
 <div class="contact-title-wrapper">
-  <h2 class="contact-title">Contact the Band</h2>
+  <h2 class="contact-title">Contact Us</h2>
 </div>
 
 <div class="contact">
@@ -9,67 +9,69 @@
     aria-describedby="formStatus"
     novalidate
   >
-    <!-- Name -->
-    <input
-      id="name"
-      formControlName="name"
-      type="text"
-      autocomplete="name"
-      placeholder="Full Name"
-      aria-label="Full Name"
-      [attr.aria-invalid]="submitted && f['name'].invalid"
-      required
-    />
-    <div class="error" *ngIf="submitted && f['name'].invalid">
-      Name must be 2–50 characters.
+    <!-- Full Name -->
+    <div class="form-group">
+      <input
+        id="name"
+        type="text"
+        formControlName="name"
+        placeholder=" "
+        required
+      />
+      <label for="name">Full Name <span class="required">*</span></label>
+      <div class="error" *ngIf="submitted && f['name'].invalid">
+        Name must be 2–50 characters.
+      </div>
     </div>
 
     <!-- Email -->
-    <input
-      id="email"
-      formControlName="email"
-      type="email"
-      autocomplete="email"
-      placeholder="Email"
-      aria-label="Email"
-      [attr.aria-invalid]="submitted && f['email'].invalid"
-      required
-    />
-    <div class="error" *ngIf="submitted && f['email'].invalid">
-      Please enter a valid email.
+    <div class="form-group">
+      <input
+        id="email"
+        type="email"
+        formControlName="email"
+        placeholder=" "
+        required
+      />
+      <label for="email">Email <span class="required">*</span></label>
+      <div class="error" *ngIf="submitted && f['email'].invalid">
+        Please enter a valid email address.
+      </div>
     </div>
 
     <!-- Subject -->
-    <input
-      id="subject"
-      formControlName="subject"
-      type="text"
-      maxlength="100"
-      placeholder="Subject"
-      aria-label="Subject"
-    />
-
-    <!-- Message -->
-    <textarea
-      id="message"
-      formControlName="message"
-      rows="5"
-      placeholder="Message"
-      aria-label="Message"
-      [attr.aria-invalid]="submitted && f['message'].invalid"
-      required
-    ></textarea>
-    <div class="error" *ngIf="submitted && f['message'].invalid">
-      Message must be 10–1000 characters.
+    <div class="form-group">
+      <input
+        id="subject"
+        type="text"
+        formControlName="subject"
+        placeholder=" "
+      />
+      <label for="subject">Subject</label>
     </div>
 
-    <!-- Submit -->
+    <!-- Message -->
+    <div class="form-group">
+      <textarea
+        id="message"
+        formControlName="message"
+        rows="5"
+        placeholder=" "
+        required
+      ></textarea>
+      <label for="message">Message <span class="required">*</span></label>
+      <div class="error" *ngIf="submitted && f['message'].invalid">
+        Message must be 10–1000 characters.
+      </div>
+    </div>
+
+    <!-- Submit Button -->
     <button type="submit" [disabled]="sending">
       {{ sending ? 'Sending…' : 'Send Message' }}
     </button>
   </form>
 
-  <!-- Live region -->
+  <!-- Live Region -->
   <p id="formStatus" class="visually-hidden" aria-live="polite">
     {{ successMessage }} {{ errorMessage }}
   </p>

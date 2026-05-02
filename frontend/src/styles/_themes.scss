@@ -1,47 +1,130 @@
 @use "sass:map";
-@use 'sass:color';
+@use "index" as *;
+
+$default-theme: (
+  "primary": #000000,
+  "secondary": #666666,
+  "tertiary": #b5b5b5,
+  "background-image": none,
+  "background": $background-dark,
+  "overlay": transparent,
+  "accent": #ff6d00,
+  "frame-bg": linear-gradient(180deg, #448aff 0%, #2962ff 100%),
+  "icon-base": #121212,
+  "icon-hover": #000000,
+);
 
 $themes: (
-  home: (
-    primary: #4A90E2,
-    secondary: #50E3C2,
-    background-image: url('/assets/pngs/music-mosaic-bg.jpg'),
-    overlay: #121212f2,
+  "home": (
+    "primary": #4a90e2,
+    "secondary": #50e3c2,
+    "accent": #50e3c2,
+    "frame-bg": linear-gradient(180deg, #4a90e2, #50e3c2 100%),
+    "frame-border": linear-gradient(180deg, #ff8f02 0%, #fe5f00 100%),
+    "background": $background-dark,
+    "section-text": $background-dark,
+    "icon-base": #121212,
+    "icon-hover": #000000,
   ),
-  contact: (
-    primary: #4A90E2,
-    secondary: #50E3C2,
-    background-image: url('/assets/pngs/music-mosaic-bg.jpg'),
-    overlay: rgba(18, 18, 18, 0.95),
+  "canvas-catalyst": (
+    "primary": #da97ff,
+    "secondary": #892cda,
+    "accent": #09CE11,
+    "frame-bg": linear-gradient(180deg, #efbd0a 0%, #9c7f2a 100%),
+    "frame-border": linear-gradient(180deg, #227853 0%, #0acf13 100%),
+    "background": linear-gradient(180deg, var(--primary) 0%, var(--secondary) 100%),
+    "section-text": $background-dark,
+    "icon-base": #121212,
+    "icon-hover": #000000,
   ),
-  canvas-catalyst: (
-    primary: #504564,
-    secondary: #dd6c34,
-    background: linear-gradient(to right, #504564, #dd6c34),
+  "cloud-canvas": (
+    "primary": #787fa4,
+    "secondary": #7795b3,
+    "accent": #ffc8f4,
+    "frame-bg": linear-gradient(180deg, #cf859b 0%, #d38397 100%),
+    "frame-border": linear-gradient(180deg, #fec9f4 0%, #e9deea 100%),
+    "frame-border-hover": linear-gradient(180deg, #ffb347 0%, #ff8f02 100%),
+    "background": linear-gradient(180deg, var(--primary) 0%, var(--secondary) 100%),
+    "section-text": #ffffff,
+    "icon-base": rgba(255, 255, 255, 0.9),
+    "icon-hover": #ffffff,
   ),
-  cloud-canvas: (
-    primary: #D38497,
-    secondary: #7795B3,
-    background: linear-gradient(to right, #7795B3, #D38497),
-    logo-bg: url('/assets/jpgs/cloud-canvas-bg.jpg'),
+  "rye-canvas": (
+    "primary": #96790b,
+    "secondary": #ffa705,
+    "accent": #a76709,
+    "frame-bg": linear-gradient(180deg, #47b43f 0%, #036c2a 100%),
+    "frame-border": linear-gradient(180deg, #d88413 0%, #a15e0c 100%),
+    "background": linear-gradient(180deg, var(--primary) 0%, var(--secondary) 100%),
+    "section-text": #ffffff,
+    "icon-base": rgba(255, 255, 255, 0.9),
+    "icon-hover": #ffffff,
   ),
-  rye-canvas: (
-    primary: #3BBA43,
-    secondary: #FFA804,
-    background: linear-gradient(to right, #3BBA43, #FFA804),
+  "wailing-canvas": (
+    "primary": #00ffdc,
+    "secondary": #09cafe,
+    "accent": #ff6d00,
+    "frame-bg": linear-gradient(180deg, #20c6fa 0%, #1f71f1 100%),
+    "frame-border": linear-gradient(180deg, #ff8f02 0%, #fe5f00 100%),
+    "frame-border-hover": linear-gradient(180deg, #ffb347 0%, #ff8f02 100%),
+    "background": linear-gradient(180deg, var(--primary) 0%, var(--secondary) 100%),
+    "section-text": $background-dark,
+    "icon-base": #121212,
+    "icon-hover": #000000,
   ),
-  wailing-canvas: (
-    background-image: url('/assets/pngs/wailing-canvas-bg.png'),
+  "phosphorescent-canvas": (
+    "primary": #20BE23,
+    "secondary": #4C6B04,
+    "accent": #71068A,
+    "frame-bg": linear-gradient(180deg, #06050A 0%, #010101 100%),
+    "frame-border": linear-gradient(180deg, #70068E 0%, #581948 100%),
+    "background": linear-gradient(180deg, var(--primary) 0%, var(--secondary) 100%),
+    "section-text": #ffffff,
+    "icon-base": rgba(255, 255, 255, 0.9),
+    "icon-hover": #ffffff,
   ),
-  phosphorescent-canvas: (
-    background-image: url('/assets/pngs/phosphorescent-canvas-bg.png'),
+  "flickering-canvas": (
+    "primary": #111111,
+    "secondary": #ffffff,
+    "accent": #ffffff,
+    "frame-bg": linear-gradient(180deg, #222 0%, #050505 100%),
+    "frame-border": linear-gradient(180deg, #ff8f02 0%, #fe5f00 100%),
+    "background": linear-gradient(180deg, var(--primary) 0%, var(--secondary) 100%),
+    "section-text": $background-dark,
+    "icon-base": #121212,
+    "icon-hover": #000000,
   ),
-  flickering-canvas: (
-    background-image: url('/assets/pngs/flickering-canvas-bg.png'),
-  ),
-  staind-glass-canvas: (
-    background-image: url('/assets/pngs/staind-glass-canvas-bg.png'),
-    overlay: rgba(18, 18, 18, 0.85),
-    band-hero-bg: rgba(0, 0, 0, 1),
+  "stained-glass-canvas": (
+    "primary": #111111,
+    "secondary": #ffffff,
+    "accent": #ffffff,
+    "frame-bg": linear-gradient(180deg, #222 0%, #050505 100%),
+    "frame-border": linear-gradient(180deg, #ff8f02 0%, #fe5f00 100%),
+    "background": linear-gradient(180deg, var(--primary) 0%, var(--secondary) 100%),
+    "section-text": $background-dark,
+    "icon-base": #121212,
+    "icon-hover": #000000,
   ),
 );
+
+/* --- Variable Generation Logic --- */
+:root {
+  @each $name, $value in $default-theme {
+    --#{$name}: #{$value};
+  }
+  // Global defaults for the icon system
+  --icon-color: var(--icon-base);
+  --icon-hover-color: var(--icon-hover);
+}
+
+@each $theme-name, $theme-map in $themes {
+  .#{$theme-name}-theme {
+    @each $key, $value in $theme-map {
+      --#{$key}: #{$value};
+    }
+    
+    // Explicitly update the icon tokens based on the theme map
+    --icon-color: var(--icon-base);
+    --icon-hover-color: var(--icon-hover);
+  }
+}

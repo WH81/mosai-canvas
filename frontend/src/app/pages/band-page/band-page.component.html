@@ -1,0 +1,63 @@
+<section class="band-content" *ngIf="bandData">
+  <div
+    class="band-hero"
+    [style.background-image]="
+      bandData.heroImage ? 'url(' + bandData.heroImage + ')' : 'none'
+    "
+  >
+    <div class="hero-overlay">
+      <div class="logo-container">
+        <img
+          [src]="'/assets/svgs/logos/' + bandSlug + '.svg'"
+          [alt]="bandData.name + ' Logo'"
+          class="hero-brand-logo"
+          (error)="handleLogoError($event)"
+        />
+      </div>
+    </div>
+  </div>
+
+  <div class="c-band-link-bar" *ngIf="bandLinks.social || bandLinks.streaming">
+    <app-social-links
+      [socialLinks]="bandSocials"
+      variant="default"
+      size="large"
+    >
+    </app-social-links>
+
+    <!-- <span
+      class="link-divider"
+      *ngIf="bandLinks.social && bandLinks.streaming"
+    ></span> -->
+
+    <app-streaming-links
+      [streamingLinks]="bandLinks.streaming"
+      variant="default"
+      size="large"
+    ></app-streaming-links>
+  </div>
+
+  <app-about [band]="bandData"></app-about>
+
+  <app-members-list [bandSlug]="bandSlug"></app-members-list>
+
+  <app-youtube-videos
+    *ngIf="bandSlug"
+    [bandSlug]="bandSlug"
+  ></app-youtube-videos>
+
+  <app-latest-releases
+    [latestReleases]="latestReleases"
+    [bandSlug]="bandSlug"
+  ></app-latest-releases>
+  
+  <app-pre-releases
+    [releases]="preReleases"
+    [bandSlug]="bandSlug"
+  ></app-pre-releases>
+
+  <app-past-releases
+    [releases]="pastReleases"
+    [bandSlug]="bandSlug"
+  ></app-past-releases>
+</section>

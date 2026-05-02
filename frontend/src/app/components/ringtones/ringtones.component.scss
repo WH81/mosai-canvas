@@ -1,121 +1,199 @@
-@use "../../../styles/_variables.scss" as *;
-@use "../../../styles/_mixins.scss" as *;
-@use "../../../styles/_breakpoints.scss" as *;
+@use "index" as *;
 
-.ringtones-container {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
-  max-width: 1200px;
-  margin: 0 auto;
-  @include component-spacing;
-
-  @include respond-min(md) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-.ringtone-title-wrapper {
-  grid-column: 1 / -1;
-  text-align: center;
-
-  .ringtone-title {
-    @include text-style-primary(clamp(2.5rem, 5vw, 4rem), clamp(3rem, 6vw, 5rem), 1.4, 700);
-    color: #7d7d7d;
-    padding: $spacing-title-vertical $spacing-title-horizontal;
-    text-align: center;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-    margin-top: -0.625rem;
-
-    will-change: opacity, transform;
-  }
-}
-
-.ringtone-card {
-  // background: var(--accent-color);
-  border-radius: 1rem;
-  // box-shadow: rgba(0, 0, 0, 0.12) 0px 4px 8px;
-  padding: 3.5rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-
-  /* Only hover transition; remove transform transition to prevent conflict */
-  transition: box-shadow 0.3s;
-
-  will-change: opacity, transform;
-
-  &:hover {
-    transform: translateY(-3px);
-    box-shadow: rgba(0, 0, 0, 0.18) 0px 6px 12px;
-    transition: transform 0.3s, box-shadow 0.3s; // Only trigger on hover
-  }
-
-  .ringtone-thumbnail {
-    width: 80px;
-    height: 80px;
-    border-radius: 0.5rem;
-    object-fit: cover;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-  }
-
-  .ringtone-info {
-    flex: 1;
+.ringtones {
+  position: relative;
+  
+  .container {
     display: flex;
     flex-direction: column;
+  }
 
-    h3 {
-      font-size: 1.25rem;
-      font-weight: 700;
-      margin: 0 0 0.25rem 0;
-      color: var(--text-color);
+  &__title-wrapper {
+    padding-left: 0;
+  }
+
+  &__slider {
+    display: flex;
+    gap: $spacing-md; 
+    overflow-x: auto;
+    padding-block: $spacing-sm $spacing-xl;
+    scrollbar-width: none;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    
+    &::-webkit-scrollbar { display: none; }
+  }
+
+  &__card {
+    flex: 0 0 calc((100% - (#{$spacing-md} * 3)) / 4); 
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+
+    &:hover {
+      transform: translateY(-8px);
+      .ringtones__thumbnail { transform: scale(1.05); }
     }
 
-    p {
-      font-size: 1.125rem;
-      color: var(--text-muted);
-      margin: 0 0 0.5rem 0;
-    }
-
-    .controls {
-      display: flex;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-
-      button,
-      .btn {
-        @include text-style-primary(14px, 18px, 1.3, 600);
-        padding: 0.4rem 0.8rem;
-        border-radius: 0.375rem;
-        border: none;
-        background: var(--accent-color);
-        color: #fff;
-        text-decoration: none;
-        transition: background 0.3s;
-
-        &:hover {
-          background: var(--accent-hover);
-        }
-      }
-
-      button {
-        cursor: pointer;
-      }
+    @include respond-max(md) {
+      flex: 0 0 85%;
     }
   }
 
-  @include respond-max(md) {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+  &__media-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: #111;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+    border-radius: 4px;
+  }
 
-    .ringtone-info {
-      h3, p {
-        text-align: center;
-      }
-      .controls {
-        justify-content: center;
-      }
+  &__thumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+  }
+
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 80%);
+    display: flex;
+    align-items: flex-end;
+    padding: $spacing-md;
+    z-index: 2;
+
+    // Desktop: Show on hover
+    @media (min-width: 1025px) {
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      .ringtones__card:hover & { opacity: 1; }
     }
+
+    // Mobile/Tablet: Always show buttons for touch interaction
+    @media (max-width: 1024px) {
+      opacity: 1;
+    }
+
+    // Force visible if playing or menu is open
+    &--active { 
+      opacity: 1 !important; 
+    }
+  }
+
+  &__overlay-footer {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    position: relative;
+  }
+
+  &__action-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(12px);
+    color: #ffffff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: all 0.2s ease;
+
+    @media (max-width: 768px) {
+      width: 48px; // Larger touch target
+      height: 48px;
+    }
+
+    &:hover { 
+      background: #ffffff; 
+      color: #000000; 
+      border-color: #ffffff;
+    }
+
+    svg { 
+      width: 22px; 
+      height: 22px; 
+      display: block;
+    }
+  }
+
+  &__popover {
+    position: absolute;
+    bottom: calc(100% + 12px); 
+    right: 0;
+    min-width: 160px;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: $spacing-xs 0;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(10px);
+    transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+    z-index: 1000;
+
+    &--active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+  }
+
+  &__popover-item {
+    display: block;
+    padding: $spacing-sm $spacing-md;
+    color: $text-color-light;
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-family: $font-family-secondary;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    &:hover { background: rgba(255, 255, 255, 0.1); }
+  }
+
+  &__info { margin-top: $spacing-md; }
+  &__name { 
+    @include text-style-primary($font-md, $font-lg, 1.1, 900);
+    text-transform: uppercase;
+    color: $text-color-light;
+    margin-bottom: 4px;
+  }
+
+  &__meta { 
+    font-family: $font-family-secondary;
+    @include text-style-secondary($font-xs, $font-sm, 1.4, 700);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba($text-color-light, 0.6);
+  }
+
+  &__nav-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: $spacing-sm;
+  }
+
+  &__nav-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: transparent;
+    border: 1px solid rgba($text-color-light, 0.1);
+    color: $text-color-light;
+    margin-left: $spacing-xs;
+    cursor: pointer;
+    transition: all 0.2s;
+    &:hover:not(:disabled) { background: rgba($text-color-light, 0.1); border-color: $text-color-light; }
+    &:disabled { opacity: 0.1; cursor: default; }
   }
 }

@@ -1,5 +1,49 @@
-.container {
-    max-width: 1600px;
-    margin: 0 auto;
-    padding: 0 1rem;
+@use 'breakpoints' as *;
+@use 'variables' as *;
+
+app-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%; // Inherits from body's height
+  width: 100%;
+}
+
+// 1. THE SECTION WRAPPER (The l- prefix stands for Layout)
+.l-section {
+  background: $background-dark;
+  display: block;
+  width: 100%;
+  padding-block: var(--section-spacing, 80px);
+  container-type: inline-size;
+
+  // MODIFIER: If a section needs to be flush (e.g., Hero/Footer)
+  &--flush {
+    padding-block: 0;
   }
+
+  @include respond-min(md) {
+    padding-block: 60px; 
+  }
+
+  @include respond-min(lg) {
+    padding-block: 80px; // Maximum "breathing room" for desktop
+  }
+}
+
+// 2. THE CONTAINER (The "Constraint")
+.container {
+  width: 100%;
+  // Set these in your _variables.scss or :root
+  max-width: var(--container-max-width, 1400px); 
+  margin-inline: auto;
+  padding-inline: var(--container-gutter, 2rem);
+  display: flow-root;
+}
+
+// 3. THE GRID SYSTEM (Optional but recommended)
+// A modern layout file usually includes a simple "Auto-Grid"
+.l-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+}

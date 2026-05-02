@@ -2,5 +2,46 @@
 <app-carousel></app-carousel>
 <app-about></app-about>
 <app-tour></app-tour>
+<app-releases-page></app-releases-page>
 <app-ringtones></app-ringtones>
 <app-mailing-list></app-mailing-list>
+
+<section class="l-section">
+  <div class="container">
+    <div class="get-connected">
+      <div class="get-connected__grid">
+        <div class="get-connected__content">
+          <h2 class="section-title get-connected__title">Get Connected</h2>
+          <p class="get-connected__desc">
+            Find us across all major social platforms and streaming services. We
+            want to hear from you!
+          </p>
+        </div>
+
+        <div class="get-connected__card">
+          <div class="get-connected__links-group">
+            <div class="get-connected__social">
+              <app-social-links
+                *ngIf="socialLinks"
+                [socialLinks]="socialLinks"
+                variant="glass"
+                size="large"
+              >
+              </app-social-links>
+            </div>
+
+            <div class="get-connected__streaming">
+              <app-streaming-links
+                *ngIf="streamingLinks"
+                [streamingLinks]="streamingLinks"
+                variant="glass"
+                size="large"
+              >
+              </app-streaming-links>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
