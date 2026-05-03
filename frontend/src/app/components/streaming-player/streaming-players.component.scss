@@ -1,32 +1,85 @@
-@use '../../../styles/breakpoints' as *;
+@use "../../../styles/breakpoints" as *;
 
 .streaming-players-container {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  align-items: center;
   width: 100%;
 
+  // Vertical spacing from page elements; horizontal padding for mobile safety
+  padding: 3.5rem 1.25rem;
+  gap: 3rem;
+
+  .player-section {
+    width: 100%;
+    /* 
+       800px is wide enough to prevent text truncation for most track names 
+       while maintaining a "compact" professional aesthetic.
+    */
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
   .player-wrapper {
-    border-radius: 12px;
+    width: 100%;
+    border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
+
+    // Depth and definition against the theme colors
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    // Blends with both mosaic and wailing canvas backgrounds
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     &:hover {
-      transform: scale(1.02);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45);
+    }
+
+    iframe {
+      display: block;
+      width: 100%;
+      border: none;
     }
   }
 
-  .spotify iframe {
-    height: 80px;
-    @include respond-min(md) {
-      height: 100px;
+  // ── Spotify ─────────────────────────────────────────────────────────
+  .spotify {
+    iframe {
+      height: var(--spotify-player-height, 580px);
+      width: 100%;
+      border-radius: 12px;
+      border: none;
     }
   }
 
-  .apple-music iframe {
-    aspect-ratio: 16/9;
-    width: 100%;
+  // ── Apple Music ─────────────────────────────────────────────────────
+  .apple-music {
+    iframe {
+      height: 450px;
+
+      @include respond-min(md) {
+        height: 500px;
+      }
+    }
   }
-  
+
+  // Accessible label for all canvas themes
+  .player-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    // Uses CSS variable for theme compatibility as per saved info
+    color: var(--text-primary, #ffffff);
+    opacity: 0.85;
+    margin-left: 0.25rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
 }

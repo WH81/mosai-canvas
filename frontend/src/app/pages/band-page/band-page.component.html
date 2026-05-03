@@ -1,4 +1,6 @@
 <section class="band-content" *ngIf="bandData">
+ 
+  <!-- ── Hero ─────────────────────────────────────────────────────────── -->
   <div
     class="band-hero"
     [style.background-image]="
@@ -16,48 +18,55 @@
       </div>
     </div>
   </div>
-
+ 
+  <!-- ── Social + Streaming Link Bar ──────────────────────────────────── -->
   <div class="c-band-link-bar" *ngIf="bandLinks.social || bandLinks.streaming">
     <app-social-links
       [socialLinks]="bandSocials"
       variant="default"
       size="large"
-    >
-    </app-social-links>
-
-    <!-- <span
-      class="link-divider"
-      *ngIf="bandLinks.social && bandLinks.streaming"
-    ></span> -->
-
+    ></app-social-links>
+ 
     <app-streaming-links
       [streamingLinks]="bandLinks.streaming"
       variant="default"
       size="large"
     ></app-streaming-links>
   </div>
-
-  <app-about [band]="bandData"></app-about>
-
+ 
+  <!-- ── About + Streaming Player (right column inside About) ──────────
+       streamingPlayer is passed into AboutComponent which handles
+       the watermark ↔ player swap internally.
+  ─────────────────────────────────────────────────────────────────────── -->
+  <app-about
+    [band]="bandData"
+    [streamingPlayer]="streamingPlayer"
+  ></app-about>
+ 
+  <!-- ── Members ───────────────────────────────────────────────────────── -->
   <app-members-list [bandSlug]="bandSlug"></app-members-list>
-
+ 
+  <!-- ── YouTube Videos ───────────────────────────────────────────────── -->
   <app-youtube-videos
     *ngIf="bandSlug"
     [bandSlug]="bandSlug"
   ></app-youtube-videos>
-
+ 
+  <!-- ── Releases ──────────────────────────────────────────────────────── -->
   <app-latest-releases
     [latestReleases]="latestReleases"
     [bandSlug]="bandSlug"
   ></app-latest-releases>
-  
+ 
   <app-pre-releases
     [releases]="preReleases"
     [bandSlug]="bandSlug"
   ></app-pre-releases>
-
+ 
   <app-past-releases
     [releases]="pastReleases"
     [bandSlug]="bandSlug"
   ></app-past-releases>
+ 
 </section>
+ 
