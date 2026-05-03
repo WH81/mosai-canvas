@@ -1,41 +1,38 @@
-<div class="streaming-players-container">
-  <div *ngIf="spotifySafeUrl" class="player-wrapper spotify">
+<!-- Only render the section if at least one player URL is available -->
+<section
+  *ngIf="hasAnyPlayer"
+  class="streaming-players-container"
+  aria-label="Music Players"
+>
+ 
+  <!-- ── Spotify Player ──────────────────────────────────────────────── -->
+  <div *ngIf="hasSpotify" class="player-wrapper spotify">
     <iframe
       [src]="spotifySafeUrl"
       width="100%"
-      height="600"
+      [height]="playerHeight"
       frameborder="0"
       allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+      allowfullscreen
       loading="lazy"
-      title="Spotify Player"
-      style="border-radius: 12px; max-width: 800px; min-height: 600px;"
+      title="Spotify Artist Player"
+      aria-label="Spotify music player"
     ></iframe>
   </div>
-
-  <div *ngIf="appleMusicSafeUrl" class="player-wrapper apple-music">
+ 
+  <!-- ── Apple Music Player ─────────────────────────────────────────── -->
+  <div *ngIf="hasAppleMusic" class="player-wrapper apple-music">
     <iframe
       [src]="appleMusicSafeUrl"
       width="100%"
-      height="450"
+      [height]="playerHeight"
       frameborder="0"
-      allow="autoplay *; encrypted-media *;"
+      allow="autoplay *; encrypted-media *; fullscreen *"
       loading="lazy"
       title="Apple Music Player"
-      style="width: 100%; max-width: 660px; overflow: hidden; background: transparent;"
+      aria-label="Apple Music player"
       sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation"
     ></iframe>
   </div>
-</div>
-  
-<!-- <iframe allow="autoplay *; encrypted-media *;" frameborder="0" height="450"
-  style="width:100%;max-width:660px;overflow:hidden;background:transparent;"
-  sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation"
-  src="https://embed.music.apple.com/us/album/never-say-die/785234437">
-</iframe>
-
-<iframe data-testid="embed-iframe" style="border-radius:12px;max-width:800px;min-height:600px;"
-  src="https://open.spotify.com/embed/album/6eh82ojicL8RSJF7GkYTh7?utm_source=generator&theme=0"
-  width="100%" height="auto" frameBorder="0" allowfullscreen=""
-  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-  loading="lazy">
-</iframe>  -->
+ 
+</section>

@@ -1,11 +1,13 @@
 <section class="l-section" aria-labelledby="about-title">
   <div class="container">
     <div class="about-content">
+ 
+      <!-- ── Left Column: Text ─────────────────────────────────────────── -->
       <div class="about-text-wrapper">
         <h2 class="section-title" appScrollAnimate animationType="fade-slide">
           About
         </h2>
-
+ 
         <ng-container *ngIf="band; else homeAbout">
           <p
             class="about-body"
@@ -18,7 +20,7 @@
             {{ band.bio }}
           </p>
         </ng-container>
-
+ 
         <ng-template #homeAbout>
           <div *ngIf="loading" class="loading">Loading...</div>
           <div *ngFor="let about of aboutList; let i = index">
@@ -34,12 +36,32 @@
           </div>
         </ng-template>
       </div>
-
-      <div class="about-visual-accent" aria-hidden="true">
+ 
+      <!-- ── Right Column: Player (band page) OR Watermark (home page) ── -->
+ 
+      <!-- BAND PAGE: Spotify player replaces watermark -->
+      <div
+        *ngIf="showStreamingPlayer"
+        class="about-visual-accent about-player"
+        aria-label="Music player"
+      >
+        <app-streaming-players
+          [streamingPlayer]="streamingPlayer"
+        ></app-streaming-players>
+      </div>
+ 
+      <!-- HOME PAGE (or band page with no player data): watermark as before -->
+      <div
+        *ngIf="showWatermark"
+        class="about-visual-accent"
+        aria-hidden="true"
+      >
         <span #parallaxText class="vertical-brand">
           {{ band ? band.name : "MOSAI CANVAS" }}
         </span>
       </div>
+ 
     </div>
   </div>
 </section>
+ 
