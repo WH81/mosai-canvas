@@ -1,7 +1,7 @@
-<div *ngIf="band" class="band-logo-wrapper">
+<div *ngIf="band?.bandLogo" class="band-logo-wrapper">
   <img
     [src]="getBandLogo()"
-    [alt]="band.name + ' logo'"
+    [alt]="band?.name + ' logo'"
     class="band-logo-image"
     loading="lazy"
   />

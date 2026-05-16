@@ -1,7 +1,7 @@
-<section class="latest-drops latest-drops--full-bleed">
+<section class="latest-drops latest-drops--full-bleed" *ngIf="latestReleases.length > 0">
   <div class="latest-drops__bg-overlay"></div>
   
-  <header class="latest-header" *ngIf="latestReleases.length > 0">
+  <header class="latest-header">
     <span class="eyebrow">NEW MUSIC // {{ displayYear }}</span>
     <h2 class="section-title">Latest release</h2>
   </header>

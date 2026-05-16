@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import path from 'path';
 import fs from 'fs';
-import Gallery from '../models/gallery';
+import Gallery from '../models/gallery.model';
 
 /**
  * GET: Retrieve all gallery items

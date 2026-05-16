@@ -4,10 +4,8 @@ export interface IBand {
   _id?: Types.ObjectId;
   name: string;
   slug: string;
-  // description?: string;
   image?: string;
-  aboutImage?: string;
-  logoType?: 'svg' | 'jpg';
+  bandLogo?: string;
   youtubeChannelId?: string;
   bio?: string;
   members?: Types.ObjectId[];

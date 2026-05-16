@@ -19,7 +19,7 @@ export class StreamingLinksComponent {
     
     const mapping = [
       { key: 'spotify', icon: 'fa-brands fa-spotify', label: 'Spotify' },
-      { key: 'appleMusic', icon: 'fab fa-itunes', label: 'Apple Music' },
+      { key: 'appleMusic', icon: 'fab fa-apple', label: 'Apple Music' },
       { key: 'soundCloud', icon: 'fa-brands fa-soundcloud', label: 'SoundCloud' }
     ];
 

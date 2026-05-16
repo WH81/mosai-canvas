@@ -22,7 +22,7 @@ import streamingPlayersRoutes from './routes/streaming-players.routes';
 import releaseRoutes from './routes/release.routes';
 import youtubeRoutes from './routes/youtube.routes';
 import galleryRoutes from './routes/gallery.routes';
-import spotifyRoutes from './routes/spotify.routes'; // NEW
+import spotifyRoutes from './routes/spotify.routes'; 
  
 import { errorHandler } from './middleware/error.middleware';
  
@@ -48,21 +48,20 @@ app.use(
 );
  
 // ─── Helmet / CSP ─────────────────────────────────────────────────────────────
-// IMPORTANT: connectSrc must include Spotify's API and accounts domains so
-// the Express server can make outbound Spotify token + data requests,
-// and so the Angular frontend can call our /api/spotify/* endpoints.
+// Unified Helmet config allowing Spotify and Cloudinary
 app.use(
   helmet({
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
  
-        // Allow images from your app, Spotify CDN (album art), and general https
+        // Allow images from your app, Spotify CDN, and Cloudinary
         imgSrc: [
           "'self'",
           'data:',
           'https:',
-          'https://i.scdn.co',         // Spotify album/artist images
+          'https://i.scdn.co',         
+          'https://res.cloudinary.com'
         ],
  
         scriptSrc: ["'self'"],
@@ -72,11 +71,11 @@ app.use(
         // Allow your backend to make outbound calls to Spotify
         connectSrc: [
           "'self'",
-          'https://api.spotify.com',           // Spotify Web API
-          'https://accounts.spotify.com',      // Spotify token endpoint
+          'https://api.spotify.com',
+          'https://accounts.spotify.com',
         ],
  
-        // Allow Spotify's Web Playback iframe if you ever embed it
+        // Allow Spotify's Web Playback iframe
         frameSrc: [
           "'self'",
           'https://open.spotify.com',
@@ -95,6 +94,7 @@ app.use(
 app.use(compression());
  
 // ─── Static Assets ────────────────────────────────────────────────────────────
+// Note: Keep this until your database migration to Cloudinary is 100% verified
 app.use('/assets/gallery', express.static(path.join(__dirname, 'src/assets/gallery')));
  
 // ─── API Routes ───────────────────────────────────────────────────────────────

@@ -12,10 +12,11 @@ import { Band } from '../../models/band/band.model';
 export class BandLogoComponent {
   @Input() band?: Band;
 
+  /**
+   * Returns the Cloudinary URL from the database.
+   * Logic is now simplified as we no longer use local assets or logoType.
+   */
   getBandLogo(): string {
-    if (!this.band) return '';
-    const ext = this.band.logoType || 'svg';
-    const folder = ext === 'jpg' ? 'jpgs' : 'svgs';
-    return `assets/${folder}/${this.band.slug}.${ext}`;
+    return this.band?.bandLogo || '';
   }
 }
