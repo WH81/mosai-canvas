@@ -2,10 +2,8 @@ export interface Band {
   _id: any;
   name: string;
   slug: string;
-  // description: string;
   image: string;
-  logoType?: 'svg' | 'jpg';
-  aboutImage?: string;
+  bandLogo?: string;
   socialLinks?: {
     facebook?: string;
     instagram?: string;

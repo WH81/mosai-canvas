@@ -77,7 +77,7 @@ export class BandPageComponent implements OnInit, OnDestroy {
     this.pastReleases = [];
     this.bandSocials = undefined;
     this.bandLinks = { social: {}, streaming: {} };
-    this.streamingPlayer = null; // ← ADDED
+    this.streamingPlayer = null;
   }
  
   private loadBandData(): void {
