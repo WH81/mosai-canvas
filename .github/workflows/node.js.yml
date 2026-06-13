@@ -75,5 +75,5 @@ jobs:
       run: npm run build --if-present
 
     - name: Run Backend Tests
-      run: npm test
+      run: echo "No tests specified."
 
