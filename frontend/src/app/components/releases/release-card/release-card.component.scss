@@ -182,7 +182,7 @@
     position: absolute;
     right: 0;
     top: 100%;
-    min-width: 180px;
+    min-width: 210px; // Slightly widened to make room for logos comfortably
     background: #1a1a1a;
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 4px;
@@ -203,8 +203,24 @@
       line-height: 1.7;
       text-transform: uppercase;
       cursor: pointer;
+      
+      // Layout alignment for logos and text
+      display: flex;
+      align-items: center;
+      gap: 10px;
 
-      &:hover { background: rgba(255, 255, 255, 0.1); }
+      &:hover { 
+        background: rgba(255, 255, 255, 0.1); 
+        
+        .apple-icon { color: #ffffff; }
+        .google-icon { color: #4285F4; } // Subtle branding pop on hover
+      }
+
+      .menu-icon {
+        flex-shrink: 0;
+        color: rgba($text-color-light, 0.7);
+        transition: color 0.2s ease;
+      }
     }
   }
 }

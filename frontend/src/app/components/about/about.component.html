@@ -1,45 +1,49 @@
 <section class="l-section" aria-labelledby="about-title">
   <div class="container">
     <div class="about-content">
- 
+
       <!-- ── Left Column: Text ─────────────────────────────────────────── -->
       <div class="about-text-wrapper">
         <h2 class="section-title" appScrollAnimate animationType="fade-slide">
           About
         </h2>
- 
+
         <ng-container *ngIf="band; else homeAbout">
           <p
             class="about-body"
+            [appScrollTypewriter]="band.bio"
+            [typewriterScrollRange]="700"
+            [typewriterStartOffset]="0.8"
             appScrollAnimate
             animationType="fade-slide"
             animationDelay="0.1s"
-            aria-live="polite"
-            title="Band biography"
-          >
-            {{ band.bio }}
-          </p>
+            aria-hidden="true"
+          ></p>
+          <p class="sr-only">{{ band.bio }}</p>
         </ng-container>
- 
+
         <ng-template #homeAbout>
           <div *ngIf="loading" class="loading">Loading...</div>
+
           <div *ngFor="let about of aboutList; let i = index">
             <p
               class="about-body"
+              [appScrollTypewriter]="about.body"
+              [typewriterScrollRange]="600"
+              [typewriterStartOffset]="0.8"
               appScrollAnimate
               [animationType]="'fade-slide'"
               [animationDelay]="i * 0.15 + 's'"
-              title="About the band"
-            >
-              {{ about.body }}
-            </p>
+              aria-hidden="true"
+            ></p>
+            <p class="sr-only">{{ about.body }}</p>
           </div>
         </ng-template>
       </div>
- 
+
       <!-- ── Right Column: Player (band page) OR Watermark (home page) ── -->
- 
-      <!-- BAND PAGE: Spotify player replaces watermark -->
+
+      <!-- BAND PAGE: Spotify player -->
       <div
         *ngIf="showStreamingPlayer"
         class="about-visual-accent about-player"
@@ -49,8 +53,8 @@
           [streamingPlayer]="streamingPlayer"
         ></app-streaming-players>
       </div>
- 
-      <!-- HOME PAGE (or band page with no player data): watermark as before -->
+
+      <!-- HOME PAGE (or band page with no player data): watermark -->
       <div
         *ngIf="showWatermark"
         class="about-visual-accent"
@@ -60,8 +64,7 @@
           {{ band ? band.name : "MOSAI CANVAS" }}
         </span>
       </div>
- 
+
     </div>
   </div>
 </section>
- 
