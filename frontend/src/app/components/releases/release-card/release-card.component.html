@@ -1,6 +1,5 @@
 <article class="card" [class.featured]="featured" [attr.aria-label]="release.title + ' by ' + release.artist">
   <div class="left">
-    <!-- FIX: Changed coverArtUrl to coverUrl -->
     <img class="cover" [src]="release.coverUrl || 'assets/placeholder.png'" [alt]="release.title + ' cover'">
   </div>
 
@@ -14,8 +13,6 @@
       <div class="album" *ngIf="release.calendarDescription">{{ release.calendarDescription }}</div>
     </div>
 
-    <!-- streaming badges for featured/latest -->
-    <!-- Added isReleased() check to badges -->
     <div class="badges" *ngIf="featured && isReleased()">
       <a *ngIf="release?.appleMusicUrl || release.platforms?.appleMusic" class="badge" (click)="emit('listen_apple')" role="button" tabindex="0" aria-label="Listen on Apple Music">
         <img src="/assets/apple-music-badge.svg" alt="Apple Music">
@@ -30,23 +27,30 @@
   </div>
 
   <div class="actions">
-    <!-- Ellipsis menu -->
     <button class="ellipsis" (click)="toggleMenu()" [attr.aria-expanded]="menuOpen" aria-haspopup="menu" aria-label="More actions">
       <span class="dot"></span><span class="dot"></span><span class="dot"></span>
     </button>
 
     <ul *ngIf="menuOpen" class="menu" role="menu" aria-label="Release options">
-      <!-- Pre-release menu (if release date in future) -->
       <ng-container *ngIf="isPreRelease()">
         <li *ngIf="release.releaseDate">
-          <button (click)="emit('ics')">Add to Apple Calendar</button>
+          <button (click)="emit('ics')">
+            <svg class="menu-icon apple-icon" viewBox="0 0 170 170" width="16" height="16" fill="currentColor" aria-hidden="true">
+              <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.34.13-9.13-1.92-14.36-6.13-3.57-2.81-7.39-7.53-11.46-14.15-4.58-7.38-8.32-15.52-11.23-24.42-3.79-11.49-5.69-22.06-5.69-31.71 0-14.75 3.69-26.6 11.08-35.56 5.57-6.72 12.42-10.13 20.52-10.24 4.01 0 8.82 1.23 14.42 3.69 5.6 2.45 9.04 3.68 10.33 3.68 1.45 0 5.02-1.29 10.73-3.87 5.71-2.56 10.25-3.74 13.62-3.53 12.01.63 21.43 4.96 28.26 12.99-11.16 6.86-16.63 15.74-16.41 26.65.22 8.46 3.32 15.42 9.3 20.89 5.98 5.46 13.04 8.4 21.18 8.81-2.45 7.14-5.61 14.19-9.5 21.16zM119.22 33.54c0-6.86-2.43-13.25-7.29-18.16-4.86-4.91-10.9-7.58-18.1-8.02.11 6.86 2.62 13.21 7.53 18.06 4.91 4.85 10.84 7.42 17.86 7.72V33.54z"/>
+            </svg>
+            <span>Add to Apple Calendar</span>
+          </button>
         </li>
         <li *ngIf="release.releaseDate">
-          <button (click)="emit('google')">Add to Google Calendar</button>
+          <button (click)="emit('google')">
+            <svg class="menu-icon google-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+              <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2zm-7 5h5v5h-5z"/>
+            </svg>
+            <span>Add to Google Calendar</span>
+          </button>
         </li>
       </ng-container>
 
-      <!-- Past/Listen options (if release date is past) -->
       <ng-container *ngIf="isReleased()">
         <li *ngIf="release.appleMusicUrl || release.platforms?.appleMusic">
           <button (click)="emit('listen_apple')">Listen on Apple Music</button>
