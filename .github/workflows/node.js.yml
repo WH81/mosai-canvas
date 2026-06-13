@@ -1,7 +1,4 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
-
-name: Node.js CI
+name: Node.js CI with Security Scanning
 
 on:
   push:
@@ -15,12 +12,10 @@ jobs:
   # -------------------------------------------------------------------------
   frontend-build:
     runs-on: ubuntu-latest
-
     strategy:
       fail-fast: false
       matrix:
         node-version: [18.x, 20.x, 22.x]
-
     defaults:
       run:
         working-directory: frontend
@@ -39,6 +34,9 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
+    - name: Scan Frontend Dependencies for Vulnerabilities
+      run: npm audit --audit-level=high
+
     - name: Build Angular App
       run: npm run build --if-present
 
@@ -47,12 +45,10 @@ jobs:
   # -------------------------------------------------------------------------
   backend-test:
     runs-on: ubuntu-latest
-
     strategy:
       fail-fast: false
       matrix:
         node-version: [18.x, 20.x, 22.x]
-
     defaults:
       run:
         working-directory: backend
@@ -60,6 +56,11 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+
+    - name: Initialize CodeQL (Static Code Analysis)
+      uses: github/codeql-action/init@v3
+      with:
+        languages: 'javascript-typescript'
 
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
@@ -71,9 +72,14 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
+    - name: Scan Backend Dependencies for Vulnerabilities
+      run: npm audit --audit-level=high
+
     - name: Compile TypeScript
       run: npm run build --if-present
 
+    - name: Perform CodeQL Security Analysis
+      uses: github/codeql-action/analyze@v3
+
     - name: Run Backend Tests
       run: echo "No tests specified."
-
