@@ -4,13 +4,14 @@ import { MembersService } from '../../services/members-bio/members.service';
 import { Member } from '../../models/members-bio/member.model';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
+import { SocialLinksComponent } from '../social-links/social-links.component';
 
 @Component({
   selector: 'app-member-bio',
   standalone: true,
-  imports: [CommonModule],
-  templateUrl: './member-bio.component.html',
-  styleUrls: ['./member-bio.component.scss']
+  imports: [CommonModule, SocialLinksComponent],
+  templateUrl: './members-bio.component.html',
+  styleUrls: ['./members-bio.component.scss']
 })
 export class MemberBioComponent implements OnInit {
   memberId: string | null = null;
@@ -29,7 +30,7 @@ export class MemberBioComponent implements OnInit {
         (value: Member) => {
           this.memberData = {
             ...value,
-            socialLinks: value.socialLinks || null
+            socialLinks: value.socialLinks || undefined
           };
         },
         (error: any) => {
