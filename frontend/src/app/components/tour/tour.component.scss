@@ -1,191 +1,41 @@
-// @use "index" as *;
-
-// .tour-content-wrapper {
-//   @include respond-min(md) {
-//     max-width: 55rem; 
-//   }
-// }
-
-// .tour-list {
-//   display: flex;
-//   flex-direction: column;
-// }
-
-// .tour-card {
-//   display: flex;
-//   flex-direction: column;
-//   padding-block: $spacing-xxl; 
-//   border-top: 1px solid rgba($text-color-light, 0.1);
-//   gap: $spacing-lg;
-//   position: relative;
-//   transition: background 0.3s ease;
-
-//   @include respond-min(md) {
-//     flex-direction: row;
-//     align-items: center;
-//     justify-content: space-between;
-//     padding-inline: 0;
-    
-//     &:hover {
-//       background: rgba($text-color-light, 0.01);
-      
-//       .tour-card__grid {
-//         transform: translateX(15px);
-//       }
-//     }
-//   }
-
-//   &__grid {
-//     display: grid;
-//     grid-template-columns: 6rem 1fr; 
-//     gap: $spacing-md;
-//     transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
-
-//     @include respond-min(md) {
-//       grid-template-columns: 8rem 1fr;
-//       gap: $spacing-xl;
-//     }
-//   }
-// }
-
-// /* =========================
-//    Typography (Variable-Driven)
-//    ========================= */
-
-// .editorial-label {
-//   display: block;
-//   font-family: $font-family-secondary; 
-//   font-size: $font-xxs; 
-//   font-weight: 800; 
-//   text-transform: uppercase;
-//   letter-spacing: 0.25em; 
-//   opacity: 0.55; 
-//   margin-bottom: $spacing-xs; 
-//   color: $text-color-light;
-// }
-
-// .date-value {
-//   @include text-style-primary($font-md, $font-lg, 1, 800);
-//   color: $text-color-light;
-// }
-
-// .band-name {
-//   @include text-style-primary($font-md, $font-lg, 1.1, 900);
-//   text-transform: uppercase;
-//   margin-bottom: $spacing-xs; 
-//   color: $text-color-light;
-// }
-
-// .venue-details {
-//   display: flex;
-//   flex-direction: column;
-  
-//   .venue {
-//     font-family: $font-family-primary;
-//     font-size: $font-sm; 
-//     font-weight: 500;
-//     color: rgba($text-color-light, 0.9); 
-//     line-height: 1.4;
-//   }
-  
-//   .location {
-//     font-family: $font-family-secondary;
-//     font-size: $font-xs; 
-//     text-transform: uppercase;
-//     letter-spacing: 0.1em;
-//     opacity: 0.6; 
-//     margin-top: $spacing-xs; 
-//     color: $text-color-medium;
-//   }
-// }
-
-// /* =========================
-//    Button Styles
-//    ========================= */
-
-// .calendar-btn {
-//   @include text-style-secondary($font-sm, $font-sm, 1, 700);
-//   display: inline-flex;
-//   align-items: center;
-//   justify-content: center;
-//   gap: $spacing-xs;
-//   padding: $spacing-md; 
-//   width: 100%; 
-//   background: rgba($text-color-light, 0.03);
-//   border: 1px solid rgba($text-color-light, 0.2);
-//   border-radius: 4px;
-//   color: $text-color-light;
-//   text-decoration: none;
-//   transition: all 0.2s ease;
-
-//   // 👉 THE FIX: Forces the button to skip the "Date" column on mobile
-//   // This aligns the left edge with the Band Name/Venue text.
-//   @include respond-max(md) {
-//     grid-column: 2;
-//     margin-top: $spacing-xs; // Tighten space slightly for a cleaner look
-//   }
-
-//   @include respond-min(md) {
-//     width: auto;
-//     padding: $spacing-sm;
-//   }
-
-//   &__icon {
-//     width: 1rem;
-//     filter: brightness(0) invert(1);
-//     opacity: 0.7;
-//     margin-right: $spacing-xxs;
-//   }
-
-//   &:hover {
-//     background: $text-color-light;
-//     color: $background-dark;
-//     .calendar-btn__icon { filter: brightness(0); opacity: 1; }
-//   }
-// }
-
-// .tour-card:last-of-type {
-//   border-bottom: 1px solid rgba($text-color-light, 0.1);
-// }
-
-
-
 @use "index" as *;
 
 .tour-content-wrapper {
   @include respond-min(md) {
     // Limits line length for better readability on desktop
-    max-width: 56rem; 
+    max-width: 56rem;
   }
 }
 
 .tour-list {
   display: flex;
   flex-direction: column;
+  list-style: none; /* Strips structural marker margins from modern list layouts */
+  padding: 0;
+  margin: 0;
 }
 
 .tour-card {
   display: flex;
   flex-direction: column;
-  // Responsive vertical padding for a breathable list
-  padding-block: clamp($spacing-lg, 5vh, $spacing-xxl); 
+  padding-block: clamp($spacing-lg, 5vh, $spacing-xxl);
   border-top: 1px solid rgba($text-color-light, 0.1);
   gap: $spacing-lg;
   position: relative;
-  
-  // Transition updated for graceful horizontal movement
-  transition: 
-    background 0.3s ease, 
+  transition: background 0.3s ease,
     padding-left 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    
-  padding-left: $spacing-sm;
+
+  @include respond-max(sm) {
+    align-items: center;
+    padding-left: 0;
+  }
 
   @include respond-min(md) {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
     padding-inline: 0;
-    
+
     &:hover {
       background: rgba($text-color-light, 0.015);
       padding-left: $spacing-sm;
@@ -199,12 +49,14 @@
 
   &__grid {
     display: grid;
-    // Maintains alignment of the date column
-    grid-template-columns: 6rem 1fr; 
+    grid-template-columns: 6rem 1fr;
     gap: $spacing-md;
-    
-    // Transition updated to match the graceful movement of the card
     transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+
+    @include respond-max(sm) {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
 
     @include respond-min(md) {
       grid-template-columns: 8rem 1fr;
@@ -219,50 +71,61 @@
 
 .editorial-label {
   display: block;
-  font-family: $font-family-secondary; 
-  font-size: $font-xxs; 
-  font-weight: 800; 
+  font-family: $font-family-secondary;
+  font-size: $font-xxs;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.25em; 
-  opacity: 0.55; 
-  margin-bottom: $spacing-xs; 
+  letter-spacing: 0.25em;
+  opacity: 0.55;
+  margin-bottom: $spacing-xs;
   color: $text-color-light;
+
+  @include respond-max(md) {
+    display: none;
+  }
 }
 
 .date-value {
-  // Fluid scaling for the date to ensure it remains a clear anchor
   @include text-style-primary(clamp(1.125rem, 2vw, 1.5rem), $font-lg, 1, 800);
+  display: block;
   color: $text-color-light;
 }
 
 .band-name {
   // Fluid scaling for the main title of the tour card
-  @include text-style-primary(clamp(1.25rem, 2.5vw, 1.75rem), $font-lg, 1.1, 900);
+  @include text-style-primary(
+    clamp(1.25rem, 2.5vw, 1.75rem),
+    $font-lg,
+    1.1,
+    900
+  );
   text-transform: uppercase;
-  margin-bottom: $spacing-xxs; 
+  margin-top: 0;
+  margin-bottom: $spacing-xs;
   color: $text-color-light;
 }
 
 .venue-details {
   display: flex;
   flex-direction: column;
-  
+
   .venue {
     font-family: $font-family-primary;
-    font-size: clamp(0.9rem, 1.2vw, 1rem); 
+    font-size: clamp(0.9rem, 1.2vw, 1rem);
     font-weight: 500;
-    color: rgba($text-color-light, 0.9); 
+    color: rgba($text-color-light, 0.9);
     line-height: 1.4;
   }
-  
+
   .location {
     font-family: $font-family-secondary;
-    font-size: $font-xs; 
+    font-size: $font-xs;
     text-transform: uppercase;
     letter-spacing: 0.12em;
-    opacity: 0.6; 
-    margin-top: $spacing-xxs; 
-    color: $text-color-medium;
+    /* Boosted opacity default to safeguard modern high-contrast cross-canvas viewing rules */
+    opacity: 0.75; 
+    margin-top: $spacing-xxs;
+    color: $text-color-light;
   }
 }
 
@@ -276,10 +139,9 @@
   align-items: center;
   justify-content: center;
   gap: $spacing-xs;
-  // Increased height for 44px mobile tap target standard
   min-height: 44px;
-  padding: $spacing-sm $spacing-md; 
-  width: 100%; 
+  padding: $spacing-sm $spacing-md;
+  width: 100%;
   background: rgba($text-color-light, 0.04);
   border: 1px solid rgba($text-color-light, 0.15);
   border-radius: 4px;
@@ -289,7 +151,6 @@
   margin-right: 0.25rem;
 
   @include respond-max(md) {
-    grid-column: 2; // Aligns with text content on mobile
     margin-top: $spacing-xs;
   }
 
@@ -308,10 +169,26 @@
     background: $text-color-light;
     color: $background-dark;
     border-color: $text-color-light;
-    .calendar-btn__icon { filter: brightness(0); opacity: 1; }
+    .calendar-btn__icon {
+      filter: brightness(0);
+      opacity: 1;
+    }
   }
 }
 
 .tour-card:last-of-type {
   border-bottom: 1px solid rgba($text-color-light, 0.1);
+}
+
+/* Screen-Reader Engine Utilities */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }

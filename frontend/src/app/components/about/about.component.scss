@@ -14,7 +14,7 @@
  
   @include respond-min(lg) {
     grid-template-columns: 1.3fr 0.7fr;
-    padding-block: clamp($spacing-xxl, 10vh, $spacing-xxxxl);
+    // padding-block: clamp($spacing-xxl, 10vh, $spacing-xxxxl);
   }
 }
  
@@ -27,7 +27,7 @@
 .about-body {
   @include text-style-secondary(clamp(1rem, 1.2vw, 1.125rem), $font-size-base, 1.6, 400);
   color: var(--color-text-medium);
-  max-width: 68ch;
+  max-width: 56rem;
   margin-inline: auto;
   margin-bottom: $spacing-md;
   text-align: left;

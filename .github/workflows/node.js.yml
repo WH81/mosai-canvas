@@ -39,6 +39,9 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
+    - name: Scan Frontend Production Dependencies for Vulnerabilities
+      run: npm audit --only=prod --audit-level=high
+
     - name: Build Angular App
       run: npm run build --if-present
 
@@ -61,6 +64,11 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
+    - name: Initialize CodeQL (Static Code Analysis)
+      uses: github/codeql-action/init@v3
+      with:
+        languages: 'javascript-typescript'
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
@@ -71,9 +79,14 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
+    - name: Scan Backend Production Dependencies for Vulnerabilities
+      run: npm audit --only=prod --audit-level=high
+
     - name: Compile TypeScript
       run: npm run build --if-present
 
+    - name: Perform CodeQL Security Analysis
+      uses: github/codeql-action/analyze@v3
+
     - name: Run Backend Tests
       run: echo "No tests specified."
-

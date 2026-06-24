@@ -12,21 +12,19 @@ import {
 import { CommonModule } from '@angular/common';
 import { MembersService } from '../../services/members-bio/members.service';
 import { Member } from '../../models/members-bio/member.model';
-
-// --- Imports for Standalone Components ---
+ 
 import { SocialLinksComponent } from '../social-links/social-links.component';
 import { StreamingLinksComponent } from '../streaming-links/streaming-links.component';
-
-// --- Scroll Animation Directive ---
+ 
 @Directive({
   selector: '[appScrollAnimation]',
   standalone: true,
 })
 export class ScrollAnimationDirective implements AfterViewInit, OnDestroy {
   private observer?: IntersectionObserver;
-
+ 
   constructor(private el: ElementRef, private renderer: Renderer2) {}
-
+ 
   ngAfterViewInit() {
     this.observer = new IntersectionObserver(
       (entries) => {
@@ -37,19 +35,16 @@ export class ScrollAnimationDirective implements AfterViewInit, OnDestroy {
           }
         });
       },
-      {
-        threshold: 0.1,
-      }
+      { threshold: 0.1 }
     );
     this.observer.observe(this.el.nativeElement);
   }
-
+ 
   ngOnDestroy() {
     this.observer?.disconnect();
   }
 }
-
-// --- Members List Component (Parent) ---
+ 
 @Component({
   selector: 'app-members-list',
   standalone: true,
@@ -65,15 +60,11 @@ export class ScrollAnimationDirective implements AfterViewInit, OnDestroy {
 export class MembersListComponent implements OnChanges {
   @Input() bandSlug: string = '';
   members: Member[] = [];
-
-  // --- FOOTER TRAY STATE ---
-  selectedMember: any | null = null; // Changed to any to allow dynamic bio/socials properties
-
-  // --- CARD VISUAL STATE ---
+  selectedMember: any | null = null;
   expandedStates: Record<string, boolean> = {};
-
+ 
   constructor(private memberService: MembersService) {}
-
+ 
   ngOnChanges(changes: SimpleChanges): void {
     const bandSlugChange = changes['bandSlug'];
     if (
@@ -84,7 +75,7 @@ export class MembersListComponent implements OnChanges {
       this.fetchMembers();
     }
   }
-
+ 
   fetchMembers(): void {
     this.memberService.getMembersByBand(this.bandSlug).subscribe(
       (members: Member[]) => {
@@ -103,47 +94,52 @@ export class MembersListComponent implements OnChanges {
       }
     );
   }
-
-  /**
-   * Manages the active member selection and expands the footer tray.
-   */
+ 
+  // Groups members into rows of 3
+  get memberRows(): Member[][] {
+    const rows: Member[][] = [];
+    for (let i = 0; i < this.members.length; i += 3) {
+      rows.push(this.members.slice(i, i + 3));
+    }
+    return rows;
+  }
+ 
+  // Returns true if the selected member belongs to this row
+  isInRow(row: Member[]): boolean {
+    if (!this.selectedMember) return false;
+    return row.some((m) => m.name === this.selectedMember.name);
+  }
+ 
   toggleExpand(memberKey: string): void {
     const member = this.members.find((m) => m.name === memberKey);
-
-    // If clicking the same member, collapse everything
+ 
     if (this.selectedMember && this.selectedMember.name === memberKey) {
       this.handleClose();
-    }
-    // Otherwise, select the new member and expand the footer tray
-    else if (member) {
+    } else if (member) {
       this.selectedMember = member;
-
-      // Reset all card visual states and highlight only the active one
       Object.keys(this.expandedStates).forEach(
         (k) => (this.expandedStates[k] = false)
       );
       this.expandedStates[memberKey] = true;
     }
   }
-
-  /**
-   * Collapses the footer and resets card highlights.
-   */
+ 
   handleClose(): void {
     this.selectedMember = null;
     Object.keys(this.expandedStates).forEach(
       (k) => (this.expandedStates[k] = false)
     );
   }
-
-  /**
-   * Logic for template binding to determine active card visual state.
-   */
+ 
   isExpanded(memberKey: string): boolean {
     return !!this.expandedStates[memberKey];
   }
-
+ 
   trackByName(_: number, member: Member): string {
     return member.name;
+  }
+ 
+  trackByRow(index: number): number {
+    return index;
   }
 }
