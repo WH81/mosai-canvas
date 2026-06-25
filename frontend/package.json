@@ -47,9 +47,6 @@
     "typescript": "~5.7.2"
   },
   "overrides": {
-    "@angular/core": "^19.1.8",
-    "@angular/compiler": "^19.1.8",
-    "@angular/common": "^19.1.8",
     "esbuild": "^0.25.0",
     "vite": "^6.2.0",
     "rollup": "^4.30.1",
