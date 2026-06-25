@@ -19,7 +19,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [18.x, 20.x, 22.x]
+        # Bumping the frontend matrix floor to v20.x to satisfy Angular's modern engine requirements
+        node-version: [20.x, 22.x]
 
     defaults:
       run:
@@ -54,6 +55,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        # Preserved legacy testing capabilities for your API services
         node-version: [18.x, 20.x, 22.x]
 
     defaults:
@@ -90,3 +92,4 @@ jobs:
 
     - name: Run Backend Tests
       run: echo "No tests specified."
+      
