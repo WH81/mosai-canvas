@@ -16,12 +16,16 @@
     display: flex;
     gap: $spacing-md; 
     overflow-x: auto;
-    padding-block: $spacing-sm $spacing-xl;
+    padding-block: $spacing-sm;
     scrollbar-width: none;
     scroll-behavior: smooth;
     scroll-snap-type: x mandatory;
     
     &::-webkit-scrollbar { display: none; }
+
+    @include respond-max(md) {
+      flex: 0 0 85%;
+    }
   }
 
   &__card {
@@ -69,14 +73,14 @@
     z-index: 2;
 
     // Desktop: Show on hover
-    @media (min-width: 1025px) {
+    @include respond-min(lg) {
       opacity: 0;
       transition: opacity 0.3s ease;
       .ringtones__card:hover & { opacity: 1; }
     }
 
     // Mobile/Tablet: Always show buttons for touch interaction
-    @media (max-width: 1024px) {
+    @include respond-max(lg) {
       opacity: 1;
     }
 
@@ -109,8 +113,8 @@
     padding: 0;
     transition: all 0.2s ease;
 
-    @media (max-width: 768px) {
-      width: 48px; // Larger touch target
+    @include respond-max(md) {
+      width: 48px;
       height: 48px;
     }
 

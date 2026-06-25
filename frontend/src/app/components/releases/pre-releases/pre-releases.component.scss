@@ -1,8 +1,6 @@
 @use 'index' as *;
 
-.pre-releases {
-  // Rely on l-section for vertical spacing
-  
+.pre-releases {  
   .pre-title {
     margin-bottom: $spacing-lg;
     color: $text-color-light;
@@ -12,7 +10,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(401px, 1fr));
     gap: 1rem;
-    padding: 0; // Remove manual padding; the .container handles this now
+    padding: 0;
   }
 
   .empty-message {

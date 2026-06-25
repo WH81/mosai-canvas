@@ -1,5 +1,4 @@
-@use "variables" as *;
-@use "mixins" as *;
+@use "index" as *;
 
 .latest-drops--full-bleed {
   position: relative;
@@ -15,10 +14,9 @@
   grid-template-columns: 1fr;
   gap: 5rem;
 
-  @media (min-width: 1200px) {
-    // grid-template-columns: 1fr 1fr;
+  @include respond-min(xxl) {
     column-gap: 6rem;
-    & article:only-child { grid-column: span 2; max-width: 1100px; margin: 0 auto; }
+    & article:only-child { grid-column: span 2; max-width: 1100px; }
   }
 }
 
@@ -27,13 +25,19 @@
     display: flex;
     align-items: center;
     gap: 3rem;
-    @media (max-width: 1100px) { flex-direction: column; text-align: center; }
+    @include respond-max(lg) { flex-direction: column; text-align: center; }
   }
 
   &__media {
     flex: 0 0 clamp(200px, 20vw, 350px);
     position: relative;
     max-width: 400px;
+
+    @include respond-max(lg) {
+      flex: 0 0 auto;
+      width: 100%;
+      max-width: 100%;
+    }
     
     // THE FLAG/BANNER
     .magazine-banner {
@@ -62,6 +66,11 @@
     flex: 1;
     min-width: 0; // Prevents song name from pushing the box out
     max-width: 47rem;
+
+    @include respond-max(lg) {
+      width: 100%;
+      max-width: 100%;
+    }
   }
 
   // REFINED SONG NAME: Smaller, more elegant, single-line
@@ -77,6 +86,12 @@
     overflow: hidden;
     text-overflow: ellipsis;
     text-wrap: auto;
+
+    @include respond-max(lg) {
+      font-size: clamp(1.4rem, 6vw, 2rem);
+      white-space: normal;
+      word-break: break-word;
+    }
   }
 
   // ARTIST TEXT: Added color contrast
@@ -119,9 +134,10 @@
     flex-direction: row;
     gap: 0.4rem;
     
-    @media (max-width: 1100px) { 
+    @include respond-max(lg) {
       justify-content: center;
-      gap: 0.8rem; 
+      gap: 0.8rem;
+      flex-wrap: wrap;
     }
   }
 }

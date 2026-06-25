@@ -1,13 +1,17 @@
 // Spacing scale
-$spacing-xxs: 0.25rem; // 4px
-$spacing-xs: 0.5rem; // 8px
-$spacing-sm: 1rem; // 16px
-$spacing-md: 1.5rem; // 24px
-$spacing-lg: 2rem; // 32px
-$spacing-xl: 3rem; // 48px
-$spacing-xxl: 4rem; // 64px
-$spacing-xxxl: 5rem; // 96px
-$spacing-xxxxl: 6rem; // 128px
+$spacing-xxs: 0.25rem;  // 4px
+$spacing-xs: 0.5rem;    // 8px
+$spacing-sm: 1rem;      // 16px
+$spacing-md: 1.5rem;    // 24px
+$spacing-lg: 2rem;      // 32px
+$spacing-xl: 3rem;      // 48px
+$spacing-xxl: 4rem;     // 64px
+$spacing-xxll: 4.5rem;  // 72px
+$spacing-xxxl: 5rem;    // 80px
+$spacing-xxxxl: 6rem;   // 96px
+$spacing-xxxxll: 7.5rem; // 120px
+$spacing-xxxxxl: 8rem;   // 128px
+$spacing-xxxxxxl: 10rem; // 160px
 
 // Font size scale
 $font-xxs: 0.625rem; // 10px - micro labels, timestamps
@@ -73,5 +77,5 @@ $frame-border-color: #000000;
   --section-spacing: #{$spacing-xl}; // Uses your 3rem variable
 
   // Clamp for section spacing here!
-  --section-spacing-fluid: clamp(2rem, 8vw, 5rem);
+  --section-spacing-fluid: clamp(#{$spacing-xxll}, 8vw, #{$spacing-xxxxll});
 }

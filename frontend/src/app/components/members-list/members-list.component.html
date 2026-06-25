@@ -101,96 +101,96 @@
   </app-member-bio-modal>
 </section> -->
 
-<section class="artist-section">
-  <svg
-    class="artist-section__paint-overlay"
-    viewBox="0 0 500 200"
-    preserveAspectRatio="none"
-    aria-hidden="true"
-  >
-    <path
-      d="M-10,120 C100,70 300,150 510,80"
-      class="brush-stroke-primary"
-      fill="none"
-    />
-    <path
-      d="M-10,130 C150,90 350,140 510,100"
-      class="brush-stroke-accent"
-      fill="none"
-    />
-  </svg>
-
+<section class="artist-section l-section">
+ 
   <header class="artist-section__header container">
     <h2 class="section-title">Artists</h2>
   </header>
-
-  <div class="members-list-container">
-    <div
-      *ngFor="let member of members; trackBy: trackByName"
-      class="member-column"
-      [class.is-active]="selectedMember?.name === member.name"
-      appScrollAnimation
-      (click)="toggleExpand(member.name)"
-      role="button"
-      tabindex="0"
-    >
-      <div class="member-image-bg">
-        <img [src]="member.image" class="img-blur-fill" aria-hidden="true" />
-        <img [src]="member.image" [alt]="member.name" class="img-main-fit" />
-      </div>
-
-      <div class="member-content">
-        <div class="text-group">
-          <h2 class="member-name-title">{{ member.name }}</h2>
-          <p class="instrument-subtitle">{{ member.instrument }}</p>
+ 
+  <div class="members-list-wrapper">
+    <div class="container">
+ 
+      <ng-container *ngFor="let row of memberRows; trackBy: trackByRow">
+ 
+        <div class="members-list-container">
+          <div
+            *ngFor="let member of row; trackBy: trackByName"
+            class="member-column"
+            [class.is-active]="selectedMember?.name === member.name"
+            [class.is-inactive]="selectedMember !== null && selectedMember.name !== member.name && isInRow(row)"
+            appScrollAnimation
+            (click)="toggleExpand(member.name)"
+            role="button"
+            tabindex="0"
+          >
+            <div class="member-image-bg">
+              <img [src]="member.image" class="img-blur-fill" aria-hidden="true" />
+              <img [src]="member.image" [alt]="member.name" class="img-main-fit" />
+            </div>
+ 
+            <div class="member-content">
+              <div class="text-group">
+                <h2 class="member-name-title">{{ member.name }}</h2>
+                <p class="instrument-subtitle">{{ member.instrument }}</p>
+              </div>
+            </div>
+ 
+            <div class="vertical-divider"></div>
+          </div>
         </div>
-      </div>
-
-      <div class="vertical-divider"></div>
+ 
+        <footer
+          *ngIf="isInRow(row) && selectedMember"
+          class="artist-section__footer is-expanded"
+        >
+          <div class="footer-top-bar">
+            <button
+              class="close-bio"
+              (click)="handleClose(); $event.stopPropagation()"
+            >
+              Close Bio
+            </button>
+          </div>
+ 
+          <div class="bio-container">
+            <div class="bio-text-column">
+              <h3 class="bio-name">
+                {{ selectedMember.name }}
+              </h3>
+              <h5 class="bio-instrument">
+                {{ selectedMember.instrument }}
+              </h5>
+              <p class="bio-description">{{ selectedMember.bio }}</p>
+            </div>
+ 
+            <div
+              class="bio-social-column"
+              *ngIf="selectedMember?.socialLinks || selectedMember?.streamingLinks"
+            >
+              <div class="social-group">
+                <div class="social-title">Follow Me</div>
+ 
+                <app-social-links
+                  *ngIf="selectedMember?.socialLinks"
+                  [socialLinks]="selectedMember?.socialLinks"
+                  variant="divided"
+                  size="large"
+                ></app-social-links>
+ 
+                <app-streaming-links
+                  *ngIf="selectedMember?.streamingLinks"
+                  [streamingLinks]="selectedMember?.streamingLinks"
+                  variant="divided"
+                  size="large"
+                ></app-streaming-links>
+              </div>
+            </div>
+          </div>
+        </footer>
+ 
+      </ng-container>
+ 
     </div>
   </div>
-
-  <footer class="artist-section__footer" [class.is-expanded]="selectedMember">
-    <div class="footer-top-bar">
-      <button
-        *ngIf="selectedMember"
-        class="close-bio"
-        (click)="selectedMember = null; $event.stopPropagation()"
-      >
-        Close Bio
-      </button>
-    </div>
-
-    <div class="bio-container">
-      <div class="bio-text-column" *ngIf="selectedMember">
-        <h3 class="bio-name">
-          {{ selectedMember.name }} — {{ selectedMember.instrument }}
-        </h3>
-        <p class="bio-description">{{ selectedMember.bio }}</p>
-      </div>
-
-      <div
-        class="bio-social-column"
-        *ngIf="selectedMember?.socialLinks || selectedMember?.streamingLinks"
-      >
-        <div class="social-group">
-          <div class="social-title">Follow Me</div>
-          
-          <app-social-links
-            *ngIf="selectedMember?.socialLinks"
-            [socialLinks]="selectedMember?.socialLinks"
-            variant="divided"
-            size="large"
-          ></app-social-links>
-
-          <app-streaming-links
-            *ngIf="selectedMember?.streamingLinks"
-            [streamingLinks]="selectedMember?.streamingLinks"
-            variant="divided"
-            size="large"
-          ></app-streaming-links>
-        </div>
-      </div>
-    </div>
-  </footer>
+ 
 </section>

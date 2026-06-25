@@ -19,7 +19,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [18.x, 20.x, 22.x]
+        # Bumping the frontend matrix floor to v20.x to satisfy Angular's modern engine requirements
+        node-version: [20.x, 22.x]
 
     defaults:
       run:
@@ -39,6 +40,9 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
+    - name: Scan Frontend Production Dependencies for Vulnerabilities
+      run: npm audit --only=prod --audit-level=high
+
     - name: Build Angular App
       run: npm run build --if-present
 
@@ -51,6 +55,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        # Preserved legacy testing capabilities for your API services
         node-version: [18.x, 20.x, 22.x]
 
     defaults:
@@ -60,6 +65,11 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+
+    - name: Initialize CodeQL (Static Code Analysis)
+      uses: github/codeql-action/init@v3
+      with:
+        languages: 'javascript-typescript'
 
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
@@ -71,9 +81,15 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
+    - name: Scan Backend Production Dependencies for Vulnerabilities
+      run: npm audit --only=prod --audit-level=high
+
     - name: Compile TypeScript
       run: npm run build --if-present
 
+    - name: Perform CodeQL Security Analysis
+      uses: github/codeql-action/analyze@v3
+
     - name: Run Backend Tests
       run: echo "No tests specified."
-
+      

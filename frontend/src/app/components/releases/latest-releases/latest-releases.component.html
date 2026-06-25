@@ -2,7 +2,6 @@
   <div class="latest-drops__bg-overlay"></div>
   
   <header class="latest-header">
-    <span class="eyebrow">NEW MUSIC // {{ displayYear }}</span>
     <h2 class="section-title">Latest release</h2>
   </header>
 
@@ -32,7 +31,7 @@
 
           <div class="magazine-card__actions">
             <a *ngIf="release.spotifyUrl" [href]="release.spotifyUrl" target="_blank" class="btn-rockstar">SPOTIFY</a>
-            <a *ngIf="release.appleMusicUrl" [href]="release.appleMusicUrl" target="_blank" class="btn-rockstar">APPLE</a>
+            <a *ngIf="release.appleMusicUrl" [href]="release.appleMusicUrl" target="_blank" class="btn-rockstar">APPLE MUSIC</a>
             <a *ngIf="release.youtubeUrl" [href]="release.youtubeUrl" target="_blank" class="btn-rockstar">YOUTUBE</a>
           </div>
         </div>

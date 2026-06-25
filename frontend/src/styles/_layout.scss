@@ -13,20 +13,12 @@ app-root {
   background: $background-dark;
   display: block;
   width: 100%;
-  padding-block: var(--section-spacing, 80px);
+  padding-block: var(--section-spacing-fluid);
   container-type: inline-size;
 
   // MODIFIER: If a section needs to be flush (e.g., Hero/Footer)
   &--flush {
     padding-block: 0;
-  }
-
-  @include respond-min(md) {
-    padding-block: 60px; 
-  }
-
-  @include respond-min(lg) {
-    padding-block: 80px; // Maximum "breathing room" for desktop
   }
 }
 
