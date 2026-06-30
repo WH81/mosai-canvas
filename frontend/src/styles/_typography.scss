@@ -180,15 +180,15 @@ small {
 // Optimized for your "Mosaic Canvas" editorial design
 .section-title {
   // Fluid font size scaling for a heavy editorial look
-  @include text-style-primary(clamp(2.2rem, 10vw, 5.5rem), $font-xxxxxl, 0.9, 900);
+  @include text-style-primary(clamp(2.5rem, 4vw + 1rem, 5rem), $font-xxxxxl, 0.9, 900);
   text-transform: uppercase;
   letter-spacing: -0.04rem;
   margin-bottom: $spacing-md;
   padding-left: 0.05rem;
   
   // Responsive Alignment
-  text-align: center;
-  word-break: break-word; // Prevents overflow on mobile for long names
+  text-align: left;
+  word-break: break-word;
 
   // Brand Styling (Mosaic Canvas)
   background: var(--frame-bg);
@@ -199,10 +199,10 @@ small {
   filter: drop-shadow(0 2px 0px rgba(0, 0, 0, 0.4));
   paint-order: fill markers stroke;
 
-  @include respond-min(md) {
+  @include respond-min(lg) {
     text-align: left;
     margin-left: -0.04em; // Tighter optical alignment for large text
-    margin-bottom: $spacing-xl;
+    // margin-bottom: $spacing-xl;
   }
 }
 

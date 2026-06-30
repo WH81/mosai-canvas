@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-// import { BandDetailComponent } from './components/band-detail/band-detail.component';
 
 export const routes: Routes = [
   {
@@ -13,15 +12,6 @@ export const routes: Routes = [
       import('./pages/band-page/band-page.component')
         .then(m => m.BandPageComponent)
   },  
-  // {
-  //   path: 'bands',
-  //   children: [
-  //     {
-  //       path: ':bandSlug',
-  //       component: BandDetailComponent,
-  //     },
-  //   ],
-  // },
   {
     path: 'art',
     loadComponent: () =>

@@ -39,73 +39,51 @@
 /* --- GET CONNECTED SECTION --- */
 .get-connected {
   position: relative;
-  padding-block: clamp(3rem, 8vh, 6rem);
+  padding-block: clamp(2rem, 5vh, 4rem);
 
   &__grid {
     display: grid;
-    grid-template-columns: 1fr 1fr; 
+    grid-template-columns: 1fr; 
     align-items: center;
     gap: 4rem;
 
-    @include respond-min(md) {
+    @include respond-min(lg) {
+      grid-template-columns: 1fr 1fr;
       max-width: var(--container-max-width, 1400px);
       margin: 0 auto;
-    }
-
-    @include respond-max(lg) {
-      grid-template-columns: 1fr; 
-      gap: 3rem;
-      text-align: center;
     }
   }
 
   &__content {
-    @include respond-min(md) {
+    @include respond-min(lg) {
       max-width: 55rem; 
-    }
-
-    .get-connected__title {
-      @include m.text-style-primary(clamp(2.2rem, 10vw, 5.5rem), $font-xxxxxl, 0.9, 900);
-      margin-bottom: 1.5rem;
-      letter-spacing: -0.04em;
-      text-transform: uppercase;
-      
-      background: var(--frame-bg);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      color: transparent;
-      filter: drop-shadow(0 2px 0px rgba(0, 0, 0, 0.4));
     }
 
     .get-connected__desc {
       color: rgba(255, 255, 255, 0.6);
       font-size: $font-md;
+      text-align: left;
+      margin: 0;
       line-height: 1.6;
       max-width: 420px;
 
-      @include respond-max(lg) {
-        margin: 0 auto; 
+      @include respond-min(lg) {
+        text-align: left;
+        margin: 0;
       }
     }
   }
 
   /* --- RIGHT SIDE: THE GLASS CARD --- */
   &__card {
-    background: rgba(255, 255, 255, 0.03); 
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 12px;
-    padding: clamp(2rem, 5vw, 3.5rem); 
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    padding: 0; 
     display: flex;
     flex-direction: column;
     gap: 2.5rem; 
     align-items: center;
 
-    @include respond-max(sm) {
-      padding: 2rem 1.25rem; 
+    @include respond-min(lg) {
+      align-items: flex-start;
     }
   }
 
@@ -113,23 +91,45 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 0;
+    align-items: flex-start;
   }
 
   &__social,
   &__streaming {
     display: flex;
-    gap: 0.5rem; 
-    flex-wrap: wrap;
-    justify-content: center; 
-    align-items: center;
-
+    flex-direction: column;
+    align-items: self-start;
+    gap: 0.75rem;
+  
+    @include respond-min(lg) {
+      align-items: flex-start;
+    }
+  
+    // Label above each group
+    &::before {
+      font-family: $font-family-secondary;
+      font-size: $font-xxs;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: rgba(255, 255, 255, 0.35);
+    }
+  
+    // Icon row
     ::ng-deep {
-      app-social-links, app-streaming-links {
+      app-social-links,
+      app-streaming-links {
         display: flex;
+        flex-wrap: wrap;
         align-items: center;
         justify-content: center;
-
+        gap: 0.5rem;
+  
+        @include respond-min(lg) {
+          justify-content: flex-start;
+        }
+  
         a {
           position: relative;
           display: inline-flex !important;
@@ -140,10 +140,8 @@
           text-decoration: none !important;
           border: none !important;
           background: transparent !important;
-          // Cubic bezier for high-end feel
           transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-
-          // HOVER GLASS EFFECT: Identical for both
+  
           &::before {
             content: '';
             position: absolute;
@@ -156,14 +154,14 @@
             transition: opacity 0.3s ease !important;
             z-index: 1;
           }
-
+  
           &:hover {
             transform: translateY(-5px) !important;
             &::before {
               opacity: 1 !important;
             }
           }
-
+  
           i, svg {
             position: relative;
             z-index: 2;
@@ -176,5 +174,24 @@
         }
       }
     }
+  }
+
+  &__social {
+    padding-bottom: 1.25rem;
+  }
+  
+  &__streaming {
+    width: 100%;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  
+  // Separate label content per group
+  &__social::before {
+    content: 'Follow us';
+  }
+  
+  &__streaming::before {
+    content: 'Listen on';
   }
 }
