@@ -29,11 +29,6 @@
     grid-template-columns: 130px 1fr auto;
     column-gap: $spacing-sm;
   }
-
-  &:hover {
-    box-shadow: 0 0 16px rgba(0, 0, 0, 0.6);
-    border: 1px outset rgba(255, 255, 255, 0.1);
-  }
 }
 
 /* =========================

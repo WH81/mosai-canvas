@@ -33,7 +33,6 @@
 
     @include respond-max(md) {
       grid-template-columns: 1fr;
-      text-align: center;
       gap: $spacing-lg;
     }
   }
@@ -42,10 +41,6 @@
     .section-title {
       margin-bottom: $spacing-md;
       text-align: left;
-
-      @include respond-max(md) {
-        text-align: center;
-      }
     }
   }
 
@@ -55,7 +50,7 @@
     max-width: 420px;
 
     @include respond-max(md) {
-      margin: 0 auto $spacing-xl;
+      margin: 0;
     }
   }
 

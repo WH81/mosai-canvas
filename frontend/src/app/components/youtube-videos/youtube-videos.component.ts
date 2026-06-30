@@ -6,6 +6,8 @@ import {
   ElementRef,
   ViewChild,
   inject,
+  ChangeDetectionStrategy, // Best practice: limit change detection footprint
+  ChangeDetectorRef
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
@@ -20,6 +22,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
   imports: [CommonModule],
   templateUrl: './youtube-videos.component.html',
   styleUrls: ['./youtube-videos.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush // Best practice performance optimization
 })
 export class YouTubeVideosComponent implements OnChanges {
   @Input() bandSlug!: string;
@@ -28,9 +31,13 @@ export class YouTubeVideosComponent implements OnChanges {
 
   private ytService = inject(YouTubeVideosService);
   private sanitizer = inject(DomSanitizer);
+  private cdr = inject(ChangeDetectorRef);
 
   videos: YouTubeVideo[] = [];
   featuredVideo?: YouTubeVideo;
+  
+  // Best practice: Cache the sanitized resource URL so it maintains structural identity
+  safeVideoUrl?: SafeResourceUrl;
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['bandSlug'] && this.bandSlug) {
@@ -45,7 +52,6 @@ export class YouTubeVideosComponent implements OnChanges {
           let cleanTitle = video.title;
   
           // STRATEGY: Remove anything inside () or [] at the end of the string.
-          // This catches "(stained glass canvas)", "(phosphorescent canvas)", etc.
           cleanTitle = cleanTitle.replace(/\s*[\(\[][^)]*[\)\]]$/g, '');
   
           // Also remove "Band Name -" if it exists at the start
@@ -60,7 +66,9 @@ export class YouTubeVideosComponent implements OnChanges {
         });
   
         if (this.videos.length > 0) {
-          this.featuredVideo = this.videos[0];
+          this.updateFeaturedVideo(this.videos[0]);
+        } else {
+          this.cdr.markForCheck();
         }
       },
       error: (err) => {
@@ -70,7 +78,9 @@ export class YouTubeVideosComponent implements OnChanges {
   }
   
   selectVideo(video: YouTubeVideo): void {
-    this.featuredVideo = video;
+    if (this.featuredVideo?.videoId === video.videoId) return;
+    
+    this.updateFeaturedVideo(video);
 
     // Smooth scroll to the player after selection
     setTimeout(() => {
@@ -81,11 +91,16 @@ export class YouTubeVideosComponent implements OnChanges {
     }, 150);
   }
 
-  getSafeVideoUrl(videoId: string): SafeResourceUrl {
-    // rel=0 prevents suggestions from other channels
-    return this.sanitizer.bypassSecurityTrustResourceUrl(
-      `https://www.youtube.com/embed/${videoId}?rel=0`
+  /**
+   * Safe processing helper to transition featured variables and sanitize links concurrently
+   */
+  private updateFeaturedVideo(video: YouTubeVideo): void {
+    this.featuredVideo = video;
+    // Cache the identity right here so the view template retains a stable pointer reference
+    this.safeVideoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+      `https://www.youtube.com/embed/${video.videoId}?rel=0`
     );
+    this.cdr.markForCheck();
   }
 
   /**

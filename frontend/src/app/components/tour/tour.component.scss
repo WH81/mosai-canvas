@@ -20,20 +20,17 @@
   flex-direction: column;
   padding-block: clamp($spacing-lg, 5vh, $spacing-xxl);
   border-top: 1px solid rgba($text-color-light, 0.1);
-  gap: $spacing-lg;
+  gap: $spacing-sm;
   position: relative;
   transition: background 0.3s ease,
     padding-left 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-
-  @include respond-max(sm) {
-    align-items: center;
-    padding-left: 0;
-  }
+  align-items: flex-start;
 
   @include respond-min(md) {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    gap: $spacing-lg;
     padding-inline: 0;
 
     &:hover {
@@ -49,19 +46,19 @@
 
   &__grid {
     display: grid;
-    grid-template-columns: 6rem 1fr;
     gap: $spacing-md;
     transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-
-    @include respond-max(sm) {
-      grid-template-columns: 1fr;
-      text-align: center;
-    }
+    grid-template-columns: 1fr; // single column by default, no breakpoint needed
+    text-align: left;
 
     @include respond-min(md) {
       grid-template-columns: 8rem 1fr;
       gap: $spacing-xl;
     }
+  }
+
+  &__actions {
+    align-self: stretch;
   }
 }
 
@@ -86,7 +83,7 @@
 }
 
 .date-value {
-  @include text-style-primary(clamp(1.125rem, 2vw, 1.5rem), $font-lg, 1, 800);
+  @include text-style-primary(clamp(1.125rem, 0.5vw + 1rem, 1.5rem), $font-lg, 1, 800);
   display: block;
   color: $text-color-light;
 }
@@ -94,7 +91,7 @@
 .band-name {
   // Fluid scaling for the main title of the tour card
   @include text-style-primary(
-    clamp(1.25rem, 2.5vw, 1.75rem),
+    clamp(1.25rem, 1vw + 1rem, 1.75rem),
     $font-lg,
     1.1,
     900
@@ -111,7 +108,7 @@
 
   .venue {
     font-family: $font-family-primary;
-    font-size: clamp(0.9rem, 1.2vw, 1rem);
+    font-size: clamp(0.925rem, 0.2vw + 0.875rem, 1rem);
     font-weight: 500;
     color: rgba($text-color-light, 0.9);
     line-height: 1.4;
@@ -148,7 +145,6 @@
   color: $text-color-light;
   text-decoration: none;
   transition: all 0.25s ease;
-  margin-right: 0.25rem;
 
   @include respond-max(md) {
     margin-top: $spacing-xs;
