@@ -9,6 +9,12 @@ on:
   pull_request:
     branches: [ "main" ]
 
+# Grant workflow permissions for CodeQL reporting
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+
 jobs:
   # -------------------------------------------------------------------------
   # Frontend CI Job (Angular)
@@ -52,6 +58,11 @@ jobs:
   backend-test:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+
     strategy:
       fail-fast: false
       matrix:
@@ -92,4 +103,3 @@ jobs:
 
     - name: Run Backend Tests
       run: echo "No tests specified."
-      
