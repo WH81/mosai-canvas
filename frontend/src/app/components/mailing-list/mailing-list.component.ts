@@ -22,6 +22,7 @@ import { NgIf, DOCUMENT } from '@angular/common';
 })
 export class MailingListComponent {
   newEntry: MailingList = { firstName: '', lastName: '', email: '' };
+  subscribedFirstName = ''; // 👈 Stores subscriber name for display
   submissionSuccess = false;
   submissionError: string = '';
   submitting = false;
@@ -60,10 +61,14 @@ export class MailingListComponent {
     this.mailingListService.subscribe(payload).subscribe({
       next: () => {
         this.submitting = false;
+        this.subscribedFirstName = payload.firstName; // 👈 Save before clearing
         this.submissionSuccess = true;
         this.newEntry = { firstName: '', lastName: '', email: '' };
         form.resetForm();
-        setTimeout(() => (this.submissionSuccess = false), 5000);
+        setTimeout(() => {
+          this.submissionSuccess = false;
+          this.subscribedFirstName = '';
+        }, 5000);
       },
       error: (err) => {
         this.submitting = false;
