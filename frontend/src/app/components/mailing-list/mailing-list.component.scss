@@ -4,7 +4,27 @@
   position: relative;
   overflow: hidden;
   background: $background-dark;
-  padding: 6rem 0;
+  padding: clamp(3rem, 6vh, 5rem) 0;
+
+  // Full-width top border accent to open the section
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+
+  // Subtle radial glow behind the form for depth
+  &::before {
+    content: "";
+    position: absolute;
+    top: -20%;
+    right: -10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(
+      circle,
+      rgba($gradient-start, 0.04) 0%,
+      transparent 70%
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
 
   /* ===== READABILITY OVERLAY ===== */
   &::after {
@@ -26,65 +46,116 @@
   &__wrapper {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: $spacing-xl;
+    gap: $spacing-xxl;
     align-items: center;
     position: relative;
     z-index: 3;
 
     @include respond-max(md) {
       grid-template-columns: 1fr;
-      gap: $spacing-lg;
+      gap: $spacing-xl;
     }
   }
 
+  /* ===== LEFT COLUMN ===== */
   &__content {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+
     .section-title {
-      margin-bottom: $spacing-md;
+      margin-bottom: $spacing-sm;
       text-align: left;
+      line-height: 0.95;
     }
+  }
+
+  &__divider {
+    width: 3rem;
+    height: 2px;
+    background: linear-gradient(to right, $gradient-start, $gradient-end);
+    border: none;
+    margin: 0;
   }
 
   &__desc {
-    @include text-style-secondary($font-sm, $font-md, 1.6, 400);
+    font-family: $font-family-secondary;
+    font-size: clamp(1rem, 1.2vw, 1.125rem);
+    line-height: 1.7;
     color: rgba($text-color-light, 0.6);
-    max-width: 420px;
+    max-width: 440px;
 
     @include respond-max(md) {
       margin: 0;
+      max-width: 100%;
     }
   }
 
-  /* ===== FORM CONTAINER (GLASS) ===== */
+  &__trust {
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+    font-family: $font-family-primary;
+    font-size: $font-xxs;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: rgba($text-color-light, 0.3);
+    margin-top: $spacing-sm;
+  }
+
+  &__trust-icon {
+    font-size: 0.7rem;
+    opacity: 0.6;
+  }
+
+  /* ===== FORM CONTAINER ===== */
   &__form-container {
-    background: rgba(255, 255, 255, 0.04);
+    background: rgba(255, 255, 255, 0.03);
     backdrop-filter: blur(24px);
-    padding: $spacing-xl;
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 8px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45),
-      inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+    padding: clamp($spacing-lg, 4vw, $spacing-xl)
+      clamp($spacing-lg, 4vw, $spacing-xxl);
+    padding-bottom: $spacing-xl;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    position: relative;
+
+    // Gradient accent line at top
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(to right, $gradient-start, $gradient-end);
+      border-radius: 4px 4px 0 0;
+    }
   }
 
   &__form {
     display: flex;
     flex-direction: column;
-    gap: $spacing-md;
+    gap: $spacing-sm;
   }
 
   /* ===== INPUTS ===== */
   .form-group {
     position: relative;
-    margin-bottom: $spacing-lg;
+    margin-bottom: $spacing-md;
 
     input {
       width: 100%;
       background: transparent;
       border: none;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-      padding: 1.8rem 0 0.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 1.8rem 0 0.6rem;
       color: $text-color-light;
-      font-size: 1.1rem;
-      transition: all 0.3s ease;
+      font-size: 1rem;
+      font-family: $font-family-secondary;
+      transition: border-color 0.3s ease;
 
       &:focus {
         outline: none;
@@ -101,21 +172,23 @@
       position: absolute;
       top: 1.8rem;
       left: 0;
-      color: rgba(255, 255, 255, 0.4);
+      color: rgba(255, 255, 255, 0.35);
       transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
       pointer-events: none;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
-      font-size: 0.85rem;
+      letter-spacing: 0.12em;
+      font-size: 0.8rem;
+      font-family: $font-family-primary;
+      font-weight: 600;
     }
 
     input:focus + label,
     input:not(:placeholder-shown) + label {
-      top: 0.3rem;
-      font-size: 0.65rem;
+      top: 0.25rem;
+      font-size: 0.6rem;
       font-weight: 700;
       color: $gradient-start;
-      letter-spacing: 0.15em;
+      letter-spacing: 0.18em;
     }
 
     .required {
@@ -127,9 +200,10 @@
       position: absolute;
       right: 0;
       top: -15px;
-      font-size: 0.65rem;
+      font-size: 0.6rem;
       font-weight: 700;
       text-transform: uppercase;
+      letter-spacing: 0.1em;
       color: #ff6b6b;
       animation: fadeInError 0.3s ease forwards;
     }
@@ -138,27 +212,48 @@
   /* ===== BUTTON ===== */
   &__submit {
     width: 100%;
-    padding: $spacing-md;
-    background: transparent;
-    border: 1px solid $text-color-light;
-    color: $text-color-light;
+    padding: $spacing-md $spacing-lg;
+    margin-top: $spacing-sm;
+    background: linear-gradient(135deg, $gradient-start, $gradient-end);
+    border: none;
+    color: $background-dark;
     text-transform: uppercase;
+    font-family: $font-family-primary;
     font-weight: 900;
-    letter-spacing: 0.2em;
+    font-size: 0.8rem;
+    letter-spacing: 0.25em;
     cursor: pointer;
     position: relative;
     overflow: hidden;
+    border-radius: 2px;
     transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
 
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, 0);
+      transition: background 0.3s ease;
+    }
+
     &:hover:not(:disabled) {
-      background: $text-color-light;
-      color: $background-dark;
-      transform: translateY(-3px);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba($gradient-start, 0.35);
+
+      &::before {
+        background: rgba(255, 255, 255, 0.1);
+      }
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
     }
 
     &:disabled {
-      opacity: 0.3;
+      opacity: 0.4;
       cursor: not-allowed;
+      background: rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.4);
     }
   }
 
@@ -166,76 +261,42 @@
   .error-message {
     margin-top: $spacing-md;
     text-align: center;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
+    font-family: $font-family-primary;
+    font-weight: 700;
     color: #ff6b6b;
-    padding: $spacing-sm;
+    padding: $spacing-sm $spacing-md;
     border: 1px solid rgba(255, 107, 107, 0.2);
     background: rgba(255, 107, 107, 0.05);
     text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 2px;
   }
 
   .success-message {
     margin-top: $spacing-md;
     text-align: center;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
+    font-family: $font-family-primary;
     font-weight: 700;
-    color: $gradient-start;
-    padding: $spacing-sm;
-    border: 1px solid rgba($gradient-start, 0.3);
-    background: rgba($gradient-start, 0.05);
+    color: $gradient-end;
+    padding: $spacing-sm $spacing-md;
+    border: 1px solid rgba($gradient-end, 0.25);
+    background: rgba($gradient-end, 0.05);
     text-transform: uppercase;
-  }
-
-  /* ===== PREMIUM WATERMARK (FIXED) ===== */
-  &__bg-text {
-    position: absolute;
-    right: -10%;
-    bottom: -15%;
-
-    /* KEY CHANGE: single letter instead of word */
-    font-size: 40vw;
-    font-weight: 900;
-    content: "C";
-    color: rgba(255, 255, 255, 0.025);
-    pointer-events: none;
-    z-index: 0;
-    line-height: 1;
-
-    /* premium depth */
-    filter: blur(4px);
-
-    /* fade edges */
-    mask-image: radial-gradient(
-      circle at center,
-      rgba(0, 0, 0, 0.6) 0%,
-      transparent 70%
-    );
-
-    transform: translateX(calc(var(--scroll-parallax, 0px) * 0.3));
-    transition: transform 0.2s ease-out;
-
-    @include respond-max(md) {
-      font-size: 60vw;
-      right: -20%;
-      bottom: -10%;
-    }
+    letter-spacing: 0.12em;
+    border-radius: 2px;
   }
 }
 
-/* ===== ANIMATION ===== */
+/* ===== ANIMATIONS ===== */
 @keyframes fadeInError {
   from {
     opacity: 0;
-    transform: translateY(5px);
+    transform: translateY(4px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-.section-title-override { 
-  font-size: 4.5rem;
-  font-weight: bold;
-  line-height: 1.2;
 }

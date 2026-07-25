@@ -1,7 +1,8 @@
 export interface MailingList {
-    _id?: string;
-    email: string;
-    name?: string;
-    subscribedAt?: string;
-  }
-  
+  _id?: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  subscribedAt?: string;
+  isSubscribed?: boolean;
+}

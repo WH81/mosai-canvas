@@ -2,36 +2,111 @@
   <div class="container mailing-list__wrapper">
 
     <div class="mailing-list__content">
-      <h2 class="section-title">Join the <span class="section-title">Collective</span></h2>
+      <h2 class="section-title">
+        Join the <span class="section-title">Collective</span>
+      </h2>
+      <hr class="mailing-list__divider" />
       <p class="mailing-list__desc">
-        Sign up for exclusive tour announcements, behind-the-scenes news, and all latest updates.
+        Sign up for exclusive tour announcements, behind-the-scenes
+        news, and all the latest updates.
+      </p>
+      <p class="mailing-list__trust">
+        <span class="mailing-list__trust-icon">🔒</span>
+        No spam. Unsubscribe anytime.
       </p>
     </div>
 
     <div class="mailing-list__form-container">
-      <form #form="ngForm" (ngSubmit)="addEntry(form)" class="mailing-list__form">
-
+      <form
+        #form="ngForm"
+        (ngSubmit)="addEntry(form)"
+        class="mailing-list__form"
+      >
+        <!-- First Name -->
         <div class="form-group">
-          <input type="text" [(ngModel)]="newEntry.name" name="name" id="name-input" placeholder=" " required #nameInput="ngModel"/>
-          <label for="name-input">Full Name <span class="required">*</span></label>
-          <div *ngIf="nameInput.invalid && nameInput.touched" class="error">Required.</div>
+          <input
+            type="text"
+            [(ngModel)]="newEntry.firstName"
+            name="firstName"
+            id="firstName-input"
+            placeholder=" "
+            required
+            #firstNameInput="ngModel"
+          />
+          <label for="firstName-input">
+            First Name <span class="required">*</span>
+          </label>
+          <div
+            *ngIf="firstNameInput.invalid && firstNameInput.touched"
+            class="error"
+          >
+            Required.
+          </div>
         </div>
 
+        <!-- Last Name -->
         <div class="form-group">
-          <input type="email" [(ngModel)]="newEntry.email" name="email" id="email-input" placeholder=" " required email #emailInput="ngModel"/>
-          <label for="email-input">Email <span class="required">*</span></label>
-          <div *ngIf="emailInput.invalid && emailInput.touched" class="error">Valid email required.</div>
+          <input
+            type="text"
+            [(ngModel)]="newEntry.lastName"
+            name="lastName"
+            id="lastName-input"
+            placeholder=" "
+            required
+            #lastNameInput="ngModel"
+          />
+          <label for="lastName-input">
+            Last Name <span class="required">*</span>
+          </label>
+          <div
+            *ngIf="lastNameInput.invalid && lastNameInput.touched"
+            class="error"
+          >
+            Required.
+          </div>
         </div>
 
-        <button type="submit" [disabled]="form.invalid || submitting" class="mailing-list__submit">
+        <!-- Email -->
+        <div class="form-group">
+          <input
+            type="email"
+            [(ngModel)]="newEntry.email"
+            name="email"
+            id="email-input"
+            placeholder=" "
+            required
+            email
+            #emailInput="ngModel"
+          />
+          <label for="email-input">
+            Email <span class="required">*</span>
+          </label>
+          <div
+            *ngIf="emailInput.invalid && emailInput.touched"
+            class="error"
+          >
+            Valid email required.
+          </div>
+        </div>
+
+        <!-- Submit -->
+        <button
+          type="submit"
+          [disabled]="form.invalid || submitting"
+          class="mailing-list__submit"
+        >
           <span>{{ submitting ? 'Subscribing...' : 'Subscribe Now' }}</span>
         </button>
 
-        <div *ngIf="submissionError" class="error-message">{{ submissionError }}</div>    
-        <div *ngIf="submissionSuccess" class="success-message">Welcome to the Collective.</div>
+        <!-- Status messages -->
+        <div *ngIf="submissionError" class="error-message">
+          {{ submissionError }}
+        </div>
+        <div *ngIf="submissionSuccess" class="success-message">
+          Welcome to the Collective, {{ newEntry.firstName || 'friend' }}!
+        </div>
       </form>
     </div>
 
-    <div class="mailing-list__bg-text">C</div>
   </div>
 </section>

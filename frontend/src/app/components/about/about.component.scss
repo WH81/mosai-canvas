@@ -80,7 +80,7 @@
  
 // ── Player variant (band pages with Spotify data) ─────────────────────────
 .about-player {
-  @include respond-min(md) {
+  @include respond-min(lg) {
     align-items: flex-start;
     opacity: 1;
     pointer-events: auto;

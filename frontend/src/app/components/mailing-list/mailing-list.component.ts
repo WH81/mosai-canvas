@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, Inject } from '@angular/core';
+import { Component, HostListener, Inject } from '@angular/core';
 import { MailingListService } from '../../services/mailing-list/mailing-list.service';
 import { MailingList } from '../../models/mailing-list/mailing-list.model';
 import { trigger, transition, style, animate } from '@angular/animations';
@@ -14,75 +14,62 @@ import { NgIf, DOCUMENT } from '@angular/common';
   animations: [
     trigger('fadeIn', [
       transition(':enter', [
-        style({ opacity: 0 }), 
-        animate('300ms ease-in', style({ opacity: 1 }))
-      ])
-    ])
-  ]
+        style({ opacity: 0 }),
+        animate('300ms ease-in', style({ opacity: 1 })),
+      ]),
+    ]),
+  ],
 })
-export class MailingListComponent implements OnInit {
-  entries: MailingList[] = [];
-  newEntry: MailingList = { email: '', name: '' };
+export class MailingListComponent {
+  newEntry: MailingList = { firstName: '', lastName: '', email: '' };
   submissionSuccess = false;
   submissionError: string = '';
   submitting = false;
 
   constructor(
     private mailingListService: MailingListService,
-    @Inject(DOCUMENT) private document: Document // Inject Document for CSS variable access
+    @Inject(DOCUMENT) private document: Document
   ) {}
 
-  ngOnInit() {
-    this.fetchEntries();
-  }
-
-  /**
-   * 👉 THE PARALLAX LOGIC
-   * This listens to the window scroll and updates a CSS variable.
-   * The multiplier (0.2) controls the speed of the slide.
-   */
   @HostListener('window:scroll', [])
   onWindowScroll() {
-    const scrollOffset = window.pageYOffset || this.document.documentElement.scrollTop || this.document.body.scrollTop || 0;
-    
-    // We apply the variable to the document root so the SCSS can pick it up
-    this.document.documentElement.style.setProperty('--scroll-parallax', `${scrollOffset * 0.1}px`);
-  }
-
-  fetchEntries() {
-    this.mailingListService.getAll().subscribe(data => this.entries = data);
+    const scrollOffset =
+      window.pageYOffset ||
+      this.document.documentElement.scrollTop ||
+      this.document.body.scrollTop ||
+      0;
+    this.document.documentElement.style.setProperty(
+      '--scroll-parallax',
+      `${scrollOffset * 0.1}px`
+    );
   }
 
   addEntry(form: NgForm) {
     if (form.invalid) return;
 
     this.submitting = true;
-    this.submissionSuccess = true; 
+    this.submissionSuccess = false;
     this.submissionError = '';
 
-    const tempEntry = { ...this.newEntry }; 
-    this.newEntry = { email: '', name: '' };
-    form.resetForm();
+    const payload = {
+      firstName: this.newEntry.firstName.trim(),
+      lastName: this.newEntry.lastName.trim(),
+      email: this.newEntry.email.trim().toLowerCase(),
+    };
 
-    setTimeout(() => this.submissionSuccess = false, 4000);
-
-    this.mailingListService.create(tempEntry).subscribe({
+    this.mailingListService.subscribe(payload).subscribe({
       next: () => {
         this.submitting = false;
-        this.entries.push(tempEntry);
+        this.submissionSuccess = true;
+        this.newEntry = { firstName: '', lastName: '', email: '' };
+        form.resetForm();
+        setTimeout(() => (this.submissionSuccess = false), 5000);
       },
       error: (err) => {
         this.submitting = false;
-        this.submissionSuccess = false;
-        this.submissionError = err.error?.message || 'An unexpected error occurred.';
-        this.newEntry = tempEntry;
-      }
+        this.submissionError =
+          err.error?.message || 'An unexpected error occurred.';
+      },
     });
   }
-
-  deleteEntry(id: string) {
-    this.mailingListService.delete(id).subscribe(() => this.fetchEntries());
-  }
 }
-
-export type { MailingList };
