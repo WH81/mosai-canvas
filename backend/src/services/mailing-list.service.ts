@@ -15,17 +15,34 @@ export const getEntryByEmail = async (email: string) =>
 export const updateEntry = async (
   id: string,
   data: Partial<IMailingList>
-) => MailingList.findByIdAndUpdate(String(id), { $set: data }, { new: true });
+) => {
+  const cleanData: Partial<IMailingList> = {};
+  if (data.email) {
+    cleanData.email = String(data.email).toLowerCase().trim();
+  }
+
+  return MailingList.findByIdAndUpdate(
+    String(id),
+    { $set: cleanData },
+    { new: true }
+  );
+};
 
 export const updateEntryByEmail = async (
   email: string,
   data: Partial<IMailingList>
-) =>
-  MailingList.findOneAndUpdate(
+) => {
+  const cleanData: Partial<IMailingList> = {};
+  if (data.email) {
+    cleanData.email = String(data.email).toLowerCase().trim();
+  }
+
+  return MailingList.findOneAndUpdate(
     { email: String(email).toLowerCase().trim() },
-    { $set: data },
+    { $set: cleanData },
     { new: true }
   );
+};
 
 export const deleteEntry = async (id: string) =>
   MailingList.findByIdAndDelete(String(id));
