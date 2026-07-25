@@ -1,29 +1,37 @@
 <section class="artist-section l-section">
-
   <header class="artist-section__header container">
     <h2 class="section-title">Artists</h2>
   </header>
 
   <div class="members-list-wrapper">
     <div class="container">
-
       <ng-container *ngFor="let row of memberRows; trackBy: trackByRow">
-
         <div class="members-list-container">
           <ng-container *ngFor="let member of row; trackBy: trackByName">
-
             <div
               class="member-column"
               [class.is-active]="selectedMember?.name === member.name"
-              [class.is-inactive]="selectedMember !== null && selectedMember.name !== member.name && isInRow(row)"
+              [class.is-inactive]="
+                selectedMember !== null &&
+                selectedMember.name !== member.name &&
+                isInRow(row)
+              "
               appScrollAnimation
               (click)="toggleExpand(member.name)"
               role="button"
               tabindex="0"
             >
               <div class="member-image-bg">
-                <img [src]="member.image" class="img-blur-fill" aria-hidden="true" />
-                <img [src]="member.image" [alt]="member.name" class="img-main-fit" />
+                <img
+                  [src]="member.image"
+                  class="img-blur-fill"
+                  aria-hidden="true"
+                />
+                <img
+                  [src]="member.image"
+                  [alt]="member.name"
+                  class="img-main-fit"
+                />
               </div>
 
               <div class="member-content">
@@ -42,16 +50,15 @@
               class="artist-section__footer is-expanded mobile-bio"
               (click)="$event.stopPropagation()"
             >
-              <div class="footer-top-bar">
+              <div class="bio-container">
                 <button
                   class="close-bio"
                   (click)="handleClose(); $event.stopPropagation()"
+                  aria-label="Close bio"
                 >
-                  Close Bio
+                  ✕
                 </button>
-              </div>
 
-              <div class="bio-container">
                 <div class="bio-text-column">
                   <h3 class="bio-name">{{ selectedMember.name }}</h3>
                   <h5 class="bio-instrument">{{ selectedMember.instrument }}</h5>
@@ -60,7 +67,10 @@
 
                 <div
                   class="bio-social-column"
-                  *ngIf="selectedMember?.socialLinks || selectedMember?.streamingLinks"
+                  *ngIf="
+                    selectedMember?.socialLinks ||
+                    selectedMember?.streamingLinks
+                  "
                 >
                   <div class="social-group">
                     <div class="social-title">Follow Me</div>
@@ -80,7 +90,6 @@
                 </div>
               </div>
             </footer>
-
           </ng-container>
         </div>
 
@@ -89,16 +98,15 @@
           *ngIf="isInRow(row) && selectedMember"
           class="artist-section__footer is-expanded desktop-bio"
         >
-          <div class="footer-top-bar">
+          <div class="bio-container">
             <button
               class="close-bio"
               (click)="handleClose(); $event.stopPropagation()"
+              aria-label="Close bio"
             >
-              Close Bio
+              ✕
             </button>
-          </div>
 
-          <div class="bio-container">
             <div class="bio-text-column">
               <h3 class="bio-name">{{ selectedMember.name }}</h3>
               <h5 class="bio-instrument">{{ selectedMember.instrument }}</h5>
@@ -107,7 +115,9 @@
 
             <div
               class="bio-social-column"
-              *ngIf="selectedMember?.socialLinks || selectedMember?.streamingLinks"
+              *ngIf="
+                selectedMember?.socialLinks || selectedMember?.streamingLinks
+              "
             >
               <div class="social-group">
                 <div class="social-title">Follow Me</div>
@@ -127,10 +137,7 @@
             </div>
           </div>
         </footer>
-
       </ng-container>
-
     </div>
   </div>
-
 </section>

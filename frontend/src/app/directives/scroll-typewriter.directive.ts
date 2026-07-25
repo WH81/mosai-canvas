@@ -21,7 +21,7 @@ import {
     private spans: HTMLElement[] = [];
     private boundHandler!: () => void;
   
-    private readonly COLOR_UNTYPED = '#3a3a3a';
+    private readonly COLOR_UNTYPED = 'rgba(255, 255, 255, 0.25)';
     private readonly COLOR_TYPED   = '#ffffff';
   
     constructor(private el: ElementRef<HTMLElement>, private ngZone: NgZone) {}

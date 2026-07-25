@@ -73,6 +73,7 @@ app.use(
           "'self'",
           'https://api.spotify.com',
           'https://accounts.spotify.com',
+          'https://api.sender.net',
         ],
  
         // Allow Spotify's Web Playback iframe

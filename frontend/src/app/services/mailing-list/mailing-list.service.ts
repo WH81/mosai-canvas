@@ -9,23 +9,17 @@ export class MailingListService {
 
   constructor(private http: HttpClient) {}
 
-  getAll(): Observable<MailingList[]> {
-    return this.http.get<MailingList[]>(this.apiUrl);
+  subscribe(entry: MailingList): Observable<{ success: boolean; message: string }> {
+    return this.http.post<{ success: boolean; message: string }>(
+      this.apiUrl,
+      entry
+    );
   }
 
-  getById(id: string): Observable<MailingList> {
-    return this.http.get<MailingList>(`${this.apiUrl}/${id}`);
-  }
-
-  create(entry: MailingList): Observable<MailingList> {
-    return this.http.post<MailingList>(this.apiUrl, entry);
-  }
-
-  update(id: string, entry: MailingList): Observable<MailingList> {
-    return this.http.put<MailingList>(`${this.apiUrl}/${id}`, entry);
-  }
-
-  delete(id: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`);
+  unsubscribe(email: string): Observable<{ success: boolean; message: string }> {
+    return this.http.post<{ success: boolean; message: string }>(
+      `${this.apiUrl}/unsubscribe`,
+      { email }
+    );
   }
 }

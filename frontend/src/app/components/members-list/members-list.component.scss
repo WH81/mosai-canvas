@@ -62,10 +62,9 @@
   flex-wrap: nowrap;
   width: 100%;
 
-  @media (max-width: 992px) {
+  @include respond-max(lg) {
     flex-direction: column;
     height: auto;
-    padding-bottom: 60px;
   }
 }
 
@@ -83,10 +82,26 @@
     max-width 0.7s cubic-bezier(0.23, 1, 0.32, 1);
   min-height: 60vh;
 
+  // Accent line at top — hidden by default
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--primary);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 10;
+  }
+
   &:hover:not(.is-active):not(.is-inactive) {
-    .img-main-fit {
-      transform: scale(1.05);
-      filter: grayscale(50%) brightness(0.9);
+    @include respond-min(lg) {
+      .img-main-fit {
+        transform: scale(1.05);
+        filter: grayscale(50%) brightness(0.9);
+      }
     }
   }
 
@@ -94,9 +109,18 @@
     flex: 0 0 50%;
     max-width: 50%;
 
+    // Show accent line on active member
+    &::before {
+      opacity: 1;
+    }
+
     .img-main-fit {
       filter: grayscale(0%) brightness(1.1);
       transform: scale(1.05);
+
+      @include respond-max(lg) {
+        transform: scale(1);
+      }
     }
 
     .vertical-divider {
@@ -110,8 +134,9 @@
     flex: 0 0 25%;
     max-width: 25%;
 
+    // More aggressive dimming to push focus to active member
     .img-main-fit {
-      filter: grayscale(100%) brightness(0.5);
+      filter: grayscale(100%) brightness(0.25);
     }
   }
 
@@ -119,10 +144,9 @@
     display: none;
   }
 
-  @media (max-width: 992px) {
+  @include respond-max(lg) {
     flex: 0 0 100% !important;
     max-width: 100% !important;
-    overflow: visible; // ← allows bio to flow below without clipping
   }
 }
 
@@ -158,6 +182,7 @@
     inset: 0;
     background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, transparent 60%);
     z-index: 3;
+    transform: scale(1.05);
   }
 }
 
@@ -210,17 +235,10 @@
     .bio-container {
       max-height: fit-content;
       padding: 40px;
+      margin-bottom: 2rem;
       opacity: 1;
-      border: 1px ridge rgba(255, 255, 255, 0.15);
       background: rgba(0, 0, 0, 1);
     }
-  }
-
-  .footer-top-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
   }
 
   .bio-container {
@@ -230,8 +248,9 @@
     overflow: hidden;
     transition: all 0.5s ease;
     gap: 40px;
+    position: relative;
 
-    @media (max-width: 768px) {
+    @include respond-max(md) {
       flex-direction: column;
       gap: 20px;
     }
@@ -268,7 +287,7 @@
     border-left: 1px solid rgba(255, 255, 255, 0.2);
     padding-left: 40px;
 
-    @media (max-width: 768px) {
+    @include respond-max(md) {
       border-left: none;
       padding-left: 0;
       padding-top: 20px;
@@ -299,13 +318,20 @@
     background: none;
     border: 1px solid rgba(255, 255, 255, 0.2);
     color: $text-color-light;
-    padding: 5px 15px;
-    font-family: $font-family-primary;
-    font-size: 0.6rem;
-    text-transform: uppercase;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    line-height: 1;
     cursor: pointer;
-    margin-left: auto;
-    align-self: flex-end;
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 10;
+    border-radius: 4px;
+    transition: background 0.2s ease, color 0.2s ease;
 
     &:hover {
       background: $text-color-light;
@@ -314,11 +340,11 @@
   }
 }
 
-// Mobile bio — visible only on mobile, hidden on desktop
+// Mobile bio — visible only below lg, hidden on desktop
 .mobile-bio {
   display: none;
 
-  @media (max-width: 992px) {
+  @include respond-max(lg) {
     display: flex;
 
     .bio-container {
@@ -327,11 +353,24 @@
   }
 }
 
-// Desktop bio — visible only on desktop, hidden on mobile
+// Desktop bio — accent line at top connects to active member above
 .desktop-bio {
   display: flex;
+  position: relative;
 
-  @media (max-width: 992px) {
+  // Matching accent line at top of bio — visually connects to member column
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--primary);
+    z-index: 10;
+  }
+
+  @include respond-max(lg) {
     display: none;
   }
 }

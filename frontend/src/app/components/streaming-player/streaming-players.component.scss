@@ -1,21 +1,16 @@
 @use "../../../styles/breakpoints" as *;
-
+@use "../../../styles/variables" as *;
 .streaming-players-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   width: 100%;
-
-  // Vertical spacing from page elements; horizontal padding for mobile safety
-  padding: 3.5rem 1.25rem;
+  padding-bottom: 0;
+  padding-inline: 0;
   gap: 3rem;
 
   .player-section {
     width: 100%;
-    /* 
-       800px is wide enough to prevent text truncation for most track names 
-       while maintaining a "compact" professional aesthetic.
-    */
     max-width: 800px;
     display: flex;
     flex-direction: column;
@@ -26,21 +21,7 @@
     width: 100%;
     border-radius: 16px;
     overflow: hidden;
-
-    // Depth and definition against the theme colors
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
     border: 1px solid rgba(255, 255, 255, 0.1);
-
-    // Blends with both mosaic and wailing canvas backgrounds
-    background: rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(10px);
-
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-
-    &:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45);
-    }
 
     iframe {
       display: block;
@@ -52,7 +33,7 @@
   // ── Spotify ─────────────────────────────────────────────────────────
   .spotify {
     iframe {
-      height: var(--spotify-player-height, 580px);
+      height: var(--spotify-player-height, 380px);
       width: 100%;
       border-radius: 12px;
       border: none;
