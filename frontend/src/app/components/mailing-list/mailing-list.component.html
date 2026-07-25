@@ -102,9 +102,11 @@
         <div *ngIf="submissionError" class="error-message">
           {{ submissionError }}
         </div>
+        
         <div *ngIf="submissionSuccess" class="success-message">
-          Welcome to the Collective, {{ newEntry.firstName || 'friend' }}!
+          Welcome to the Collective, {{ subscribedFirstName || 'friend' }}!
         </div>
+
       </form>
     </div>
 
