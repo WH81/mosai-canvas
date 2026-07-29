@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import { ICarouselItem } from '../interfaces/CarouselItem.interface';
+import { ICarouselItem } from '../interfaces/carousel-item.interface';
 
 const CarouselItemSchema: Schema = new mongoose.Schema(
   {

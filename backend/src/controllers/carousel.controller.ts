@@ -1,22 +1,22 @@
 import { NextFunction, Request, Response } from "express";
-import About from "../models/About";
+import CarouselItem from "../models/carousel-item.model";
 import mongoose from "mongoose";
 
-// Get all about items
-export const getAbout = async (_: Request, res: Response) => {
+// Get all carousel items
+export const getCarouselItems = async (_req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const items = await About.find();
+    const items = await CarouselItem.find();
     res.json(items);
   } catch (error) {
-    res.status(500).json({ message: (error as Error).message });
+      next(error);
   }
   return;
 };
 
-// Get a single about item by ID
-export const getAboutById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+// Get a single carousel item by ID
+export const getCarouselItemById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-      const item = await About.findById(req.params.id);
+      const item = await CarouselItem.findById(req.params.id);
       if (!item) {
           res.status(404).json({ error: "Item not found" });
           return;
@@ -27,19 +27,23 @@ export const getAboutById = async (req: Request, res: Response, next: NextFuncti
   }
 };
 
-// Create a new about item
-export const createAbout = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  const { title, body } = req.body;
+// Create a new carousel item
+export const createCarouselItem = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  const { imageUrl, bandName, songName, releaseDate, buttonText, buttonLink } = req.body;
 
   // Ensure all required fields are provided
-  if (!title || !body) {
+  if (!imageUrl || !bandName || !songName || !releaseDate || !buttonText || !buttonLink) {
     res.status(400).json({ message: "Missing required fields" });
     return; // 🔴 Important: Stop further execution
   }
 
-  const newItem = new About({
-    title,
-    body,
+  const newItem = new CarouselItem({
+    imageUrl,
+    bandName,
+    songName,
+    releaseDate,
+    buttonText,
+    buttonLink,
   });
 
   try {
@@ -52,28 +56,28 @@ export const createAbout = async (req: Request, res: Response, next: NextFunctio
   }
 };
 
-// Update an existing about item
-export const updateAbout = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+// Update an existing carousel item
+export const updateCarouselItem = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const { id } = req.params;
-  const { title, body } = req.body;
+  const { imageUrl, bandName, songName, releaseDate, buttonText, buttonLink } = req.body;
 
   // Validate request body
-  if (!title || !body) {
+  if (!imageUrl || !bandName || !songName || !releaseDate || !buttonText || !buttonLink) {
     res.status(400).json({ message: "All fields are required" });
     return;
   }
 
   try {
-    // Update the about item
-    const updatedItem = await About.findByIdAndUpdate(
+    // Update the carousel item
+    const updatedItem = await CarouselItem.findByIdAndUpdate(
       id,
-      { title, body },
+      { imageUrl, bandName, songName, releaseDate, buttonText, buttonLink },
       { new: true }
     );
 
     // If the item is not found
     if (!updatedItem) {
-      res.status(404).json({ message: "About item not found" });
+      res.status(404).json({ message: "Carousel item not found" });
       return;
     }
 
@@ -85,8 +89,8 @@ export const updateAbout = async (req: Request, res: Response, next: NextFunctio
   }
 };
 
-// Delete a about item
-export const deleteAbout = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+// Delete a carousel item
+export const deleteCarouselItem = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const { id } = req.params;
 
   // Validate if the ID is provided and is a valid MongoDB ObjectId
@@ -96,11 +100,11 @@ export const deleteAbout = async (req: Request, res: Response, next: NextFunctio
   }
 
   try {
-    // Attempt to delete the about item by ID
-    const deletedItem = await About.findByIdAndDelete(id);
+    // Attempt to delete the carousel item by ID
+    const deletedItem = await CarouselItem.findByIdAndDelete(id);
 
     if (!deletedItem) {
-      res.status(404).json({ message: "About item not found" });
+      res.status(404).json({ message: "Carousel item not found" });
       return;
     }
 
