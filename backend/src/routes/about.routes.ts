@@ -5,8 +5,8 @@ import {
     createAbout, 
     updateAbout, 
     deleteAbout 
-} from "../controllers/aboutController";
-import { validateAbout } from "../middleware/validateAbout"; // Middleware import
+} from "../controllers/about.controller";
+import { validateAbout } from "../middleware/validate-about"; // Middleware import
 
 const router = express.Router();
 

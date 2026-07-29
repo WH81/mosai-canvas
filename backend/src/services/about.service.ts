@@ -1,5 +1,5 @@
-import About from '../models/About';
-import { IAbout } from '../interfaces/About.interface';
+import About from '../models/about.model';
+import { IAbout } from '../interfaces/about.interface';
 
 // Function to get all About data
 export const getAbout = async (): Promise<IAbout[]> => {

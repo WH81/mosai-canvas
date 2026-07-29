@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import { IAbout } from '../interfaces/About.interface';
+import { IAbout } from '../interfaces/about.interface';
 
 const AboutSchema: Schema = new Schema({
   id: { type: String },

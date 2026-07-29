@@ -5,8 +5,8 @@ import {
     createCarouselItem, 
     updateCarouselItem, 
     deleteCarouselItem 
-} from "../controllers/carouselController";
-import { validateCarouselItem } from "../middleware/validateCarouselItem"; // Middleware import
+} from "../controllers/carousel.controller";
+import { validateCarouselItem } from "../middleware/validate-carousel-item"; // Middleware import
 
 const router = express.Router();
 
