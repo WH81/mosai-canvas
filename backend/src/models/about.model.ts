@@ -8,4 +8,3 @@ const AboutSchema: Schema = new Schema({
 });
 
 export default mongoose.model<IAbout>('About', AboutSchema);
-
