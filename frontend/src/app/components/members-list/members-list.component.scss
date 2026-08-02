@@ -268,10 +268,10 @@
 
     .bio-instrument {
       font-family: $font-family-secondary;
-      color: var(--primary);
       letter-spacing: 0.15em;
       text-transform: uppercase;
       margin-bottom: 1rem;
+      color: var(--primary);
     }
 
     .bio-description {
@@ -307,7 +307,6 @@
       font-size: clamp(1.5rem, 3vw, 2.2rem);
       font-weight: 950;
       text-transform: uppercase;
-      color: var(--primary);
       line-height: 1;
       letter-spacing: 0.02em;
       margin-bottom: 5px;
