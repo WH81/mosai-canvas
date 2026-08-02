@@ -15,8 +15,11 @@ app-root {
   width: 100%;
   padding-block: var(--section-spacing-fluid);
   container-type: inline-size;
+  
+  @include respond-max(sm) {
+    padding-block: $spacing-xl; // ← 48px, only fires on phones ≤430px
+  }
 
-  // MODIFIER: If a section needs to be flush (e.g., Hero/Footer)
   &--flush {
     padding-block: 0;
   }
