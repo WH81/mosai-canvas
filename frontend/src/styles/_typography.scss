@@ -143,30 +143,42 @@ p, small {
 }
 
 // 2. STANDARD SCALING (Fluid & Responsive)
-// We use clamp(min, fluid-rate, max) to bridge your variable tokens.
 h1 {
-  // Scales from $font-xxxl on mobile to $font-xxxxxl on desktop
-  @include text-style-primary(clamp(2.5rem, 8vw, 4.5rem), $font-xxxxxl, 1.05, 900);
+  font-size: clamp(2.5rem, 5vw + 1rem, 4.5rem);
+  line-height: 1.05;
+  font-weight: 900;
+  font-family: $font-family-primary;
+  color: $text-color-medium;
   letter-spacing: -0.02em;
 }
 
 h2 {
-  // Scales from $font-xxl to $font-xxxl
-  @include text-style-primary(clamp(2rem, 6vw, 3rem), $font-xxxl, 1.1, 800);
+  font-size: clamp(2rem, 3vw + 1rem, 3rem);
+  line-height: 1.1;
+  font-weight: 800;
+  font-family: $font-family-primary;
+  color: $text-color-medium;
 }
 
 h3 {
-  @include text-style-primary(clamp(1.5rem, 4vw, 2.25rem), $font-xxl, 1.2, 700);
+  font-size: clamp(1.5rem, 2vw + 1rem, 2.25rem);
+  line-height: 1.2;
+  font-weight: 700;
+  font-family: $font-family-primary;
+  color: $text-color-medium;
 }
 
 h4 {
-  @include text-style-primary(clamp(1.2rem, 3vw, 1.75rem), $font-xl, 1.3, 600);
+  font-size: clamp(1.2rem, 1.5vw + 1rem, 1.75rem);
+  line-height: 1.3;
+  font-weight: 600;
+  font-family: $font-family-primary;
+  color: $text-color-medium;
 }
 
 p {
-  // Body text: Minimum 1rem (16px) for accessibility, scales slightly on large screens
-  @include text-style-secondary(clamp(1rem, 1.2vw, 1.125rem), $font-size-base, 1.6, 400);
-  margin-bottom: $spacing-md;
+  @include text-style-secondary(1rem, $font-size-base, 1.6, 400);
+  margin-bottom: 0; // ← reset globally, components control their own spacing
 }
 
 small {
@@ -177,20 +189,15 @@ small {
 }
 
 // 3. THE GLOBAL SECTION TITLE
-// Optimized for your "Mosaic Canvas" editorial design
 .section-title {
-  // Fluid font size scaling for a heavy editorial look
   @include text-style-primary(clamp(2.5rem, 4vw + 1rem, 5rem), $font-xxxxxl, 0.9, 900);
   text-transform: uppercase;
   letter-spacing: -0.04rem;
   margin-bottom: $spacing-md;
   padding-left: 0.05rem;
-  
-  // Responsive Alignment
-  text-align: left;
+  text-align: center; // ← mobile default
   word-break: break-word;
 
-  // Brand Styling (Mosaic Canvas)
   background: var(--frame-bg);
   -webkit-background-clip: text;
   background-clip: text;
@@ -200,43 +207,42 @@ small {
   paint-order: fill markers stroke;
 
   @include respond-min(lg) {
-    text-align: left;
-    margin-left: -0.04em; // Tighter optical alignment for large text
-    // margin-bottom: $spacing-xl;
+    text-align: left; // ← left when two-column layout activates
+    margin-left: -0.04em;
   }
 }
 
 .section-title__secondary {
-  @include text-style-primary(clamp(1.8rem, 6vw, 3.5rem), $font-xxxl, 0.9, 900);
+  @include text-style-primary(clamp(1.8rem, 3vw + 1rem, 3.5rem), $font-xxxl, 0.9, 900);
   text-transform: uppercase;
   letter-spacing: -0.04rem;
   margin-bottom: $spacing-xl;
-  text-align: center;
+  text-align: center; // ← mobile default
 
   background: var(--frame-bg);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 
-  @include respond-min(md) {
+  @include respond-min(lg) {
     text-align: left;
     margin-bottom: $spacing-sm;
   }
 }
 
 .section-title-alt__tertiary {
-  @include text-style-primary(clamp(1.5rem, 4vw, 2.5rem), $font-xxxl, 0.9, 900);
+  @include text-style-primary(clamp(1.5rem, 2vw + 1rem, 2.5rem), $font-xxxl, 0.9, 900);
   text-transform: uppercase;
   letter-spacing: -0.04rem;
   margin-bottom: $spacing-sm;
-  text-align: center;
+  text-align: center; // ← mobile default
 
   background: var(--frame-bg);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 
-  @include respond-min(md) {
+  @include respond-min(lg) {
     text-align: left;
   }
 }

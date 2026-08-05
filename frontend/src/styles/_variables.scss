@@ -38,7 +38,7 @@ $secondary-color: #ff5722; // A contrasting accent color (orange)
 $background-dark: #121212; // A deep, dark background color
 
 $dark-gradient-start: #121212;
-$dark-gradient-mid: #212121;
+$dark-gradient-mid: #171717;
 $dark-gradient-end: #121212;
 $background-gradient-dark: linear-gradient(
   90deg,
@@ -57,6 +57,7 @@ $letter-spacing-base: 0px;
 $gradient-start: #4a90e2;
 $gradient-end: #50e3c2;
 $gradient-mosai-canvas: linear-gradient(to bottom, $gradient-start, $gradient-end);
+$bg-mailing-list: #131820;
 
 // Additional variables for a cohesive theme
 $border-radius-rounded: 0.75rem; // For cards and sections
@@ -69,13 +70,22 @@ $spacing-title-horizontal: clamp(1rem, 2vw, 1.5rem);
 $frame-background-color: #2c2c2c;
 $frame-border-color: #000000;
 
-// LAYOUT TOKENS (Variables specific to layout)
-// These usually pull from your _variables.scss, but defined here for clarity
 :root {
   --container-max-width: 90rem;
-  --container-gutter: #{$spacing-lg}; // Uses your 1.5rem variable
-  --section-spacing: #{$spacing-xl}; // Uses your 3rem variable
+  --container-gutter: #{$spacing-md};     // ← 24px default for mobile
+  --section-spacing: #{$spacing-xl};
+  --section-spacing-fluid: clamp(#{$spacing-xl}, 8vw, #{$spacing-xxxxll});
+  // ← floor raised from 72px to 48px — sections breathe without being sparse on mobile
+}
 
-  // Clamp for section spacing here!
-  --section-spacing-fluid: clamp(#{$spacing-xxll}, 8vw, #{$spacing-xxxxll});
+@media (min-width: 768px) {
+  :root {
+    --container-gutter: #{$spacing-lg};   // ← 32px tablet
+  }
+}
+
+@media (min-width: 1440px) {
+  :root {
+    --container-gutter: #{$spacing-xl};   // ← 48px large desktop
+  }
 }

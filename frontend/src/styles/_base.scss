@@ -18,4 +18,7 @@ body {
   position: relative;
   display: flex;
   flex-direction: column;
+  -webkit-font-smoothing: antialiased;  // ← crisper text rendering on Mac/iOS
+  -moz-osx-font-smoothing: grayscale;  // ← crisper text rendering on Firefox Mac
+  text-rendering: optimizeLegibility;  // ← better kerning on large headings
 }

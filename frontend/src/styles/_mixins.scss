@@ -2,19 +2,18 @@
 
 // Primary Typography Mixin
 @mixin text-style-primary($min, $max, $line-height, $weight) {
-  font-size: clamp(#{$min}, 4vw, #{$max});
+  font-size: clamp(#{$min}, 4vw + 1rem, #{$max}); // ← fluid value includes rem base
   line-height: $line-height;
   font-weight: $weight;
-  font-family: $font-family-primary; // No v. prefix needed
+  font-family: $font-family-primary;
   color: $text-color-medium;
 }
 
-// Secondary Typography Mixin
 @mixin text-style-secondary($min, $max, $line-height, $weight) {
-  font-size: clamp(#{$min}, 2vw, #{$max});
+  font-size: clamp(#{$min}, 1vw + 1rem, #{$max}); // ← fluid value includes rem base
   line-height: $line-height;
   font-weight: $weight;
-  font-family: $font-family-secondary; // No v. prefix needed
+  font-family: $font-family-secondary;
   color: $text-color-light;
 }
 
