@@ -1,0 +1,31 @@
+<nav class="admin-header" aria-label="Administrator navigation">
+  <div class="admin-header__inner">
+    <a
+      class="admin-brand"
+      routerLink="/admin"
+      aria-label="MOSAI CANVAS administration dashboard"
+    >
+      MOSAI CANVAS
+    </a>
+
+    <div class="admin-navigation">
+      <a
+        routerLink="/admin"
+        routerLinkActive="admin-navigation__link--active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        Dashboard
+      </a>
+    </div>
+
+    <div class="admin-account">
+      <span class="admin-account__name" *ngIf="admin">
+        {{ admin.displayName }}
+      </span>
+
+      <button type="button" class="admin-account__logout" (click)="logout()">
+        Sign Out
+      </button>
+    </div>
+  </div>
+</nav>

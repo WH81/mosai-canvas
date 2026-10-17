@@ -1,28 +1,80 @@
-import express from "express";
-import { 
-    getCarouselItems, 
-    getCarouselItemById, 
-    createCarouselItem, 
-    updateCarouselItem, 
-    deleteCarouselItem 
-} from "../controllers/carousel.controller";
-import { validateCarouselItem } from "../middleware/validate-carousel-item"; // Middleware import
+import express from 'express';
 
-const router = express.Router();
+import {
+  getCarouselItems,
+  getCarouselItemById,
+  createCarouselItem,
+  updateCarouselItem,
+  reorderCarouselItems,
+  deleteCarouselItem,
+} from '../controllers/carousel.controller';
 
-// Get all carousel items
-router.get("/", getCarouselItems);
+import {
+  validateCarouselItem,
+  validateCarouselOrder,
+} from '../middleware/validate-carousel-item';
 
-// Get a single carousel item by ID
-router.get("/:id", getCarouselItemById);
+import {
+  authenticateAdmin,
+} from '../middleware/auth.middleware';
 
-// Create a new carousel item (with validation middleware)
-router.post("/", validateCarouselItem, createCarouselItem);
+const router =
+  express.Router();
 
-// Update an existing carousel item by ID (with validation middleware)
-router.put("/:id", validateCarouselItem, updateCarouselItem);
+/**
+ * PUBLIC
+ */
+router.get(
+  '/',
+  getCarouselItems
+);
 
-// Delete a carousel item by ID
-router.delete("/:id", deleteCarouselItem);
+/**
+ * IMPORTANT:
+ * /order must appear before /:id.
+ */
+router.put(
+  '/order',
+  authenticateAdmin,
+  validateCarouselOrder,
+  reorderCarouselItems
+);
+
+/**
+ * ADMIN
+ */
+router.post(
+  '/',
+  authenticateAdmin,
+  validateCarouselItem,
+  createCarouselItem
+);
+
+/**
+ * ADMIN
+ */
+router.put(
+  '/:id',
+  authenticateAdmin,
+  validateCarouselItem,
+  updateCarouselItem
+);
+
+/**
+ * ADMIN
+ */
+router.delete(
+  '/:id',
+  authenticateAdmin,
+  deleteCarouselItem
+);
+
+/**
+ * PUBLIC
+ */
+router.get(
+  '/:id',
+  getCarouselItemById
+);
 
 export default router;

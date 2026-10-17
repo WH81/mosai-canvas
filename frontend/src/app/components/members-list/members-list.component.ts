@@ -8,6 +8,8 @@ import {
   AfterViewInit,
   OnDestroy,
   Renderer2,
+  ChangeDetectorRef,
+  inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MembersService } from '../../services/members-bio/members.service';
@@ -63,7 +65,8 @@ export class MembersListComponent implements OnChanges {
   selectedMember: any | null = null;
   expandedStates: Record<string, boolean> = {};
  
-  constructor(private memberService: MembersService) {}
+  private memberService = inject(MembersService);
+  private cdr = inject(ChangeDetectorRef);
  
   ngOnChanges(changes: SimpleChanges): void {
     const bandSlugChange = changes['bandSlug'];
@@ -79,14 +82,17 @@ export class MembersListComponent implements OnChanges {
   fetchMembers(): void {
     this.memberService.getMembersByBand(this.bandSlug).subscribe(
       (members: Member[]) => {
-        this.members = members || [];
-        if (!this.expandedStates) {
-          this.expandedStates = {};
-        }
-        this.members.forEach((m) => {
-          if (!(m.name in this.expandedStates)) {
-            this.expandedStates[m.name] = false;
+        queueMicrotask(() => {
+          this.members = members || [];
+          if (!this.expandedStates) {
+            this.expandedStates = {};
           }
+          this.members.forEach((m) => {
+            if (!(m.name in this.expandedStates)) {
+              this.expandedStates[m.name] = false;
+            }
+          });
+          this.cdr.markForCheck();
         });
       },
       (error: any) => {

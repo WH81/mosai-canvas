@@ -1,0 +1,80 @@
+<main class="admin-bands" aria-labelledby="bands-heading">
+    <header class="admin-bands__header">
+      <p class="admin-bands__eyebrow">MOSAI CANVAS</p>
+  
+      <h1 id="bands-heading" class="admin-bands__title">
+        Bands
+      </h1>
+  
+      <p class="admin-bands__description">
+        Select a band to manage its website content and links.
+      </p>
+    </header>
+  
+    @if (isLoading) {
+      <div
+        class="admin-bands__loading"
+        role="status"
+        aria-live="polite"
+      >
+        Loading bands...
+      </div>
+    } @else if (errorMessage) {
+      <div
+        class="admin-bands__message admin-bands__message--error"
+        role="alert"
+      >
+        {{ errorMessage }}
+      </div>
+    } @else if (bands.length === 0) {
+      <div
+        class="admin-bands__message"
+        role="status"
+      >
+        No bands are currently available.
+      </div>
+    } @else {
+      <section
+        class="admin-bands__list"
+        aria-label="Available bands"
+      >
+        @for (band of bands; track band._id) {
+          <article class="admin-bands__card">
+            <div class="admin-bands__card-content">
+              @if (band.bandLogo) {
+                <div class="admin-bands__logo-wrapper">
+                  <img
+                    class="admin-bands__logo"
+                    [src]="band.bandLogo"
+                    [alt]="band.name + ' logo'"
+                  />
+                </div>
+              }
+  
+              <div class="admin-bands__details">
+                <h2 class="admin-bands__band-name">
+                  {{ band.name }}
+                </h2>
+  
+                @if (band.bio) {
+                  <p class="admin-bands__band-description">
+                    {{ band.bio }}
+                  </p>
+                }
+              </div>
+            </div>
+  
+            <div class="admin-bands__actions">
+              <a
+                class="admin-bands__action"
+                [routerLink]="['/admin/bands', band.slug, 'links']"
+                [attr.aria-label]="'Manage links for ' + band.name"
+              >
+                Manage Links →
+              </a>
+            </div>
+          </article>
+        }
+      </section>
+    }
+  </main>

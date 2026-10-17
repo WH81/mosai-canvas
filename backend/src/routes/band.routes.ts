@@ -1,43 +1,125 @@
 import express from 'express';
+
 import {
   createBand,
   getAllBands,
   getBandBySlug,
   updateBand,
   deleteBand,
+
   getSocialLinksByBand,
   createSocialLinksForBand,
   updateSocialLinksForBand,
   deleteSocialLinksForBand,
+
   getStreamingLinksByBand,
   createStreamingLinksForBand,
   updateStreamingLinksForBand,
-  deleteStreamingLinksForBand
+  deleteStreamingLinksForBand,
 } from '../controllers/band.controller';
+
+import { authenticateAdmin } from '../middleware/auth.middleware';
+
+import { validateBandId } from '../middleware/validate-band-id';
+import { validateSocialLinks } from '../middleware/validate-social-links';
+import { validateStreamingLinks } from '../middleware/validate-streaming-links';
 
 const router = express.Router();
 
-// Band CRUD
-router.post('/', createBand);
-router.get('/', getAllBands);
+// ============================================================
+// BAND CRUD
+// ============================================================
 
-// ⭐ Social Links CRUD for a band
-router.get('/:bandId/social-links', getSocialLinksByBand);
-router.post('/:bandId/social-links', createSocialLinksForBand);
-router.put('/:bandId/social-links', updateSocialLinksForBand);
-router.delete('/:bandId/social-links', deleteSocialLinksForBand);
+router.get(
+  '/',
+  getAllBands
+);
 
-// ⭐ Streaming Links CRUD for a band
-router.get('/:bandId/streaming-links', getStreamingLinksByBand);
-router.post('/:bandId/streaming-links', createStreamingLinksForBand);
-router.put('/:bandId/streaming-links', updateStreamingLinksForBand);
-router.delete('/:bandId/streaming-links', deleteStreamingLinksForBand);
+router.post(
+  '/',
+  authenticateAdmin,
+  validateBandId,
+  createBand
+);
 
-// ⭐ These MUST come AFTER the social/streaming routes
-router.put('/:id', updateBand);
-router.delete('/:id', deleteBand);
+router.put(
+  '/:id',
+  authenticateAdmin,
+  validateBandId,
+  updateBand
+);
 
-// ⭐ Slug route MUST be last
-router.get('/:slug', getBandBySlug);
+router.delete(
+  '/:id',
+  authenticateAdmin,
+  deleteBand
+);
+
+// ============================================================
+// BAND SOCIAL LINKS
+// ============================================================
+
+router.get(
+  '/:bandId/social-links',
+  getSocialLinksByBand
+);
+
+router.post(
+  '/:bandId/social-links',
+  authenticateAdmin,
+  validateSocialLinks,
+  createSocialLinksForBand
+);
+
+router.put(
+  '/:bandId/social-links',
+  authenticateAdmin,
+  validateSocialLinks,
+  updateSocialLinksForBand
+);
+
+router.delete(
+  '/:bandId/social-links',
+  authenticateAdmin,
+  deleteSocialLinksForBand
+);
+
+// ============================================================
+// BAND STREAMING LINKS
+// ============================================================
+
+router.get(
+  '/:bandId/streaming-links',
+  getStreamingLinksByBand
+);
+
+router.post(
+  '/:bandId/streaming-links',
+  authenticateAdmin,
+  validateStreamingLinks,
+  createStreamingLinksForBand
+);
+
+router.put(
+  '/:bandId/streaming-links',
+  authenticateAdmin,
+  validateStreamingLinks,
+  updateStreamingLinksForBand
+);
+
+router.delete(
+  '/:bandId/streaming-links',
+  authenticateAdmin,
+  deleteStreamingLinksForBand
+);
+
+// ============================================================
+// BAND BY SLUG
+// ============================================================
+
+router.get(
+  '/:slug',
+  getBandBySlug
+);
 
 export default router;

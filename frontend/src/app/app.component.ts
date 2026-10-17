@@ -12,7 +12,9 @@ import { FooterComponent } from './components/footer/footer.component';
   imports: [RouterModule, MenuComponent, FooterComponent],
 })
 export class AppComponent {
-  constructor(private router: Router) {
+  constructor(
+    private router: Router
+  ) {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         const slug = this.extractSlug(event.urlAfterRedirects);

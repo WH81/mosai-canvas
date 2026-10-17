@@ -1,24 +1,110 @@
 @if (memberData) {
   <div class="member-bio">
+
     <div class="member-header">
       <img
         class="member-thumbnail"
         [src]="memberData.image"
         [alt]="'Thumbnail of ' + memberData.name"
       />
-      <h2 class="member-name">{{ memberData.name }}</h2>
+
+      <h2 class="member-name">
+        {{ memberData.name }}
+      </h2>
     </div>
 
     <p class="member-instrument">
-      <strong>Instrument:</strong> {{ memberData.instrument }}
+      <strong>Instrument:</strong>
+      {{ memberData.instrument }}
     </p>
+
     <p class="member-band">
-      <strong>Band:</strong> {{ memberData.band }}
+      <strong>Band:</strong>
+      {{ memberData.band }}
     </p>
 
-    <h3 class="bio-label">Bio</h3>
+    <h3 class="bio-label">
+      Bio
+    </h3>
 
-    <p class="bio-text">{{ memberData.bio }}</p>
+    <p class="bio-text">
+      {{ memberData.bio }}
+    </p>
 
-    <app-social-links [socialLinks]="memberData.socialLinks || undefined" size="small"></app-social-links>  </div>
+    <!-- Social Media -->
+    @if (memberData.socialLinks) {
+      <section
+        class="member-links"
+        aria-labelledby="member-social-heading"
+      >
+        <h3
+          id="member-social-heading"
+          class="links-label"
+        >
+          Follow
+        </h3>
+
+        <app-social-links
+          [socialLinks]="memberData.socialLinks"
+          size="small"
+        />
+      </section>
+    }
+
+    <!-- Streaming Media -->
+    @if (memberData.streamingLinks) {
+      <section
+        class="member-links"
+        aria-labelledby="member-streaming-heading"
+      >
+        <h3
+          id="member-streaming-heading"
+          class="links-label"
+        >
+          Listen
+        </h3>
+
+        <div class="streaming-links">
+
+          @if (memberData.streamingLinks.spotify) {
+            <a
+              class="streaming-link"
+              [href]="memberData.streamingLinks.spotify"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Listen to {{ memberData.name }} on Spotify"
+            >
+              Spotify
+            </a>
+          }
+
+          @if (memberData.streamingLinks.appleMusic) {
+            <a
+              class="streaming-link"
+              [href]="memberData.streamingLinks.appleMusic"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Listen to {{ memberData.name }} on Apple Music"
+            >
+              Apple Music
+            </a>
+          }
+
+          @if (memberData.streamingLinks.soundCloud) {
+            <a
+              class="streaming-link"
+              [href]="memberData.streamingLinks.soundCloud"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Listen to {{ memberData.name }} on SoundCloud"
+            >
+              SoundCloud
+            </a>
+          }
+
+        </div>
+      </section>
+    }
+
+  </div>
 }

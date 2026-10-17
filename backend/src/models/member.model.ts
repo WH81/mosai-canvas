@@ -1,22 +1,70 @@
-import mongoose, { Schema } from 'mongoose';
-import { IMember } from '../interfaces/member.interface';
+import mongoose, { Schema } from "mongoose";
+import { IMember } from "../interfaces/member.interface";
 
-const memberSchema: Schema = new mongoose.Schema(
+const memberSchema = new Schema<IMember>(
   {
-    name: { type: String, required: true },
-    instrument: { type: String, required: true },
-    band: { type: mongoose.Schema.Types.ObjectId, ref: 'Band', required: true },
-    bandSlug: { type: String, required: true, unique: true },
-    image: { type: String, required: true },
-    bio: { type: String, required: true },
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
+    instrument: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
+    band: {
+      type: Schema.Types.ObjectId,
+      ref: "Band",
+      required: true,
+      index: true,
+    },
+
+    /**
+     * Stores the band's slug for efficient member-by-band queries.
+     *
+     * This is intentionally NOT unique because multiple members
+     * belong to the same band.
+     */
+    bandSlug: {
+      type: String,
+      required: true,
+      trim: true,
+      index: true,
+    },
+
+    image: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
+    bio: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
     socialLinks: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'SocialLinks',
+      type: Schema.Types.ObjectId,
+      ref: "SocialLinks",
       required: false,
-    }
+    },
+    
+    streamingLinks: {
+      type: Schema.Types.ObjectId,
+      ref: 'StreamingLinks',
+      required: false,
+    },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+  }
 );
 
-export default mongoose.model<IMember>('Member', memberSchema);
-
+export default mongoose.model<IMember>(
+  "Member",
+  memberSchema
+);

@@ -1,18 +1,50 @@
 import { Router } from 'express';
+
 import {
   createTour,
   getAllTours,
   getTourById,
   updateTour,
-  deleteTour
+  deleteTour,
 } from '../controllers/tour.controller';
+
+import { authenticateAdmin } from '../middleware/auth.middleware';
+import { validateTour } from '../middleware/validate-tour';
 
 const router: Router = Router();
 
-router.post('/', createTour);
+/*
+ * Public read endpoints.
+ */
 router.get('/', getAllTours);
+
 router.get('/:id', getTourById);
-router.put('/:id', updateTour);
-router.delete('/:id', deleteTour);
+
+/*
+ * Protected administrator write endpoints.
+ *
+ * Authentication runs first.
+ * Validation runs second.
+ * Controller runs last.
+ */
+router.post(
+  '/',
+  authenticateAdmin,
+  validateTour,
+  createTour
+);
+
+router.put(
+  '/:id',
+  authenticateAdmin,
+  validateTour,
+  updateTour
+);
+
+router.delete(
+  '/:id',
+  authenticateAdmin,
+  deleteTour
+);
 
 export default router;

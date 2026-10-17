@@ -1,0 +1,346 @@
+<main
+  class="admin-about"
+  aria-labelledby="about-heading"
+>
+  <header class="admin-about__header">
+
+    <div>
+      <a
+        routerLink="/admin"
+        class="back-link"
+      >
+        ← Dashboard
+      </a>
+
+      <p class="eyebrow">
+        MOSAI CANVAS
+      </p>
+
+      <h1 id="about-heading">
+        About
+      </h1>
+
+      <p class="intro">
+        Manage the About content displayed on the home page.
+      </p>
+    </div>
+
+  </header>
+
+
+  <!-- Success message -->
+
+  <div
+    *ngIf="successMessage"
+    class="message message--success"
+    role="status"
+  >
+    {{ successMessage }}
+  </div>
+
+
+  <!-- Error message -->
+
+  <div
+    *ngIf="errorMessage"
+    class="message message--error"
+    role="alert"
+  >
+    {{ errorMessage }}
+  </div>
+
+
+  <!-- Editor -->
+
+  <section
+    class="editor-card"
+    aria-labelledby="editor-heading"
+  >
+
+    <div class="editor-card__header">
+
+      <div>
+        <h2 id="editor-heading">
+          {{ editingId ? 'Edit About' : 'About Content' }}
+        </h2>
+
+        <p>
+          {{
+            editingId
+              ? 'Update the selected About section and select Save Changes.'
+              : 'Enter new About content and select Save Changes.'
+          }}
+        </p>
+      </div>
+
+      <button
+        *ngIf="editingId"
+        type="button"
+        class="text-button"
+        (click)="cancelEdit()"
+        [disabled]="isSaving"
+      >
+        Cancel
+      </button>
+
+    </div>
+
+
+    <form
+      [formGroup]="aboutForm"
+      (ngSubmit)="save()"
+      novalidate
+    >
+
+      <!-- Title -->
+
+      <div class="form-field">
+
+        <label for="about-title">
+          Title
+          <span class="optional-label">
+            Optional
+          </span>
+        </label>
+
+        <input
+          id="about-title"
+          type="text"
+          formControlName="title"
+          autocomplete="off"
+          spellcheck="true"
+          maxlength="100"
+          [attr.aria-invalid]="
+            titleControl.invalid &&
+            titleControl.touched
+          "
+          aria-describedby="title-help title-error"
+        />
+
+        <p
+          id="title-help"
+          class="field-help"
+        >
+          Optional heading displayed above the About text.
+        </p>
+
+        <p
+          *ngIf="
+            titleControl.invalid &&
+            titleControl.touched
+          "
+          id="title-error"
+          class="field-error"
+        >
+          Title cannot exceed 100 characters.
+        </p>
+
+      </div>
+
+
+      <!-- Body -->
+
+      <div class="form-field">
+
+        <label for="about-body">
+          Body
+        </label>
+
+        <textarea
+          id="about-body"
+          formControlName="body"
+          rows="10"
+          maxlength="2000"
+          spellcheck="true"
+          [attr.aria-invalid]="
+            bodyControl.invalid &&
+            bodyControl.touched
+          "
+          aria-describedby="body-help body-error"
+        ></textarea>
+
+        <p
+          id="body-help"
+          class="field-help"
+        >
+          Enter the text displayed in the About section.
+        </p>
+
+        <p
+          *ngIf="
+            bodyControl.invalid &&
+            bodyControl.touched
+          "
+          id="body-error"
+        >
+          About text is required.
+        </p>
+
+      </div>
+
+
+      <!-- Actions -->
+
+      <div class="form-actions">
+
+        <button
+          type="submit"
+          class="primary-button"
+          [disabled]="
+            isSaving ||
+            deletingId !== null
+          "
+        >
+          {{
+            isSaving
+              ? 'Saving...'
+              : editingId
+                ? 'Save Changes'
+                : 'Create About'
+          }}
+        </button>
+
+        <button
+          *ngIf="editingId"
+          type="button"
+          class="secondary-button"
+          (click)="cancelEdit()"
+          [disabled]="isSaving"
+        >
+          Cancel
+        </button>
+
+      </div>
+
+    </form>
+
+  </section>
+
+
+  <!-- Existing records -->
+
+  <section
+    class="content-section"
+    aria-labelledby="existing-heading"
+  >
+
+    <div class="section-heading">
+
+      <div>
+        <h2 id="existing-heading">
+          Existing About Content
+        </h2>
+
+        <p>
+          {{ aboutItems.length }}
+          {{ aboutItems.length === 1 ? 'item' : 'items' }}
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="text-button"
+        (click)="loadAbout()"
+        [disabled]="
+          isLoading ||
+          isSaving ||
+          deletingId !== null
+        "
+      >
+        Refresh
+      </button>
+
+    </div>
+
+
+    <!-- Loading -->
+
+    <div
+      *ngIf="isLoading"
+      class="state"
+      role="status"
+    >
+      Loading About content...
+    </div>
+
+
+    <!-- Empty state -->
+
+    <div
+      *ngIf="
+        !isLoading &&
+        aboutItems.length === 0
+      "
+      class="state"
+    >
+      No About content exists yet.
+    </div>
+
+
+    <!-- Records -->
+
+    <div
+      *ngIf="
+        !isLoading &&
+        aboutItems.length > 0
+      "
+      class="about-list"
+    >
+
+      <article
+        *ngFor="let item of aboutItems"
+        class="about-item"
+      >
+
+        <div class="about-item__content">
+
+          <h3 *ngIf="item.title">
+            {{ item.title }}
+          </h3>
+
+          <p>
+            {{ item.body }}
+          </p>
+
+        </div>
+
+
+        <div class="about-item__actions">
+
+          <button
+            type="button"
+            class="secondary-button"
+            (click)="startEdit(item)"
+            [disabled]="
+              isSaving ||
+              deletingId !== null
+            "
+          >
+            Edit
+          </button>
+
+          <button
+            type="button"
+            class="danger-button"
+            (click)="delete(item)"
+            [disabled]="
+              isSaving ||
+              deletingId !== null
+            "
+          >
+            {{
+              deletingId === item._id
+                ? 'Deleting...'
+                : 'Delete'
+            }}
+          </button>
+
+        </div>
+
+      </article>
+
+    </div>
+
+  </section>
+
+</main>

@@ -1,0 +1,602 @@
+<main
+  class="admin-carousel"
+  aria-labelledby="carousel-heading"
+>
+
+  <header class="admin-carousel__header">
+
+    <div>
+
+      <a
+        routerLink="/admin"
+        class="back-link"
+      >
+        ← Dashboard
+      </a>
+
+      <p class="eyebrow">
+        MOSAI CANVAS
+      </p>
+
+      <h1 id="carousel-heading">
+        Carousel
+      </h1>
+
+      <p class="intro">
+        Manage the slides displayed in the
+        homepage carousel.
+      </p>
+
+    </div>
+
+  </header>
+
+
+  <!-- Success -->
+
+  <div
+    *ngIf="successMessage"
+    class="message message--success"
+    role="status"
+    aria-live="polite"
+  >
+    {{ successMessage }}
+  </div>
+
+
+  <!-- Error -->
+
+  <div
+    *ngIf="errorMessage"
+    class="message message--error"
+    role="alert"
+    aria-live="assertive"
+  >
+    {{ errorMessage }}
+  </div>
+
+
+  <!-- Editor -->
+
+  <section
+    class="editor-card"
+    aria-labelledby="editor-heading"
+  >
+
+    <div class="editor-card__header">
+
+      <div>
+
+        <h2 id="editor-heading">
+          {{
+            editingId
+              ? 'Edit Carousel Slide'
+              : 'Create Carousel Slide'
+          }}
+        </h2>
+
+        <p>
+          {{
+            editingId
+              ? 'Update the selected slide and save your changes.'
+              : 'Add a new slide to the homepage carousel.'
+          }}
+        </p>
+
+      </div>
+
+      <button
+        *ngIf="editingId"
+        type="button"
+        class="text-button"
+        (click)="cancelEdit()"
+        [disabled]="isSaving || isReordering"
+      >
+        Cancel
+      </button>
+
+    </div>
+
+
+    <form
+      [formGroup]="carouselForm"
+      (ngSubmit)="save()"
+      novalidate
+    >
+
+      <!-- Image -->
+
+      <div class="form-field">
+
+        <label for="carousel-image">
+          Image URL
+        </label>
+
+        <input
+          id="carousel-image"
+          type="url"
+          formControlName="imageUrl"
+          autocomplete="url"
+          spellcheck="false"
+          maxlength="2048"
+          placeholder="https://example.com/image.jpg"
+          [attr.aria-invalid]="
+            imageUrlControl.invalid &&
+            imageUrlControl.touched
+          "
+          aria-describedby="image-help image-error"
+        />
+
+        <p
+          id="image-help"
+          class="field-help"
+        >
+          Enter the full HTTPS image URL.
+        </p>
+
+        <p
+          *ngIf="
+            imageUrlControl.invalid &&
+            imageUrlControl.touched
+          "
+          id="image-error"
+          class="field-error"
+        >
+          A valid image URL is required.
+        </p>
+
+      </div>
+
+
+      <!-- Band -->
+
+      <div class="form-field">
+
+        <label for="carousel-band">
+          Band Name
+        </label>
+
+        <input
+          id="carousel-band"
+          type="text"
+          formControlName="bandName"
+          maxlength="100"
+          autocomplete="off"
+          [attr.aria-invalid]="
+            bandNameControl.invalid &&
+            bandNameControl.touched
+          "
+          aria-describedby="band-error"
+        />
+
+        <p
+          *ngIf="
+            bandNameControl.invalid &&
+            bandNameControl.touched
+          "
+          id="band-error"
+          class="field-error"
+        >
+          Band name is required and must be
+          100 characters or fewer.
+        </p>
+
+      </div>
+
+
+      <!-- Song -->
+
+      <div class="form-field">
+
+        <label for="carousel-song">
+          Song Name
+        </label>
+
+        <input
+          id="carousel-song"
+          type="text"
+          formControlName="songName"
+          maxlength="100"
+          autocomplete="off"
+          [attr.aria-invalid]="
+            songNameControl.invalid &&
+            songNameControl.touched
+          "
+          aria-describedby="song-error"
+        />
+
+        <p
+          *ngIf="
+            songNameControl.invalid &&
+            songNameControl.touched
+          "
+          id="song-error"
+          class="field-error"
+        >
+          Song name is required and must be
+          100 characters or fewer.
+        </p>
+
+      </div>
+
+
+      <!-- Out date -->
+
+      <div class="form-field">
+
+        <label for="carousel-release-date">
+          Out Date
+        </label>
+
+        <input
+          id="carousel-release-date"
+          type="date"
+          formControlName="releaseDate"
+          [attr.aria-invalid]="
+            releaseDateControl.invalid &&
+            releaseDateControl.touched
+          "
+          aria-describedby="date-help date-error"
+        />
+
+        <p
+          id="date-help"
+          class="field-help"
+        >
+          Date displayed after “Out:” on the carousel.
+        </p>
+
+        <p
+          *ngIf="
+            releaseDateControl.invalid &&
+            releaseDateControl.touched
+          "
+          id="date-error"
+          class="field-error"
+        >
+          An out date is required.
+        </p>
+
+      </div>
+
+
+      <!-- Button text -->
+
+      <div class="form-field">
+
+        <label for="carousel-button-text">
+          Button Text
+        </label>
+
+        <input
+          id="carousel-button-text"
+          type="text"
+          formControlName="buttonText"
+          maxlength="50"
+          autocomplete="off"
+          [attr.aria-invalid]="
+            buttonTextControl.invalid &&
+            buttonTextControl.touched
+          "
+          aria-describedby="button-text-error"
+        />
+
+        <p
+          *ngIf="
+            buttonTextControl.invalid &&
+            buttonTextControl.touched
+          "
+          id="button-text-error"
+          class="field-error"
+        >
+          Button text is required and must be
+          50 characters or fewer.
+        </p>
+
+      </div>
+
+
+      <!-- Button link -->
+
+      <div class="form-field">
+
+        <label for="carousel-button-link">
+          Button Link
+        </label>
+
+        <input
+          id="carousel-button-link"
+          type="url"
+          formControlName="buttonLink"
+          maxlength="2048"
+          autocomplete="url"
+          spellcheck="false"
+          placeholder="https://example.com"
+          [attr.aria-invalid]="
+            buttonLinkControl.invalid &&
+            buttonLinkControl.touched
+          "
+          aria-describedby="button-link-help button-link-error"
+        />
+
+        <p
+          id="button-link-help"
+          class="field-help"
+        >
+          Full HTTPS URL opened when visitors
+          select the carousel button.
+        </p>
+
+        <p
+          *ngIf="
+            buttonLinkControl.invalid &&
+            buttonLinkControl.touched
+          "
+          id="button-link-error"
+          class="field-error"
+        >
+          A valid button URL is required.
+        </p>
+
+      </div>
+
+
+      <!-- Actions -->
+
+      <div class="form-actions">
+
+        <button
+          type="submit"
+          class="primary-button"
+          [disabled]="
+            isSaving ||
+            isReordering ||
+            deletingId !== null
+          "
+        >
+          {{
+            isSaving
+              ? 'Saving...'
+              : editingId
+                ? 'Save Changes'
+                : 'Create Slide'
+          }}
+        </button>
+
+        <button
+          *ngIf="editingId"
+          type="button"
+          class="secondary-button"
+          (click)="cancelEdit()"
+          [disabled]="isSaving || isReordering"
+        >
+          Cancel
+        </button>
+
+      </div>
+
+    </form>
+
+  </section>
+
+
+  <!-- Existing carousel slides -->
+
+  <section
+    class="content-section"
+    aria-labelledby="existing-heading"
+  >
+
+    <div class="section-heading">
+
+      <div>
+
+        <h2 id="existing-heading">
+          Existing Carousel Slides
+        </h2>
+
+        <p>
+          {{ carouselItems.length }}
+          {{
+            carouselItems.length === 1
+              ? 'slide'
+              : 'slides'
+          }}
+        </p>
+
+      </div>
+
+      <button
+        type="button"
+        class="text-button"
+        (click)="loadCarousel()"
+        [disabled]="
+          isLoading ||
+          isSaving ||
+          isReordering ||
+          deletingId !== null
+        "
+      >
+        Refresh
+      </button>
+
+    </div>
+
+
+    <!-- Reorder instructions -->
+
+    <p
+      *ngIf="
+        !isLoading &&
+        carouselItems.length > 1
+      "
+      class="drag-help"
+    >
+      Drag and drop slides to change their order.
+    </p>
+
+
+    <!-- Reordering status -->
+
+    <div
+      *ngIf="isReordering"
+      class="reorder-status"
+      role="status"
+      aria-live="polite"
+    >
+      Saving carousel order...
+    </div>
+
+
+    <!-- Loading -->
+
+    <div
+      *ngIf="isLoading"
+      class="state"
+      role="status"
+      aria-live="polite"
+    >
+      Loading Carousel content...
+    </div>
+
+
+    <!-- Empty -->
+
+    <div
+      *ngIf="
+        !isLoading &&
+        carouselItems.length === 0
+      "
+      class="state"
+    >
+      No carousel slides exist yet.
+    </div>
+
+
+    <!-- Slides -->
+
+    <div
+      *ngIf="
+        !isLoading &&
+        carouselItems.length > 0
+      "
+      class="carousel-list"
+    >
+
+      <article
+        *ngFor="let item of carouselItems"
+        class="carousel-item"
+        [class.carousel-item--dragging]="
+          draggedItemId === item._id
+        "
+        [class.carousel-item--drag-over]="
+          dragOverItemId === item._id &&
+          draggedItemId !== item._id
+        "
+        draggable="true"
+        (dragstart)="onDragStart($event, item)"
+        (dragover)="onDragOver($event, item)"
+        (drop)="onDrop($event, item)"
+        (dragend)="onDragEnd()"
+        [attr.aria-label]="
+          'Carousel slide: ' +
+          item.songName +
+          ' by ' +
+          item.bandName
+        "
+      >
+
+        <!-- Drag handle -->
+
+        <div
+          class="carousel-item__drag-handle"
+          aria-hidden="true"
+        >
+          ⋮⋮
+        </div>
+
+
+        <div class="carousel-item__image">
+
+          <img
+            [src]="item.imageUrl"
+            [alt]="
+              item.songName +
+              ' by ' +
+              item.bandName
+            "
+            loading="lazy"
+            draggable="false"
+          />
+
+        </div>
+
+
+        <div class="carousel-item__content">
+
+          <h3>
+            {{ item.songName }}
+          </h3>
+
+          <p class="carousel-item__band">
+            {{ item.bandName }}
+          </p>
+
+          <p *ngIf="item.releaseDate">
+            <strong>Out:</strong>
+            {{ item.releaseDate | date:'EEEE, MMMM d, y':'UTC' }}
+          </p>
+
+          <p>
+            <strong>Button:</strong>
+            {{ item.buttonText }}
+          </p>
+
+          <p class="carousel-item__url">
+            {{ item.buttonLink }}
+          </p>
+
+        </div>
+
+
+        <div class="carousel-item__actions">
+
+          <button
+            type="button"
+            class="secondary-button"
+            (click)="startEdit(item)"
+            [disabled]="
+              isSaving ||
+              isReordering ||
+              deletingId !== null
+            "
+          >
+            Edit
+          </button>
+
+          <button
+            type="button"
+            class="danger-button"
+            (click)="delete(item)"
+            [disabled]="
+              isSaving ||
+              isReordering ||
+              deletingId !== null
+            "
+          >
+            {{
+              deletingId === item._id
+                ? 'Deleting...'
+                : 'Delete'
+            }}
+          </button>
+
+        </div>
+
+      </article>
+
+    </div>
+
+  </section>
+
+</main>

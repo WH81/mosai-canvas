@@ -1,0 +1,93 @@
+<div class="admin-band-links">
+
+    @if (isLoading) {
+      <div
+        class="admin-band-links__loading"
+        role="status"
+        aria-live="polite"
+      >
+        Loading band links...
+      </div>
+    } @else {
+  
+      <header class="admin-band-links__header">
+        <h1 class="admin-band-links__title">
+          {{ band?.name }} Links
+        </h1>
+  
+        <p class="admin-band-links__subtitle">
+          Manage the social media and streaming links displayed
+          on this band's page.
+        </p>
+      </header>
+  
+      <div class="admin-band-links__status">
+  
+        @if (successMessage) {
+          <p
+            class="admin-band-links__message admin-band-links__message--success"
+            role="status"
+            aria-live="polite"
+          >
+            {{ successMessage }}
+          </p>
+        }
+  
+        @if (errorMessage) {
+          <p
+            class="admin-band-links__message admin-band-links__message--error"
+            role="alert"
+          >
+            {{ errorMessage }}
+          </p>
+        }
+  
+      </div>
+  
+      <div class="admin-band-links__sections">
+  
+        <!-- Social Media Links -->
+        <section class="admin-band-links__section">
+  
+          <h2 class="admin-band-links__section-title">
+            Social Media
+          </h2>
+  
+          <p class="admin-band-links__section-description">
+            Manage the social media links displayed on the
+            band's public page.
+          </p>
+  
+          <app-social-links-editor
+            [socialLinks]="socialLinks"
+            [title]="'Band Social Links'"
+            [saving]="isSavingSocial"
+            (save)="saveSocialLinks($event)"
+          />
+  
+        </section>
+  
+        <!-- Streaming Links -->
+        <section class="admin-band-links__section">
+  
+          <h2 class="admin-band-links__section-title">
+            Streaming
+          </h2>
+  
+          <p class="admin-band-links__section-description">
+            Manage the music streaming links displayed on the
+            band's public page.
+          </p>
+  
+          <app-streaming-links-editor
+            [streamingLinks]="streamingLinks"
+            [title]="'Band Streaming Links'"
+            [saving]="isSavingStreaming"
+            (save)="saveStreamingLinks($event)"
+          />
+  
+        </section>
+  
+      </div>
+    }
+  </div>

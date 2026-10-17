@@ -1,0 +1,26 @@
+:host {
+    display: block;
+    min-height: 100vh;
+  }
+  
+  .admin-shell {
+    min-height: 100vh;
+    background: #0b0b0b;
+    color: #ffffff;
+  }
+  
+  .admin-shell__header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  
+    background: rgba(11, 11, 11, 0.96);
+    backdrop-filter: blur(12px);
+  }
+  
+  .admin-shell__content {
+    width: 100%;
+    min-height: calc(100vh - 80px);
+  }

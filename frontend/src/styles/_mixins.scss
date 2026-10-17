@@ -2,7 +2,7 @@
 
 // Primary Typography Mixin
 @mixin text-style-primary($min, $max, $line-height, $weight) {
-  font-size: clamp(#{$min}, 4vw + 1rem, #{$max}); // ← fluid value includes rem base
+  font-size: clamp(#{$min}, 4vw + 1rem, #{$max});
   line-height: $line-height;
   font-weight: $weight;
   font-family: $font-family-primary;
@@ -10,7 +10,7 @@
 }
 
 @mixin text-style-secondary($min, $max, $line-height, $weight) {
-  font-size: clamp(#{$min}, 1vw + 1rem, #{$max}); // ← fluid value includes rem base
+  font-size: clamp(#{$min}, 1vw + 1rem, #{$max});
   line-height: $line-height;
   font-weight: $weight;
   font-family: $font-family-secondary;
@@ -39,5 +39,54 @@
     left: 0;
     right: 0;
     bottom: 0;
+  }
+}
+
+// ==========================================================================
+// DRY Glass Icon Button Styling (Shared between Home & Band pages)
+// ==========================================================================
+@mixin glass-link-buttons {
+  ::ng-deep {
+    app-social-links,
+    app-streaming-links {
+      display: flex !important;
+      flex-wrap: wrap !important;
+      align-items: center !important;
+      gap: 1rem !important;
+      width: 100% !important;
+      min-height: 48px !important;
+
+      a {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 48px !important;
+        height: 48px !important;
+        border-radius: 4px !important;
+        background: rgba(255, 255, 255, 0.08) !important;
+        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        color: #ffffff !important;
+        text-decoration: none !important;
+        transition: all 0.3s ease !important;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.18) !important;
+          transform: translateY(-3px) !important;
+        }
+
+        i,
+        svg,
+        fa-icon {
+          color: #ffffff !important;
+          display: inline-block !important;
+          font-size: 1.25rem !important;
+          line-height: 1 !important;
+        }
+
+        i {
+          transform: translateY(-1px) !important;
+        }
+      }
+    }
   }
 }

@@ -14,7 +14,6 @@ import { ScrollAnimateDirective } from '../../directives/scroll-animate.directiv
 import { Band } from '../../models/band/band.model';
 import { StreamingPlayers } from '../../models/streaming-players/streaming-players.model';
 import { StreamingPlayersComponent } from '../streaming-player/streaming-players.component';
-import { ScrollTypewriterDirective } from '../../directives/scroll-typewriter.directive';
 
 @Component({
   selector: 'app-about',
@@ -25,7 +24,6 @@ import { ScrollTypewriterDirective } from '../../directives/scroll-typewriter.di
     CommonModule,
     ScrollAnimateDirective,
     StreamingPlayersComponent,
-    ScrollTypewriterDirective,
   ],
 })
 export class AboutComponent implements OnInit, AfterViewInit {

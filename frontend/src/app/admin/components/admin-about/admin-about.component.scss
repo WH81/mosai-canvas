@@ -1,0 +1,381 @@
+:host {
+  display: block;
+}
+
+.admin-about {
+  width: min(1100px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 40px 0 100px;
+  color: #ffffff;
+}
+
+/* ─────────────────────────────────────────────
+   Header
+   ───────────────────────────────────────────── */
+
+.admin-about__header {
+  margin-bottom: 40px;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 28px;
+
+  color: rgba(255, 255, 255, 0.65);
+  text-decoration: none;
+}
+
+.back-link:hover {
+  color: #ffffff;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+
+  opacity: 0.5;
+}
+
+h1 {
+  margin: 0 0 12px;
+
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  line-height: 1.1;
+}
+
+.intro {
+  max-width: 650px;
+  margin: 0;
+
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.6;
+}
+
+/* ─────────────────────────────────────────────
+   Messages
+   ───────────────────────────────────────────── */
+
+.message {
+  margin-bottom: 24px;
+  padding: 14px 16px;
+
+  border-radius: 8px;
+
+  line-height: 1.5;
+}
+
+.message--success {
+  border: 1px solid rgba(80, 200, 120, 0.35);
+  background: rgba(80, 200, 120, 0.08);
+}
+
+.message--error {
+  border: 1px solid rgba(255, 90, 90, 0.35);
+  background: rgba(255, 90, 90, 0.08);
+}
+
+/* ─────────────────────────────────────────────
+   Editor
+   ───────────────────────────────────────────── */
+
+.editor-card {
+  margin-bottom: 48px;
+  padding: 28px;
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+
+  background: #151515;
+}
+
+.editor-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.editor-card h2 {
+  margin: 0 0 8px;
+  font-size: 1.4rem;
+}
+
+.editor-card__header p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* ─────────────────────────────────────────────
+   Form
+   ───────────────────────────────────────────── */
+
+.form-field {
+  margin-bottom: 24px;
+}
+
+.form-field label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.optional-label {
+  margin-left: 8px;
+
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.8rem;
+  font-weight: 400;
+}
+
+.form-field input,
+.form-field textarea {
+  box-sizing: border-box;
+  width: 100%;
+
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 6px;
+
+  padding: 13px 14px;
+
+  background: #0e0e0e;
+  color: #ffffff;
+
+  font: inherit;
+  line-height: 1.5;
+}
+
+.form-field textarea {
+  resize: vertical;
+  min-height: 180px;
+}
+
+.form-field input:focus,
+.form-field textarea:focus {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.form-field input[aria-invalid='true'],
+.form-field textarea[aria-invalid='true'] {
+  border-color: rgba(255, 90, 90, 0.8);
+}
+
+.field-help {
+  margin: 7px 0 0;
+
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.875rem;
+}
+
+.field-error {
+  margin: 7px 0 0;
+
+  color: #ff8a8a;
+  font-size: 0.875rem;
+}
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* ─────────────────────────────────────────────
+   Existing content
+   ───────────────────────────────────────────── */
+
+.content-section {
+  margin-top: 48px;
+}
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 24px;
+  margin-bottom: 20px;
+}
+
+.section-heading h2 {
+  margin: 0 0 6px;
+  font-size: 1.5rem;
+}
+
+.section-heading p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.about-list {
+  display: grid;
+  gap: 16px;
+}
+
+.about-item {
+  display: flex;
+  justify-content: space-between;
+
+  gap: 24px;
+  padding: 24px;
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+
+  background: #151515;
+}
+
+.about-item__content {
+  min-width: 0;
+}
+
+.about-item h3 {
+  margin: 0 0 10px;
+  font-size: 1.2rem;
+}
+
+.about-item p {
+  margin: 0;
+
+  color: rgba(255, 255, 255, 0.65);
+
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.about-item__actions {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* ─────────────────────────────────────────────
+   States
+   ───────────────────────────────────────────── */
+
+.state {
+  padding: 32px;
+
+  border: 1px dashed rgba(255, 255, 255, 0.18);
+  border-radius: 10px;
+
+  color: rgba(255, 255, 255, 0.55);
+
+  text-align: center;
+}
+
+/* ─────────────────────────────────────────────
+   Buttons
+   ───────────────────────────────────────────── */
+
+.primary-button,
+.secondary-button,
+.danger-button,
+.text-button {
+  min-height: 44px;
+  padding: 0 18px;
+
+  border-radius: 6px;
+
+  font: inherit;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.primary-button {
+  border: 1px solid #ffffff;
+  background: #ffffff;
+  color: #000000;
+}
+
+.primary-button:hover {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.secondary-button {
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: transparent;
+  color: #ffffff;
+}
+
+.secondary-button:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.danger-button {
+  border: 1px solid rgba(255, 90, 90, 0.4);
+  background: transparent;
+  color: #ff8a8a;
+}
+
+.danger-button:hover {
+  background: rgba(255, 90, 90, 0.08);
+}
+
+.text-button {
+  min-height: auto;
+  padding: 4px;
+
+  border: 0;
+  background: transparent;
+
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.text-button:hover {
+  color: #ffffff;
+}
+
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+button:focus-visible,
+.back-link:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+
+/* ─────────────────────────────────────────────
+   Mobile
+   ───────────────────────────────────────────── */
+
+@media (max-width: 700px) {
+  .admin-about {
+    width: calc(100% - 24px);
+    padding-top: 24px;
+  }
+
+  .editor-card {
+    padding: 20px;
+  }
+
+  .editor-card__header {
+    flex-direction: column;
+  }
+
+  .about-item {
+    flex-direction: column;
+  }
+
+  .about-item__actions {
+    width: 100%;
+  }
+
+  .about-item__actions button {
+    flex: 1;
+  }
+}

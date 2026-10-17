@@ -1,0 +1,422 @@
+<main
+  class="admin-tours"
+  aria-labelledby="tours-heading"
+>
+  <header class="admin-tours__header">
+    <div>
+      <a
+        routerLink="/admin"
+        class="back-link"
+      >
+        ← Dashboard
+      </a>
+
+      <p class="eyebrow">
+        MOSAI CANVAS
+      </p>
+
+      <h1 id="tours-heading">
+        Tour Dates
+      </h1>
+
+      <p class="intro">
+        Manage the tour dates displayed on
+        the website.
+      </p>
+    </div>
+  </header>
+
+  <!-- Success -->
+
+  <div
+    *ngIf="successMessage"
+    class="message message--success"
+    role="status"
+    aria-live="polite"
+  >
+    {{ successMessage }}
+  </div>
+
+  <!-- Error -->
+
+  <div
+    *ngIf="errorMessage"
+    class="message message--error"
+    role="alert"
+    aria-live="assertive"
+  >
+    {{ errorMessage }}
+  </div>
+
+  <!-- Editor -->
+
+  <section
+    class="editor-card"
+    aria-labelledby="editor-heading"
+  >
+    <div class="editor-card__header">
+      <div>
+        <h2 id="editor-heading">
+          {{
+            editingId
+              ? 'Edit Tour Date'
+              : 'Create Tour Date'
+          }}
+        </h2>
+
+        <p>
+          {{
+            editingId
+              ? 'Update the selected tour date and save your changes.'
+              : 'Add a new tour date to the website.'
+          }}
+        </p>
+      </div>
+
+      <button
+        *ngIf="editingId"
+        type="button"
+        class="text-button"
+        (click)="cancelEdit()"
+        [disabled]="isSaving"
+      >
+        Cancel
+      </button>
+    </div>
+
+    <form
+      [formGroup]="tourForm"
+      (ngSubmit)="save()"
+      novalidate
+    >
+      <!-- Date -->
+
+      <div class="form-field">
+        <label for="tour-date">
+          Date
+        </label>
+
+        <input
+          id="tour-date"
+          type="date"
+          formControlName="date"
+          [attr.aria-invalid]="
+            dateControl.invalid &&
+            dateControl.touched
+          "
+          aria-describedby="date-help date-error"
+        />
+
+        <p
+          id="date-help"
+          class="field-help"
+        >
+          Select the date of the performance.
+        </p>
+
+        <p
+          *ngIf="
+            dateControl.invalid &&
+            dateControl.touched
+          "
+          id="date-error"
+          class="field-error"
+        >
+          A valid tour date is required.
+        </p>
+      </div>
+
+      <!-- Band -->
+
+      <div class="form-field">
+        <label for="tour-band">
+          Band
+        </label>
+
+        <input
+          id="tour-band"
+          type="text"
+          formControlName="band"
+          maxlength="100"
+          autocomplete="organization"
+          [attr.aria-invalid]="
+            bandControl.invalid &&
+            bandControl.touched
+          "
+          aria-describedby="band-error"
+        />
+
+        <p
+          *ngIf="
+            bandControl.invalid &&
+            bandControl.touched
+          "
+          id="band-error"
+          class="field-error"
+        >
+          Band name is required and must be
+          100 characters or fewer.
+        </p>
+      </div>
+
+      <!-- Venue -->
+
+      <div class="form-field">
+        <label for="tour-venue">
+          Venue
+        </label>
+
+        <input
+          id="tour-venue"
+          type="text"
+          formControlName="venue"
+          maxlength="200"
+          autocomplete="organization"
+          [attr.aria-invalid]="
+            venueControl.invalid &&
+            venueControl.touched
+          "
+          aria-describedby="venue-error"
+        />
+
+        <p
+          *ngIf="
+            venueControl.invalid &&
+            venueControl.touched
+          "
+          id="venue-error"
+          class="field-error"
+        >
+          Venue is required and must be
+          200 characters or fewer.
+        </p>
+      </div>
+
+      <!-- City -->
+
+      <div class="form-field">
+        <label for="tour-city">
+          City
+        </label>
+
+        <input
+          id="tour-city"
+          type="text"
+          formControlName="city"
+          maxlength="100"
+          autocomplete="address-level2"
+          [attr.aria-invalid]="
+            cityControl.invalid &&
+            cityControl.touched
+          "
+          aria-describedby="city-error"
+        />
+
+        <p
+          *ngIf="
+            cityControl.invalid &&
+            cityControl.touched
+          "
+          id="city-error"
+          class="field-error"
+        >
+          City is required and must be
+          100 characters or fewer.
+        </p>
+      </div>
+
+      <!-- State -->
+
+      <div class="form-field">
+        <label for="tour-state">
+          State
+        </label>
+
+        <input
+          id="tour-state"
+          type="text"
+          formControlName="state"
+          maxlength="100"
+          autocomplete="address-level1"
+          [attr.aria-invalid]="
+            stateControl.invalid &&
+            stateControl.touched
+          "
+          aria-describedby="state-error"
+        />
+
+        <p
+          *ngIf="
+            stateControl.invalid &&
+            stateControl.touched
+          "
+          id="state-error"
+          class="field-error"
+        >
+          State is required and must be
+          100 characters or fewer.
+        </p>
+      </div>
+
+      <!-- Actions -->
+
+      <div class="form-actions">
+        <button
+          type="submit"
+          class="primary-button"
+          [disabled]="
+            isSaving ||
+            deletingId !== null
+          "
+        >
+          {{
+            isSaving
+              ? 'Saving...'
+              : editingId
+                ? 'Save Changes'
+                : 'Create Tour Date'
+          }}
+        </button>
+
+        <button
+          *ngIf="editingId"
+          type="button"
+          class="secondary-button"
+          (click)="cancelEdit()"
+          [disabled]="isSaving"
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
+  </section>
+
+  <!-- Existing Tour Dates -->
+
+  <section
+    class="content-section"
+    aria-labelledby="existing-heading"
+  >
+    <div class="section-heading">
+      <div>
+        <h2 id="existing-heading">
+          Existing Tour Dates
+        </h2>
+
+        <p>
+          {{ tours.length }}
+          {{
+            tours.length === 1
+              ? 'tour date'
+              : 'tour dates'
+          }}
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="text-button"
+        (click)="loadTours()"
+        [disabled]="
+          isLoading ||
+          isSaving ||
+          deletingId !== null
+        "
+      >
+        Refresh
+      </button>
+    </div>
+
+    <!-- Loading -->
+
+    <div
+      *ngIf="isLoading"
+      class="state"
+      role="status"
+      aria-live="polite"
+    >
+      Loading Tour Dates...
+    </div>
+
+    <!-- Empty -->
+
+    <div
+      *ngIf="
+        !isLoading &&
+        tours.length === 0
+      "
+      class="state"
+    >
+      No Tour Dates exist yet.
+    </div>
+
+    <!-- Tour Dates -->
+
+    <div
+      *ngIf="
+        !isLoading &&
+        tours.length > 0
+      "
+      class="tour-list"
+    >
+      <article
+        *ngFor="let tour of tours"
+        class="tour-item"
+      >
+        <div class="tour-item__date">
+          <span class="tour-item__label">
+            Date
+          </span>
+
+          <strong>
+            {{ tour.date | date: 'EEEE, MMMM d, y' : 'UTC' }}
+          </strong>
+        </div>
+
+        <div class="tour-item__content">
+          <h3>
+            {{ tour.band }}
+          </h3>
+
+          <p class="tour-item__venue">
+            {{ tour.venue }}
+          </p>
+
+          <p class="tour-item__location">
+            {{ tour.city }}, {{ tour.state }}
+          </p>
+        </div>
+
+        <div class="tour-item__actions">
+          <button
+            type="button"
+            class="secondary-button"
+            (click)="startEdit(tour)"
+            [disabled]="
+              isSaving ||
+              deletingId !== null
+            "
+          >
+            Edit
+          </button>
+
+          <button
+            type="button"
+            class="danger-button"
+            (click)="delete(tour)"
+            [disabled]="
+              isSaving ||
+              deletingId !== null
+            "
+          >
+            {{
+              deletingId === tour._id
+                ? 'Deleting...'
+                : 'Delete'
+            }}
+          </button>
+        </div>
+      </article>
+    </div>
+  </section>
+</main>

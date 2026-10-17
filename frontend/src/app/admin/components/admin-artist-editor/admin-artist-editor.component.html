@@ -1,0 +1,456 @@
+<main class="admin-artist-editor" aria-labelledby="artist-editor-heading">
+  <header class="admin-artist-editor__header">
+    <a routerLink="/admin/artists" class="admin-artist-editor__back-link">
+      <span aria-hidden="true">←</span>
+      <span>Back to Artists</span>
+    </a>
+
+    <p class="admin-artist-editor__eyebrow">
+      {{ band?.name }}
+    </p>
+
+    <h1 id="artist-editor-heading" class="admin-artist-editor__title">
+      Artist Management
+    </h1>
+
+    <p class="admin-artist-editor__description">
+      Add, edit, and manage the artists associated with
+      {{ band?.name }}.
+    </p>
+  </header>
+
+  @if (successMessage) {
+  <div
+    class="admin-artist-editor__message admin-artist-editor__message--success"
+    role="status"
+    aria-live="polite"
+  >
+    {{ successMessage }}
+  </div>
+  } @if (errorMessage) {
+  <div
+    class="admin-artist-editor__message admin-artist-editor__message--error"
+    role="alert"
+    aria-live="assertive"
+  >
+    {{ errorMessage }}
+  </div>
+  } @if (isLoading) {
+
+  <div class="admin-artist-editor__state" role="status" aria-live="polite">
+    Loading artists...
+  </div>
+
+  } @else {
+
+  <!-- ======================================================
+         ARTIST EDITOR
+         ====================================================== -->
+
+  <section
+    class="admin-artist-editor__editor"
+    aria-labelledby="artist-form-heading"
+  >
+    <!-- Editor Header -->
+
+    <div class="admin-artist-editor__section-header">
+      <div>
+        <p class="admin-artist-editor__section-kicker">Artist Management</p>
+
+        <h2 id="artist-form-heading" class="admin-artist-editor__section-title">
+          {{ editingMemberId ? "Edit Artist" : "Add Artist" }}
+        </h2>
+
+        <p class="admin-artist-editor__section-description">
+          {{
+            editingMemberId
+              ? "Update the artist information, social media, and streaming links below."
+              : "Enter all artist information, social media, and streaming links before creating the artist."
+          }}
+        </p>
+      </div>
+    </div>
+
+    <!-- ====================================================
+           ARTIST INFORMATION
+           ==================================================== -->
+
+    <form
+      id="artist-form"
+      class="admin-artist-editor__form"
+      [formGroup]="artistForm"
+      (ngSubmit)="save()"
+      novalidate
+    >
+      <!-- Name -->
+
+      <div class="admin-artist-editor__field">
+        <label for="artist-name" class="admin-artist-editor__label">
+          Name
+
+          <span class="admin-artist-editor__required" aria-hidden="true">
+            *
+          </span>
+        </label>
+
+        <input
+          id="artist-name"
+          type="text"
+          formControlName="name"
+          maxlength="150"
+          autocomplete="name"
+          placeholder="Enter artist name"
+          [attr.aria-invalid]="nameControl.invalid && nameControl.touched"
+          aria-describedby="artist-name-help artist-name-error"
+        />
+
+        <p id="artist-name-help" class="admin-artist-editor__field-help">
+          The artist's public display name.
+        </p>
+
+        @if ( nameControl.invalid && nameControl.touched ) {
+        <p id="artist-name-error" class="admin-artist-editor__field-error">
+          Name is required and must be 150 characters or fewer.
+        </p>
+        }
+      </div>
+
+      <!-- Instrument -->
+
+      <div class="admin-artist-editor__field">
+        <label for="artist-instrument" class="admin-artist-editor__label">
+          Instrument
+
+          <span class="admin-artist-editor__required" aria-hidden="true">
+            *
+          </span>
+        </label>
+
+        <input
+          id="artist-instrument"
+          type="text"
+          formControlName="instrument"
+          maxlength="150"
+          autocomplete="off"
+          placeholder="e.g. Guitar / Vocals"
+          [attr.aria-invalid]="
+            instrumentControl.invalid && instrumentControl.touched
+          "
+          aria-describedby="artist-instrument-help artist-instrument-error"
+        />
+
+        <p id="artist-instrument-help" class="admin-artist-editor__field-help">
+          Enter the artist's primary role or instrument.
+        </p>
+
+        @if ( instrumentControl.invalid && instrumentControl.touched ) {
+        <p
+          id="artist-instrument-error"
+          class="admin-artist-editor__field-error"
+        >
+          Instrument is required and must be 150 characters or fewer.
+        </p>
+        }
+      </div>
+
+      <!-- Image -->
+
+      <div class="admin-artist-editor__field">
+        <label for="artist-image" class="admin-artist-editor__label">
+          Artist Image
+
+          <span class="admin-artist-editor__required" aria-hidden="true">
+            *
+          </span>
+        </label>
+
+        <input
+          id="artist-image"
+          type="text"
+          formControlName="image"
+          maxlength="2048"
+          autocomplete="url"
+          spellcheck="false"
+          placeholder="https://example.com/artist.jpg"
+          [attr.aria-invalid]="imageControl.invalid && imageControl.touched"
+          aria-describedby="artist-image-help artist-image-error"
+        />
+
+        <p id="artist-image-help" class="admin-artist-editor__field-help">
+          Enter the image URL or application path used by the public site.
+        </p>
+
+        @if ( imageControl.invalid && imageControl.touched ) {
+        <p id="artist-image-error" class="admin-artist-editor__field-error">
+          An image value is required and must be 2,048 characters or fewer.
+        </p>
+        }
+      </div>
+
+      <!-- Biography -->
+
+      <div class="admin-artist-editor__field">
+        <label for="artist-bio" class="admin-artist-editor__label">
+          Biography
+
+          <span class="admin-artist-editor__required" aria-hidden="true">
+            *
+          </span>
+        </label>
+
+        <textarea
+          id="artist-bio"
+          formControlName="bio"
+          rows="7"
+          maxlength="5000"
+          placeholder="Enter the artist biography..."
+          [attr.aria-invalid]="bioControl.invalid && bioControl.touched"
+          aria-describedby="artist-bio-help artist-bio-error"
+        ></textarea>
+
+        <p id="artist-bio-help" class="admin-artist-editor__field-help">
+          Maximum 5,000 characters.
+        </p>
+
+        @if ( bioControl.invalid && bioControl.touched ) {
+        <p id="artist-bio-error" class="admin-artist-editor__field-error">
+          Biography is required and must be 5,000 characters or fewer.
+        </p>
+        }
+      </div>
+    </form>
+
+    <!-- ====================================================
+           ARTIST LINKS
+           ==================================================== -->
+
+    <section
+      class="admin-artist-editor__links"
+      aria-labelledby="artist-links-heading"
+    >
+      <div class="admin-artist-editor__section-header">
+        <div>
+          <p class="admin-artist-editor__section-kicker">Online Presence</p>
+
+          <h2
+            id="artist-links-heading"
+            class="admin-artist-editor__section-title"
+          >
+            Artist Links
+          </h2>
+
+          <p class="admin-artist-editor__section-description">
+            Add the social media and streaming destinations displayed for this
+            artist.
+          </p>
+        </div>
+      </div>
+
+      <div class="admin-artist-editor__links-grid">
+        <!-- Social Media -->
+
+        <section
+          class="admin-artist-editor__link-card"
+          aria-labelledby="artist-social-heading"
+        >
+          <div class="admin-artist-editor__link-card-header">
+            <div>
+              <h3
+                id="artist-social-heading"
+                class="admin-artist-editor__link-title"
+              >
+                Social Media
+              </h3>
+
+              <p class="admin-artist-editor__link-description">
+                Profiles and social channels.
+              </p>
+            </div>
+          </div>
+
+          <app-social-links-editor
+            #socialLinksEditor
+            [socialLinks]="socialLinks"
+            [saving]="isSaving"
+            [showActions]="false"
+            title="Social Media Links"
+            (save)="saveSocialLinks($event)"
+          />
+        </section>
+
+        <!-- Streaming -->
+
+        <section
+          class="admin-artist-editor__link-card"
+          aria-labelledby="artist-streaming-heading"
+        >
+          <div class="admin-artist-editor__link-card-header">
+            <div>
+              <h3
+                id="artist-streaming-heading"
+                class="admin-artist-editor__link-title"
+              >
+                Streaming
+              </h3>
+
+              <p class="admin-artist-editor__link-description">
+                Music streaming profiles.
+              </p>
+            </div>
+          </div>
+
+          <app-streaming-links-editor
+            #streamingLinksEditor
+            [streamingLinks]="streamingLinks"
+            [saving]="isSaving"
+            [showActions]="false"
+            title="Streaming Links"
+            (save)="saveStreamingLinks($event)"
+          />
+        </section>
+      </div>
+    </section>
+
+    <!-- ====================================================
+           PRIMARY ARTIST ACTIONS
+           ==================================================== -->
+
+    <div class="admin-artist-editor__form-actions">
+      @if (editingMemberId) {
+      <button
+        type="button"
+        class="admin-artist-editor__secondary-button"
+        (click)="cancelEdit()"
+        [disabled]="isSaving"
+      >
+        Cancel
+      </button>
+      }
+
+      <button
+        type="submit"
+        form="artist-form"
+        class="admin-artist-editor__primary-button"
+        [disabled]="isSaving || deletingMemberId !== null"
+      >
+        {{
+          isSaving
+            ? "Saving..."
+            : editingMemberId
+            ? "Save Changes"
+            : "Create Artist"
+        }}
+      </button>
+    </div>
+  </section>
+
+  <!-- ======================================================
+         EXISTING ARTISTS
+         ====================================================== -->
+
+  <section
+    class="admin-artist-editor__existing"
+    aria-labelledby="existing-artists-heading"
+  >
+    <div class="admin-artist-editor__section-header">
+      <div>
+        <p class="admin-artist-editor__section-kicker">Band Roster</p>
+
+        <h2
+          id="existing-artists-heading"
+          class="admin-artist-editor__section-title"
+        >
+          Existing Artists
+        </h2>
+
+        <p class="admin-artist-editor__section-description">
+          {{ members.length }}
+          {{ members.length === 1 ? "artist" : "artists" }}
+          currently associated with
+          {{ band?.name }}.
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="admin-artist-editor__secondary-button"
+        (click)="startCreate()"
+        [disabled]="isSaving || deletingMemberId !== null"
+      >
+        <span aria-hidden="true">+</span>
+        Add Artist
+      </button>
+    </div>
+
+    @if (members.length === 0) {
+
+    <div class="admin-artist-editor__state" role="status">
+      No artists have been added to this band yet.
+    </div>
+
+    } @else {
+
+    <div class="admin-artist-editor__artist-list">
+      @for ( member of members; track member._id ) {
+
+      <article class="admin-artist-editor__artist-card">
+        <div class="admin-artist-editor__artist-content">
+          @if (member.image) {
+          <div class="admin-artist-editor__artist-image-wrapper">
+            <img
+              class="admin-artist-editor__artist-image"
+              [src]="member.image"
+              [alt]="member.name"
+              loading="lazy"
+            />
+          </div>
+          }
+
+          <div class="admin-artist-editor__artist-details">
+            <h3 class="admin-artist-editor__artist-name">
+              {{ member.name }}
+            </h3>
+
+            <p class="admin-artist-editor__artist-instrument">
+              {{ member.instrument }}
+            </p>
+
+            @if (member.bio) {
+            <p class="admin-artist-editor__artist-bio">
+              {{ member.bio }}
+            </p>
+            }
+          </div>
+        </div>
+
+        <div class="admin-artist-editor__artist-actions">
+          <button
+            type="button"
+            class="admin-artist-editor__secondary-button"
+            (click)="startEdit(member)"
+            [disabled]="isSaving || deletingMemberId !== null"
+            [attr.aria-label]="'Edit ' + member.name"
+          >
+            Edit
+          </button>
+
+          <button
+            type="button"
+            class="admin-artist-editor__danger-button"
+            (click)="deleteMember(member)"
+            [disabled]="isSaving || deletingMemberId !== null"
+            [attr.aria-label]="'Delete ' + member.name"
+          >
+            {{ deletingMemberId === member._id ? "Deleting..." : "Delete" }}
+          </button>
+        </div>
+      </article>
+
+      }
+    </div>
+
+    }
+  </section>
+
+  }
+</main>

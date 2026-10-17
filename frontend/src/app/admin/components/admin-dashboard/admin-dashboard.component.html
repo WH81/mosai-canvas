@@ -1,0 +1,72 @@
+<main class="admin-dashboard" aria-labelledby="dashboard-heading">
+  <section class="dashboard-intro">
+    <p class="dashboard-eyebrow">MOSAI CANVAS</p>
+
+    <h1 id="dashboard-heading">Admin Dashboard</h1>
+
+    <p>Manage your website content from one place.</p>
+  </section>
+
+  <section class="dashboard-grid" aria-label="Website content">
+    <a routerLink="/admin/about" class="dashboard-card">
+      <h2>About</h2>
+      <p>Manage your site's About content.</p>
+
+      <span class="card-action"> Manage About → </span>
+    </a>
+
+    <a routerLink="/admin/carousel" class="dashboard-card">
+      <h2>Carousel</h2>
+      <p>
+        Manage homepage carousel slides, images, release dates, and buttons.
+      </p>
+
+      <span class="card-action"> Manage Carousel → </span>
+    </a>
+
+    <a routerLink="/admin/tours" class="dashboard-card">
+      <h2>Tour</h2>
+      <p>Manage tour dates</p>
+
+      <span class="card-action"> Manage Tour Dates → </span>
+    </a>
+
+    <a
+      routerLink="/admin/get-connected"
+      class="dashboard-card"
+      routerLinkActive="admin-navigation__link--active"
+    >
+      <h2>Get Connected</h2>
+      <p>Manage get connected social media and streaming media links</p>
+
+      <span class="card-action"> Manage Get Connected Links → </span>
+    </a>
+
+    <a routerLink="/admin/bands" class="dashboard-card">
+      <h2>Bands</h2>
+
+      <p>Manage band information and content.</p>
+
+      <span class="card-action"> Manage Bands → </span>
+    </a>
+
+    <a
+      routerLink="/admin/artists"
+      class="dashboard-card"
+      routerLinkActive="admin-dashboard__card--active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <h2>Artists</h2>
+      <p>Manage band artists and biographies.</p>
+      <span class="card-action">Manage Artists →</span>
+    </a>
+
+    <article class="dashboard-card dashboard-card--disabled">
+      <h2>Releases</h2>
+
+      <p>Manage releases and release information.</p>
+
+      <span class="card-coming-soon"> Coming soon </span>
+    </article>
+  </section>
+</main>

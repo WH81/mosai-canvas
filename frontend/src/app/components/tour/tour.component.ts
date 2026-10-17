@@ -9,34 +9,113 @@ import { ScrollAnimateDirective } from '../../directives/scroll-animate.directiv
 @Component({
   selector: 'app-tour',
   standalone: true,
-  imports: [CommonModule, HttpClientModule, ScrollAnimateDirective],
+  imports: [
+    CommonModule,
+    HttpClientModule,
+    ScrollAnimateDirective,
+  ],
   templateUrl: './tour.component.html',
-  styleUrls: ['./tour.component.scss']
+  styleUrls: ['./tour.component.scss'],
 })
 export class TourComponent implements OnInit {
   tours: Tour[] = [];
 
-  constructor(private tourService: TourService) {}
+  constructor(
+    private readonly tourService: TourService
+  ) {}
 
   ngOnInit(): void {
     this.loadTours();
   }
 
+  /**
+   * Loads current and upcoming tour dates.
+   *
+   * The backend already removes expired dates.
+   * We additionally filter and sort here so the
+   * component remains defensive.
+   */
   loadTours(): void {
-    this.tourService.getTours()
+    this.tourService
+      .getTours()
       .pipe(
-        catchError(err => {
-          console.error('Failed to load tours', err);
+        catchError((err) => {
+          console.error(
+            'Failed to load tours',
+            err
+          );
+
           return of([] as Tour[]);
         })
       )
-      .subscribe(data => this.tours = data);
+      .subscribe((data) => {
+        const today = this.getTodayDateString();
+
+        this.tours = data
+          .filter((tour) => tour.date >= today)
+          .sort((a, b) =>
+            a.date.localeCompare(b.date)
+          );
+      });
   }
 
-  getGoogleCalendarLink(tour: Tour): string {
-    const startDate = new Date(tour.date).toISOString().replace(/-|:|\.\d+/g, '');
-    const endDate = new Date(new Date(tour.date).getTime() + 2 * 60 * 60 * 1000).toISOString().replace(/-|:|\.\d+/g, '');
-    const location = `${tour.venue}, ${tour.city}, ${tour.state}`;
-    return `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(`${tour.band} at ${tour.venue}`)}&dates=${startDate}/${endDate}&location=${encodeURIComponent(location)}`;
+  /**
+   * Returns today's date as YYYY-MM-DD.
+   *
+   * Uses local date components rather than
+   * toISOString() to prevent timezone shifts.
+   */
+  private getTodayDateString(): string {
+    const now = new Date();
+
+    const year = now.getFullYear();
+    const month = String(
+      now.getMonth() + 1
+    ).padStart(2, '0');
+
+    const day = String(
+      now.getDate()
+    ).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+  }
+
+  /**
+   * Creates a Google Calendar event link.
+   */
+  getGoogleCalendarLink(
+    tour: Tour
+  ): string {
+    const startDate = new Date(
+      `${tour.date}T00:00:00`
+    );
+
+    const endDate = new Date(
+      startDate.getTime() +
+        2 * 60 * 60 * 1000
+    );
+
+    const formattedStart = startDate
+      .toISOString()
+      .replace(/-|:|\.\d+/g, '');
+
+    const formattedEnd = endDate
+      .toISOString()
+      .replace(/-|:|\.\d+/g, '');
+
+    const location =
+      `${tour.venue}, ` +
+      `${tour.city}, ` +
+      `${tour.state}`;
+
+    return (
+      'https://www.google.com/calendar/render' +
+      '?action=TEMPLATE' +
+      `&text=${encodeURIComponent(
+        `${tour.band} at ${tour.venue}`
+      )}` +
+      `&dates=${formattedStart}/${formattedEnd}` +
+      `&location=${encodeURIComponent(location)}`
+    );
   }
 }

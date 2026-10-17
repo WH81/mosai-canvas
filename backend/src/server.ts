@@ -25,7 +25,8 @@ import galleryRoutes from './routes/gallery.routes';
 import spotifyRoutes from './routes/spotify.routes'; 
  
 import { errorHandler } from './middleware/error.middleware';
- 
+import authRoutes from './routes/auth.routes';
+
 dotenv.config();
 connectDB();
  
@@ -114,6 +115,7 @@ app.use('/api/releases', releaseRoutes);
 app.use('/api/youtube', youtubeRoutes);
 app.use('/api/gallery', galleryRoutes);
 app.use('/api/spotify', spotifyRoutes);
+app.use('/api/auth', authRoutes);
  
 // ─── Error Handler (always last) ─────────────────────────────────────────────
 app.use(errorHandler);

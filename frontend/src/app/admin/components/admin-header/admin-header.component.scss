@@ -1,0 +1,121 @@
+:host {
+    display: block;
+  }
+  
+  .admin-header {
+    width: 100%;
+  }
+  
+  .admin-header__inner {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 32px;
+  
+    width: min(1400px, calc(100% - 40px));
+    min-height: 80px;
+    margin: 0 auto;
+  }
+  
+  .admin-brand {
+    color: #ffffff;
+  
+    font-size: 0.9rem;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  
+  .admin-navigation {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  
+  .admin-navigation a {
+    padding: 8px 0;
+  
+    color: rgba(255, 255, 255, 0.65);
+  
+    font-size: 0.9rem;
+    font-weight: 600;
+  
+    text-decoration: none;
+  
+    transition:
+      color 0.2s ease,
+      opacity 0.2s ease;
+  }
+  
+  .admin-navigation a:hover,
+  .admin-navigation__link--active {
+    color: #ffffff;
+  }
+  
+  .admin-account {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  .admin-account__name {
+    color: rgba(255, 255, 255, 0.7);
+  
+    font-size: 0.85rem;
+  }
+  
+  .admin-account__logout {
+    min-height: 40px;
+    padding: 0 16px;
+  
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+  
+    background: transparent;
+    color: #ffffff;
+  
+    font: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+  
+    cursor: pointer;
+  
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease;
+  }
+  
+  .admin-account__logout:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.4);
+  }
+  
+  .admin-account__logout:focus-visible,
+  .admin-brand:focus-visible,
+  .admin-navigation a:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 4px;
+  }
+  
+  @media (max-width: 800px) {
+    .admin-header__inner {
+      grid-template-columns: 1fr auto;
+      gap: 16px;
+    }
+  
+    .admin-navigation {
+      display: none;
+    }
+  }
+  
+  @media (max-width: 500px) {
+    .admin-header__inner {
+      width: calc(100% - 24px);
+      min-height: 70px;
+    }
+  
+    .admin-account__name {
+      display: none;
+    }
+  }

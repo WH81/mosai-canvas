@@ -1,0 +1,146 @@
+<main class="login-page">
+    <section
+      class="login-card"
+      aria-labelledby="login-title"
+    >
+      <header class="login-header">
+        <p class="eyebrow">MOSAI CANVAS</p>
+  
+        <h1 id="login-title">
+          Admin Login
+        </h1>
+  
+        <p class="login-description">
+          Sign in to manage your site content.
+        </p>
+      </header>
+  
+      <form
+        [formGroup]="loginForm"
+        (ngSubmit)="onSubmit()"
+        novalidate
+        autocomplete="on"
+      >
+        <!-- Authentication error -->
+        <div
+          *ngIf="loginError"
+          class="login-error"
+          role="alert"
+          aria-live="assertive"
+        >
+          {{ loginError }}
+        </div>
+  
+        <!-- Identifier -->
+        <div class="form-field">
+          <label for="identifier">
+            Username or email
+          </label>
+  
+          <input
+            id="identifier"
+            name="username"
+            type="text"
+            formControlName="identifier"
+            autocomplete="username"
+            inputmode="email"
+            maxlength="255"
+            spellcheck="false"
+            autocapitalize="none"
+            [attr.aria-invalid]="
+              identifierControl.invalid &&
+              identifierControl.touched
+                ? 'true'
+                : 'false'
+            "
+            [attr.aria-describedby]="
+              identifierControl.invalid &&
+              identifierControl.touched
+                ? 'identifier-error'
+                : null
+            "
+          />
+  
+          <div
+            *ngIf="
+              identifierControl.invalid &&
+              identifierControl.touched
+            "
+            id="identifier-error"
+            class="field-error"
+            role="alert"
+          >
+            <span *ngIf="identifierControl.errors?.['required']">
+              Username or email is required.
+            </span>
+  
+            <span *ngIf="identifierControl.errors?.['maxlength']">
+              Username or email is too long.
+            </span>
+          </div>
+        </div>
+  
+        <!-- Password -->
+        <div class="form-field">
+          <label for="password">
+            Password
+          </label>
+  
+          <input
+            id="password"
+            name="password"
+            type="password"
+            formControlName="password"
+            autocomplete="current-password"
+            maxlength="128"
+            [attr.aria-invalid]="
+              passwordControl.invalid &&
+              passwordControl.touched
+                ? 'true'
+                : 'false'
+            "
+            [attr.aria-describedby]="
+              passwordControl.invalid &&
+              passwordControl.touched
+                ? 'password-error'
+                : null
+            "
+          />
+  
+          <div
+            *ngIf="
+              passwordControl.invalid &&
+              passwordControl.touched
+            "
+            id="password-error"
+            class="field-error"
+            role="alert"
+          >
+            <span *ngIf="passwordControl.errors?.['required']">
+              Password is required.
+            </span>
+  
+            <span *ngIf="passwordControl.errors?.['maxlength']">
+              Password is too long.
+            </span>
+          </div>
+        </div>
+  
+        <!-- Submit -->
+        <button
+          type="submit"
+          class="login-button"
+          [disabled]="isSubmitting || loginForm.invalid"
+          [attr.aria-busy]="isSubmitting"
+        >
+          <span *ngIf="!isSubmitting">
+            Sign In
+          </span>
+  
+          <span *ngIf="isSubmitting">
+            Signing In...
+          </span>
+        </button>
+      </form>
+    </section>
+  </main>
