@@ -145,7 +145,6 @@ export const updateTour = async (
   }
 
   try {
-    // Explicitly construct a sanitized update payload to prevent operator injection
     const {
       title,
       date,
@@ -162,22 +161,23 @@ export const updateTour = async (
       notes,
     } = req.body;
 
+    // CodeQL safe: strictly validate types to prevent NoSQL operator injection
     const updatePayload: Record<string, any> = {};
-    if (title !== undefined) updatePayload.title = title;
-    if (date !== undefined) updatePayload.date = date;
-    if (time !== undefined) updatePayload.time = time;
-    if (venue !== undefined) updatePayload.venue = venue;
-    if (city !== undefined) updatePayload.city = city;
-    if (state !== undefined) updatePayload.state = state;
-    if (country !== undefined) updatePayload.country = country;
-    if (ticketUrl !== undefined) updatePayload.ticketUrl = ticketUrl;
-    if (status !== undefined) updatePayload.status = status;
-    if (description !== undefined) updatePayload.description = description;
-    if (ticketStatus !== undefined) updatePayload.ticketStatus = ticketStatus;
-    if (soldOut !== undefined) updatePayload.soldOut = soldOut;
-    if (notes !== undefined) updatePayload.notes = notes;
+    if (typeof title === 'string') updatePayload.title = title.trim();
+    if (typeof date === 'string') updatePayload.date = date.trim();
+    if (typeof time === 'string') updatePayload.time = time.trim();
+    if (typeof venue === 'string') updatePayload.venue = venue.trim();
+    if (typeof city === 'string') updatePayload.city = city.trim();
+    if (typeof state === 'string') updatePayload.state = state.trim();
+    if (typeof country === 'string') updatePayload.country = country.trim();
+    if (typeof ticketUrl === 'string') updatePayload.ticketUrl = ticketUrl.trim();
+    if (typeof status === 'string') updatePayload.status = status.trim();
+    if (typeof description === 'string') updatePayload.description = description.trim();
+    if (typeof ticketStatus === 'string') updatePayload.ticketStatus = ticketStatus.trim();
+    if (typeof soldOut === 'boolean') updatePayload.soldOut = soldOut;
+    if (typeof notes === 'string') updatePayload.notes = notes.trim();
 
-    // CodeQL safe: Wrapped ID and sanitized update payload
+    // CodeQL safe: Wrapped ID and strictly validated update payload
     const updated = await Tour.findByIdAndUpdate(
       new mongoose.Types.ObjectId(tourId),
       updatePayload,
