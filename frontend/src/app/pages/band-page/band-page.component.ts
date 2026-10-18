@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy, inject, ChangeDetectorRef } from '@angular/core'; // Added ChangeDetectorRef
+import { Component, OnInit, OnDestroy, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { Subject, forkJoin, of, switchMap, takeUntil } from 'rxjs';
+import { Subject, forkJoin, of, switchMap, takeUntil, catchError, distinctUntilChanged } from 'rxjs';
 
 import { MembersListComponent } from '../../components/members-list/members-list.component';
 import { AboutComponent } from '../../components/about/about.component';
@@ -46,7 +46,7 @@ export class BandPageComponent implements OnInit, OnDestroy {
   private bandService = inject(BandService);
   private bandLinksService = inject(BandLinksService);
   private streamingPlayersService = inject(StreamingPlayersService);
-  private cdr = inject(ChangeDetectorRef); // Injected ChangeDetectorRef
+  private cdr = inject(ChangeDetectorRef);
 
   private destroy$ = new Subject<void>();
 
@@ -54,12 +54,20 @@ export class BandPageComponent implements OnInit, OnDestroy {
 
   bandData: Band | null = null;
   bandSocials?: SocialLinks;
-  bandLinks: BandLinks = { social: {}, streaming: {} };
+  bandLinks: BandLinks = { social: undefined, streaming: undefined };
   streamingPlayer: StreamingPlayers | null = null;
 
   latestReleases: Releases[] = [];
   preReleases: Releases[] = [];
   pastReleases: Releases[] = [];
+
+  get hasSocialLinks(): boolean {
+    return !!(this.bandSocials && Object.values(this.bandSocials).some(val => !!val));
+  }
+
+  get hasStreamingLinks(): boolean {
+    return !!(this.bandLinks.streaming && Object.values(this.bandLinks.streaming).some(val => !!val));
+  }
 
   ngOnInit(): void {
     this.route.paramMap
@@ -68,54 +76,66 @@ export class BandPageComponent implements OnInit, OnDestroy {
         switchMap(params => {
           const slug = params.get('bandSlug');
           if (!slug) return of(null);
-
-          this.bandSlug = slug;
-          this.resetPageState();
-
-          return this.bandService.getBandBySlug(slug);
-        })
+          return of(slug);
+        }),
+        distinctUntilChanged()
       )
-      .subscribe(band => {
-        if (!band) return;
+      .subscribe(slug => {
+        if (!slug) return;
 
-        this.bandData = band;
+        this.bandSlug = slug;
+        this.resetPageState();
 
-        this.loadRelatedData(band);
-        this.loadReleases();
-        
-        // Ensure the initial band structure data triggers a UI update instantly
-        this.cdr.detectChanges();
+        this.bandService.getBandBySlug(slug)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe(band => {
+            if (!band) return;
+
+            queueMicrotask(() => {
+              this.bandData = band;
+              this.loadRelatedData(band);
+              this.loadReleases();
+              this.cdr.markForCheck();
+            });
+          });
       });
   }
 
   private loadRelatedData(band: Band): void {
     forkJoin({
-      social: this.bandLinksService.getSocialLinksBySlug(this.bandSlug),
-      streaming: this.bandLinksService.getStreamingLinksBySlug(this.bandSlug),
+      social: this.bandLinksService.getSocialLinksBySlug(this.bandSlug).pipe(
+        catchError(() => of(null))
+      ),
+      streaming: this.bandLinksService.getStreamingLinksBySlug(this.bandSlug).pipe(
+        catchError(() => of(null))
+      ),
       player: band._id
-        ? this.streamingPlayersService.getStreamingPlayerByBandId(band._id)
+        ? this.streamingPlayersService.getStreamingPlayerByBandId(band._id).pipe(
+            catchError(() => of(null))
+          )
         : of(null),
     })
       .pipe(takeUntil(this.destroy$))
       .subscribe(result => {
-        this.bandLinks.social = result.social;
-        this.bandLinks.streaming = result.streaming;
-        this.bandSocials = result.social;
-        this.streamingPlayer = result.player;
-
-        // Force layout update once child relationships resolve
-        this.cdr.detectChanges();
+        queueMicrotask(() => {
+          this.bandSocials = result.social || undefined;
+          this.bandLinks = {
+            social: result.social || undefined,
+            streaming: result.streaming || undefined,
+          };
+          this.streamingPlayer = result.player;
+          this.cdr.markForCheck();
+        });
       });
   }
 
   private async loadReleases(): Promise<void> {
     try {
       const releases = await this.releaseService.getAll(this.bandSlug);
-      this.categorize(releases);
-      
-      // Since this is an async/await promise resolving completely outside the main stream,
-      // forcing change detection here makes sure components like latest-releases paint instantly.
-      this.cdr.detectChanges();
+      queueMicrotask(() => {
+        this.categorize(releases);
+        this.cdr.markForCheck();
+      });
     } catch (error) {
       console.error('Error loading releases:', error);
     }
@@ -124,7 +144,7 @@ export class BandPageComponent implements OnInit, OnDestroy {
   private resetPageState(): void {
     this.bandData = null;
     this.bandSocials = undefined;
-    this.bandLinks = { social: {}, streaming: {} };
+    this.bandLinks = { social: undefined, streaming: undefined };
     this.streamingPlayer = null;
 
     this.latestReleases = [];

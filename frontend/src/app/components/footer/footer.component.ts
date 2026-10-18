@@ -1,12 +1,8 @@
-import { Component, AfterViewInit, OnDestroy, HostListener, ViewChild, ElementRef, OnInit } from '@angular/core';
+import { Component, AfterViewInit, OnDestroy, HostListener, ViewChild, ElementRef, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MosaicanvasLogoComponent } from '../mosaicanvas-logo/mosaicanvas-logo.component';
 import { menuItems } from '../../shared/nav-config';
-// import { SocialLinksComponent } from '../social-links/social-links.component';
-// import { SocialLinks } from '../../models/social-links/social-links.model';
-// import { StreamingLinks } from '../../models/streaming-links/streaming-links.model';
-// import { StreamingLinksComponent } from '../streaming-links/streaming-links.component';
 import { FooterService } from '../../services/footer/footer.service';
 import { BandService } from '../../services/band/band.service';
 
@@ -16,9 +12,6 @@ import { BandService } from '../../services/band/band.service';
   imports: [
     CommonModule,
     RouterModule,
-    MosaicanvasLogoComponent
-    // SocialLinksComponent,
-    // StreamingLinksComponent
   ],
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.scss']
@@ -26,17 +19,17 @@ import { BandService } from '../../services/band/band.service';
 export class FooterComponent implements AfterViewInit, OnDestroy, OnInit {
   homepageBandSlug = 'mosai-canvas';
   bandId?: string;
-  // socialLinks?: SocialLinks;
-  // streamingLinks?: StreamingLinks;
   currentYear = new Date().getFullYear();
   menuItems = menuItems;
 
+  showBackToTop = false;
   @ViewChild('backToTopBtn') backToTopBtnRef!: ElementRef<HTMLButtonElement>;
-  private scrollThreshold = 300;
+  private scrollThreshold = 150;
 
   constructor(
     private footerService: FooterService,
-    private bandService: BandService  // Inject BandService
+    private bandService: BandService,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -46,17 +39,7 @@ export class FooterComponent implements AfterViewInit, OnDestroy, OnInit {
           console.error('Band not found for slug:', this.homepageBandSlug);
           return;
         }
-        const bandId = band._id;
-
-        // this.footerService.getHomePageSocialLinks(bandId).subscribe({
-        //   next: (data) => this.socialLinks = data,
-        //   error: (err) => console.error('Failed to load social links:', err)
-        // });
-
-        // this.footerService.getHomePageStreamingLinks(bandId).subscribe({
-        //   next: (data) => this.streamingLinks = data,
-        //   error: (err) => console.error('Failed to load streaming links:', err)
-        // });
+        this.bandId = band._id;
       },
       error: (err) => console.error('Failed to load band by slug:', err)
     });
@@ -69,17 +52,35 @@ export class FooterComponent implements AfterViewInit, OnDestroy, OnInit {
   ngOnDestroy(): void {}
 
   @HostListener('window:scroll', [])
+  @HostListener('document:scroll', [])
+  @HostListener('body:scroll', [])
   onWindowScroll(): void {
     this.toggleBackToTopButtonVisibility();
   }
 
   private toggleBackToTopButtonVisibility(): void {
+    const scrollPos = 
+      window.scrollY || 
+      window.pageYOffset || 
+      document.documentElement.scrollTop || 
+      document.body.scrollTop || 
+      0;
+
+    const shouldShow = scrollPos > this.scrollThreshold;
+
+    if (this.showBackToTop !== shouldShow) {
+      this.showBackToTop = shouldShow;
+      this.cd.detectChanges();
+    }
+
     if (this.backToTopBtnRef?.nativeElement) {
-      this.backToTopBtnRef.nativeElement.classList.toggle('active', window.scrollY > this.scrollThreshold);
+      this.backToTopBtnRef.nativeElement.classList.toggle('active', shouldShow);
     }
   }
 
   scrollToTop(): void {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.documentElement.scrollTo({ top: 0, behavior: 'smooth' });
+    document.body.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }

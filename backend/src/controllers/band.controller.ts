@@ -1,282 +1,835 @@
 import { Request, Response, RequestHandler } from 'express';
+import mongoose from 'mongoose';
+
 import { Band } from '../models/band.model';
 import { StreamingLinks } from '../models/streaming-links.model';
 import { SocialLinks } from '../models/social-links.model';
-import mongoose from 'mongoose';
 
-// Create a new band
-export const createBand: RequestHandler = async (req: Request, res: Response): Promise<void> => {
+/*
+ * Resolve a band using either:
+ *   - MongoDB ObjectId
+ *   - band slug
+ *
+ * GET requests currently support both forms.
+ * Write operations use the resolved MongoDB _id.
+ */
+const findBandByIdOrSlug = async (
+  bandIdOrSlug: string
+) => {
+  if (mongoose.Types.ObjectId.isValid(bandIdOrSlug)) {
+    return Band.findById(bandIdOrSlug);
+  }
+
+  return Band.findOne({
+    slug: bandIdOrSlug,
+  });
+};
+
+/*
+ * Fields allowed when creating/updating a Band.
+ *
+ * Do not pass req.body directly into Mongoose.
+ * Explicitly selecting fields prevents unexpected properties
+ * from being written to the database.
+ */
+const getBandPayload = (
+  body: Record<string, unknown>
+) => ({
+  name: body['name'],
+  slug: body['slug'],
+  bio: body['bio'],
+  image: body['image'],
+  bandLogo: body['bandLogo'],
+  youtubeChannelId: body['youtubeChannelId'],
+});
+
+/*
+ * Fields allowed for Social Links.
+ */
+const getSocialLinksPayload = (
+  body: Record<string, unknown>
+) => ({
+  facebook: body['facebook'],
+  instagram: body['instagram'],
+  x: body['x'],
+  youtube: body['youtube'],
+  tiktok: body['tiktok'],
+});
+
+/*
+ * Fields allowed for Streaming Links.
+ */
+const getStreamingLinksPayload = (
+  body: Record<string, unknown>
+) => ({
+  spotify: body['spotify'],
+  appleMusic: body['appleMusic'],
+  soundCloud: body['soundCloud'],
+});
+
+
+// ============================================================
+// BAND CRUD
+// ============================================================
+
+// POST /api/band
+export const createBand: RequestHandler = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
-    const band = new Band(req.body);
+    const bandPayload = getBandPayload(req.body);
+
+    const band = new Band(bandPayload);
     const savedBand = await band.save();
+
     res.status(201).json(savedBand);
   } catch (err) {
-    res.status(500).json({ message: 'Error creating band', error: err });
+    console.error('Error creating band:', err);
+
+    if (!res.headersSent) {
+      res.status(500).json({
+        message: 'Error creating band',
+      });
+    }
   }
 };
 
-// Get all bands
-export const getAllBands: RequestHandler = async (_req, res): Promise<void> => {
+
+// GET /api/band
+export const getAllBands: RequestHandler = async (
+  _req,
+  res
+): Promise<void> => {
   try {
     const bands = await Band.find()
       .populate('socialLinks')
       .populate('streamingLinks');
+
     res.json(bands);
   } catch (err) {
-    res.status(500).json({ message: 'Error fetching bands', error: err });
+    console.error('Error fetching bands:', err);
+
+    if (!res.headersSent) {
+      res.status(500).json({
+        message: 'Error fetching bands',
+      });
+    }
   }
 };
 
-// Get band by slug
-export const getBandBySlug: RequestHandler<{ slug: string }> = async (
+
+// GET /api/band/:slug
+export const getBandBySlug: RequestHandler<{
+  slug: string;
+}> = async (
   req: Request<{ slug: string }>,
   res: Response
 ): Promise<void> => {
   try {
     const { slug } = req.params;
-    const band = await Band.findOne({ slug }).populate('socialLinks').populate('streamingLinks');
+
+    /*
+     * Populate both related documents so the frontend receives
+     * the actual social and streaming link data rather than
+     * only their MongoDB ObjectIds.
+     */
+    const band = await Band.findOne({ slug })
+      .populate('socialLinks')
+      .populate('streamingLinks');
+
     if (!band) {
-      res.status(404).json({ message: 'Band not found' });
+      res.status(404).json({
+        message: 'Band not found',
+      });
+
       return;
     }
+
     res.json(band);
   } catch (err) {
-    res.status(500).json({ message: 'Error fetching band', error: err });
+    console.error(
+      'Error fetching band:',
+      err
+    );
+
+    if (!res.headersSent) {
+      res.status(500).json({
+        message: 'Error fetching band',
+      });
+    }
   }
 };
 
-// Update a band
-export const updateBand: RequestHandler<{ id: string }> = async (
+
+// PUT /api/band/:id
+export const updateBand: RequestHandler<{
+  id: string;
+}> = async (
   req: Request<{ id: string }>,
   res: Response
 ): Promise<void> => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    res.status(400).json({
+      message: 'Invalid band ID',
+    });
+
+    return;
+  }
+
   try {
-    const { id } = req.params;
-    const updatedBand = await Band.findByIdAndUpdate(id, req.body, { new: true })
+    const bandPayload = getBandPayload(req.body);
+
+    const updatedBand = await Band.findByIdAndUpdate(
+      id,
+      bandPayload,
+      {
+        new: true,
+        runValidators: true,
+      }
+    )
       .populate('socialLinks')
       .populate('streamingLinks');
 
     if (!updatedBand) {
-      res.status(404).json({ message: 'Band not found' });
+      res.status(404).json({
+        message: 'Band not found',
+      });
+
       return;
     }
-    
+
     res.json(updatedBand);
   } catch (err) {
-    res.status(500).json({ message: 'Error updating band', error: err });
+    console.error(
+      'Error updating band:',
+      err
+    );
+
+    if (!res.headersSent) {
+      res.status(500).json({
+        message: 'Error updating band',
+      });
+    }
   }
 };
 
-// Delete a band
-export const deleteBand: RequestHandler<{ id: string }> = async (
+
+// DELETE /api/band/:id
+export const deleteBand: RequestHandler<{
+  id: string;
+}> = async (
   req: Request<{ id: string }>,
   res: Response
 ): Promise<void> => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    res.status(400).json({
+      message: 'Invalid band ID',
+    });
+
+    return;
+  }
+
   try {
-    const { id } = req.params;
     const deletedBand = await Band.findByIdAndDelete(id);
+
     if (!deletedBand) {
-      res.status(404).json({ message: 'Band not found' });
+      res.status(404).json({
+        message: 'Band not found',
+      });
+
       return;
     }
-    res.json({ message: 'Band deleted' });
+
+    /*
+     * Remove associated links so orphaned documents
+     * aren't left behind.
+     */
+    await SocialLinks.deleteOne({
+      band: deletedBand._id,
+    });
+
+    await StreamingLinks.deleteOne({
+      band: deletedBand._id,
+    });
+
+    res.status(204).send();
   } catch (err) {
-    res.status(500).json({ message: 'Error deleting band', error: err });
+    console.error(
+      'Error deleting band:',
+      err
+    );
+
+    if (!res.headersSent) {
+      res.status(500).json({
+        message: 'Error deleting band',
+      });
+    }
   }
 };
 
-// ===== Social Links CRUD for Band =====
 
-export const getSocialLinksByBand: RequestHandler<{ bandId: string }> = async (
+// ============================================================
+// SOCIAL LINKS FOR BAND
+// ============================================================
+
+
+// GET /api/band/:bandId/social-links
+export const getSocialLinksByBand: RequestHandler<{
+  bandId: string;
+}> = async (
   req: Request<{ bandId: string }>,
   res: Response
 ): Promise<void> => {
-  const { bandId } = req.params; 
-  
-  try {
-    let band;
+  const { bandId } = req.params;
 
-    // 1. Check if the bandId is a valid MongoDB ObjectId
-    if (mongoose.Types.ObjectId.isValid(bandId)) {
-      band = await Band.findById(bandId);
-    } else {
-      // 2. If it's not a valid ID, treat it as a slug
-      band = await Band.findOne({ slug: bandId });
-    }
-    
+  try {
+    const band = await findBandByIdOrSlug(
+      bandId
+    );
+
     if (!band) {
-      res.status(404).json({ message: 'Band not found' });
+      res.status(404).json({
+        message: 'Band not found',
+      });
+
       return;
     }
 
-    const socialLinks = await SocialLinks.findOne({ band: band._id });
-    
+    const socialLinks = await SocialLinks.findOne({
+      band: band._id,
+    });
+
     if (!socialLinks) {
-      // Return empty links instead of erroring out
-      res.json({ facebook: '', instagram: '', twitter: '', spotify: '' });
+      /*
+       * Return the same shape expected by the frontend.
+       */
+      res.json({
+        facebook: '',
+        instagram: '',
+        x: '',
+        youtube: '',
+        tiktok: '',
+      });
+
       return;
     }
 
     res.json(socialLinks);
   } catch (err) {
-    res.status(500).json({ message: 'Error fetching social links', error: err });
+    console.error(
+      'Error fetching social links:',
+      err
+    );
+
+    if (!res.headersSent) {
+      res.status(500).json({
+        message: 'Error fetching social links',
+      });
+    }
   }
 };
 
-export const createSocialLinksForBand: RequestHandler<{ bandId: string }> = async (
+
+// POST /api/band/:bandId/social-links
+export const createSocialLinksForBand: RequestHandler<{
+  bandId: string;
+}> = async (
   req: Request<{ bandId: string }>,
   res: Response
 ): Promise<void> => {
   const { bandId } = req.params;
+
   try {
-    const existing = await SocialLinks.findOne({ band: bandId });
-    if (existing) {
-      res.status(400).json({ message: 'Social links already exist for this band, use PUT to update' });
+    const band = await findBandByIdOrSlug(
+      bandId
+    );
+
+    if (!band) {
+      res.status(404).json({
+        message: 'Band not found',
+      });
+
       return;
     }
-    const socialLinks = new SocialLinks({ ...req.body, band: bandId });
-    await socialLinks.save();
-    await Band.findByIdAndUpdate(bandId, { socialLinks: socialLinks._id });
-    res.status(201).json(socialLinks);
+
+    const existing = await SocialLinks.findOne({
+      band: band._id,
+    });
+
+    if (existing) {
+      res.status(409).json({
+        message:
+          'Social links already exist for this band, use PUT to update',
+      });
+
+      return;
+    }
+
+    const socialLinks = new SocialLinks({
+      ...getSocialLinksPayload(req.body),
+      band: band._id,
+    });
+
+    const savedLinks = await socialLinks.save();
+
+    /*
+     * Keep the Band -> SocialLinks reference synchronized.
+     */
+    await Band.findByIdAndUpdate(
+      band._id,
+      {
+        $set: {
+          socialLinks: savedLinks._id,
+        },
+      },
+      {
+        runValidators: true,
+      }
+    );
+
+    res.status(201).json(savedLinks);
   } catch (err) {
-    res.status(500).json({ message: 'Error creating social links', error: err });
+    console.error(
+      'Error creating social links:',
+      err
+    );
+
+    if (!res.headersSent) {
+      res.status(500).json({
+        message: 'Error creating social links',
+      });
+    }
   }
 };
 
-export const updateSocialLinksForBand: RequestHandler<{ bandId: string }> = async (
+
+// PUT /api/band/:bandId/social-links
+export const updateSocialLinksForBand: RequestHandler<{
+  bandId: string;
+}> = async (
   req: Request<{ bandId: string }>,
   res: Response
 ): Promise<void> => {
   const { bandId } = req.params;
+
   try {
+    const band = await findBandByIdOrSlug(
+      bandId
+    );
+
+    if (!band) {
+      res.status(404).json({
+        message: 'Band not found',
+      });
+
+      return;
+    }
+
     const socialLinks = await SocialLinks.findOneAndUpdate(
-      { band: bandId },
-      req.body,
-      { new: true }
+      {
+        band: band._id,
+      },
+      getSocialLinksPayload(req.body),
+      {
+        new: true,
+        runValidators: true,
+      }
     );
+
     if (!socialLinks) {
-      res.status(404).json({ message: 'Social links not found for this band' });
+      res.status(404).json({
+        message: 'Social links not found for this band',
+      });
+
       return;
     }
+
+    /*
+     * Repair the Band reference if it is missing or points
+     * to a different SocialLinks document.
+     */
+    if (
+      !band.socialLinks ||
+      !band.socialLinks.equals(
+        socialLinks._id
+      )
+    ) {
+      await Band.findByIdAndUpdate(
+        band._id,
+        {
+          $set: {
+            socialLinks: socialLinks._id,
+          },
+        },
+        {
+          runValidators: true,
+        }
+      );
+    }
+
     res.json(socialLinks);
   } catch (err) {
-    res.status(500).json({ message: 'Error updating social links', error: err });
-  }
-};
+    console.error(
+      'Error updating social links:',
+      err
+    );
 
-export const deleteSocialLinksForBand: RequestHandler<{ bandId: string }> = async (
-  req: Request<{ bandId: string }>,
-  res: Response
-): Promise<void> => {
-  const { bandId } = req.params;
-  try {
-    const deleted = await SocialLinks.findOneAndDelete({ band: bandId });
-    if (!deleted) {
-      res.status(404).json({ message: 'Social links not found for this band' });
-      return;
+    if (!res.headersSent) {
+      res.status(500).json({
+        message: 'Error updating social links',
+      });
     }
-    await Band.findByIdAndUpdate(bandId, { $unset: { socialLinks: 1 } });
-    res.status(204).send();
-  } catch (err) {
-    res.status(500).json({ message: 'Error deleting social links', error: err });
   }
 };
 
-// ===== Streaming Links CRUD for Band =====
 
-export const getStreamingLinksByBand: RequestHandler<{ bandId: string }> = async (
+// DELETE /api/band/:bandId/social-links
+export const deleteSocialLinksForBand: RequestHandler<{
+  bandId: string;
+}> = async (
   req: Request<{ bandId: string }>,
   res: Response
 ): Promise<void> => {
   const { bandId } = req.params;
 
   try {
-    let band;
-    
-    if (mongoose.Types.ObjectId.isValid(bandId)) {
-      band = await Band.findById(bandId);
-    } else {
-      band = await Band.findOne({ slug: bandId });
-    }
+    const band = await findBandByIdOrSlug(
+      bandId
+    );
 
     if (!band) {
-      res.status(404).json({ message: 'Band not found' });
+      res.status(404).json({
+        message: 'Band not found',
+      });
+
       return;
     }
 
-    const streamingLinks = await StreamingLinks.findOne({ band: band._id });
-    
-    // CHANGE THIS BLOCK:
-    if (!streamingLinks) {
-      // Return 200 with empty strings so the frontend doesn't throw an error
-      res.json({ spotify: '', appleMusic: '', youtube: '', soundcloud: '' });
-      return;
-    }
-    
-    res.json(streamingLinks);
-  } catch (err) {
-    res.status(500).json({ message: 'Error fetching streaming links', error: err });
-  }
-};
+    const deleted = await SocialLinks.findOneAndDelete({
+      band: band._id,
+    });
 
-export const createStreamingLinksForBand: RequestHandler<{ bandId: string }> = async (
-  req: Request<{ bandId: string }>,
-  res: Response
-): Promise<void> => {
-  const { bandId } = req.params;
-  try {
-    const existing = await StreamingLinks.findOne({ band: bandId });
-    if (existing) {
-      res.status(400).json({ message: 'Streaming links already exist for this band, use PUT to update' });
-      return;
-    }
-
-    const streamingLinks = new StreamingLinks({ ...req.body, band: bandId });
-    await streamingLinks.save();
-
-    await Band.findByIdAndUpdate(bandId, { streamingLinks: streamingLinks._id });
-    res.status(201).json(streamingLinks);
-  } catch (err) {
-    res.status(500).json({ message: 'Error creating streaming links', error: err });
-  }
-};
-
-export const updateStreamingLinksForBand: RequestHandler<{ bandId: string }> = async (
-  req: Request<{ bandId: string }>,
-  res: Response
-): Promise<void> => {
-  const { bandId } = req.params;
-  try {
-    const streamingLinks = await StreamingLinks.findOneAndUpdate(
-      { band: bandId },
-      req.body,
-      { new: true }
-    );
-    if (!streamingLinks) {
-      res.status(404).json({ message: 'Streaming links not found for this band' });
-      return;
-    }
-    res.json(streamingLinks);
-  } catch (err) {
-    res.status(500).json({ message: 'Error updating streaming links', error: err });
-  }
-};
-
-export const deleteStreamingLinksForBand: RequestHandler<{ bandId: string }> = async (
-  req: Request<{ bandId: string }>,
-  res: Response
-): Promise<void> => {
-  const { bandId } = req.params;
-  try {
-    const deleted = await StreamingLinks.findOneAndDelete({ band: bandId });
     if (!deleted) {
-      res.status(404).json({ message: 'Streaming links not found for this band' });
+      res.status(404).json({
+        message: 'Social links not found for this band',
+      });
+
       return;
     }
-    await Band.findByIdAndUpdate(bandId, { $unset: { streamingLinks: 1 } });
+
+    /*
+     * Remove the Band -> SocialLinks reference after
+     * successfully deleting the SocialLinks document.
+     */
+    await Band.findByIdAndUpdate(
+      band._id,
+      {
+        $unset: {
+          socialLinks: 1,
+        },
+      }
+    );
+
     res.status(204).send();
   } catch (err) {
-    res.status(500).json({ message: 'Error deleting streaming links', error: err });
+    console.error(
+      'Error deleting social links:',
+      err
+    );
+
+    if (!res.headersSent) {
+      res.status(500).json({
+        message: 'Error deleting social links',
+      });
+    }
   }
 };
 
+
+// ============================================================
+// STREAMING LINKS FOR BAND
+// ============================================================
+
+
+// GET /api/band/:bandId/streaming-links
+export const getStreamingLinksByBand: RequestHandler<{
+  bandId: string;
+}> = async (
+  req: Request<{ bandId: string }>,
+  res: Response
+): Promise<void> => {
+  const { bandId } = req.params;
+
+  try {
+    const band = await findBandByIdOrSlug(
+      bandId
+    );
+
+    if (!band) {
+      res.status(404).json({
+        message: 'Band not found',
+      });
+
+      return;
+    }
+
+    const streamingLinks =
+      await StreamingLinks.findOne({
+        band: band._id,
+      });
+
+    if (!streamingLinks) {
+      res.json({
+        spotify: '',
+        appleMusic: '',
+        soundCloud: '',
+      });
+
+      return;
+    }
+
+    res.json(streamingLinks);
+  } catch (err) {
+    console.error(
+      'Error fetching streaming links:',
+      err
+    );
+
+    if (!res.headersSent) {
+      res.status(500).json({
+        message: 'Error fetching streaming links',
+      });
+    }
+  }
+};
+
+
+// POST /api/band/:bandId/streaming-links
+export const createStreamingLinksForBand: RequestHandler<{
+  bandId: string;
+}> = async (
+  req: Request<{ bandId: string }>,
+  res: Response
+): Promise<void> => {
+  const { bandId } = req.params;
+
+  try {
+    const band = await findBandByIdOrSlug(
+      bandId
+    );
+
+    if (!band) {
+      res.status(404).json({
+        message: 'Band not found',
+      });
+
+      return;
+    }
+
+    const existing =
+      await StreamingLinks.findOne({
+        band: band._id,
+      });
+
+    if (existing) {
+      res.status(409).json({
+        message:
+          'Streaming links already exist for this band, use PUT to update',
+      });
+
+      return;
+    }
+
+    const streamingLinks =
+      new StreamingLinks({
+        ...getStreamingLinksPayload(req.body),
+        band: band._id,
+      });
+
+    const savedLinks =
+      await streamingLinks.save();
+
+    /*
+     * Keep the Band -> StreamingLinks reference synchronized.
+     */
+    await Band.findByIdAndUpdate(
+      band._id,
+      {
+        $set: {
+          streamingLinks: savedLinks._id,
+        },
+      },
+      {
+        runValidators: true,
+      }
+    );
+
+    res.status(201).json(savedLinks);
+  } catch (err) {
+    console.error(
+      'Error creating streaming links:',
+      err
+    );
+
+    if (!res.headersSent) {
+      res.status(500).json({
+        message: 'Error creating streaming links',
+      });
+    }
+  }
+};
+
+
+// PUT /api/band/:bandId/streaming-links
+export const updateStreamingLinksForBand: RequestHandler<{
+  bandId: string;
+}> = async (
+  req: Request<{ bandId: string }>,
+  res: Response
+): Promise<void> => {
+  const { bandId } = req.params;
+
+  try {
+    const band = await findBandByIdOrSlug(
+      bandId
+    );
+
+    if (!band) {
+      res.status(404).json({
+        message: 'Band not found',
+      });
+
+      return;
+    }
+
+    const streamingLinks =
+      await StreamingLinks.findOneAndUpdate(
+        {
+          band: band._id,
+        },
+        getStreamingLinksPayload(req.body),
+        {
+          new: true,
+          runValidators: true,
+        }
+      );
+
+    if (!streamingLinks) {
+      res.status(404).json({
+        message:
+          'Streaming links not found for this band',
+      });
+
+      return;
+    }
+
+    /*
+     * Repair the Band reference if it is missing or
+     * points to a different StreamingLinks document.
+     */
+    if (
+      !band.streamingLinks ||
+      !band.streamingLinks.equals(
+        streamingLinks._id
+      )
+    ) {
+      await Band.findByIdAndUpdate(
+        band._id,
+        {
+          $set: {
+            streamingLinks:
+              streamingLinks._id,
+          },
+        },
+        {
+          runValidators: true,
+        }
+      );
+    }
+
+    res.json(streamingLinks);
+  } catch (err) {
+    console.error(
+      'Error updating streaming links:',
+      err
+    );
+
+    if (!res.headersSent) {
+      res.status(500).json({
+        message:
+          'Error updating streaming links',
+      });
+    }
+  }
+};
+
+
+// DELETE /api/band/:bandId/streaming-links
+export const deleteStreamingLinksForBand: RequestHandler<{
+  bandId: string;
+}> = async (
+  req: Request<{ bandId: string }>,
+  res: Response
+): Promise<void> => {
+  const { bandId } = req.params;
+
+  try {
+    const band = await findBandByIdOrSlug(
+      bandId
+    );
+
+    if (!band) {
+      res.status(404).json({
+        message: 'Band not found',
+      });
+
+      return;
+    }
+
+    const deleted =
+      await StreamingLinks.findOneAndDelete({
+        band: band._id,
+      });
+
+    if (!deleted) {
+      res.status(404).json({
+        message:
+          'Streaming links not found for this band',
+      });
+
+      return;
+    }
+
+    /*
+     * Remove the Band -> StreamingLinks reference
+     * after successfully deleting the document.
+     */
+    await Band.findByIdAndUpdate(
+      band._id,
+      {
+        $unset: {
+          streamingLinks: 1,
+        },
+      }
+    );
+
+    res.status(204).send();
+  } catch (err) {
+    console.error(
+      'Error deleting streaming links:',
+      err
+    );
+
+    if (!res.headersSent) {
+      res.status(500).json({
+        message:
+          'Error deleting streaming links',
+      });
+    }
+  }
+};

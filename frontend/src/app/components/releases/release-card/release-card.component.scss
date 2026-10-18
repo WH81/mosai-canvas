@@ -10,23 +10,24 @@
    ========================= */
 .card {
   display: grid;
-  // Standardized columns to match the "invisible line" across the site
+  // Standardized columns to match horizontal rhythm
   grid-template-columns: 72px 1fr auto; 
   column-gap: 12px;
   align-items: start;
-  // height: 100%;
-  // Subtle top border for list-style separation
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding-block: $spacing-md;
+  
+  // Clean top border for editorial separation
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
   padding: $spacing-sm;
-  transition: background 0.2s ease;
-  border-left: 1px outset transparent;
-  border-right: 1px outset transparent;
-  border-bottom: 1px outset transparent;
+  transition: background 0.25s ease, border-color 0.25s ease;
 
-  // Desktop adjustment: Matches the visual weight of Tour and About sections
+  &:hover {
+    background: rgba(255, 255, 255, 0.02);
+    border-top-color: rgba(255, 255, 255, 0.3);
+  }
+
+  // Desktop adjustment
   @media (min-width: 860px) {
-    grid-template-columns: 130px 1fr auto;
+    grid-template-columns: 110px 1fr auto;
     column-gap: $spacing-sm;
   }
 }
@@ -35,7 +36,6 @@
    Featured / Latest modifier
    ========================= */
 .card.featured {
-  // Maintaining grid consistency even for featured items
   grid-template-columns: 72px 1fr auto;
 
   @media (min-width: 860px) {
@@ -75,13 +75,11 @@
     object-fit: cover;
     display: block;
     border-radius: 2px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-
-    // &:hover { margin-left: 1rem; }
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 
     @media (min-width: 860px) {
-      width: 125px;
-      height: 125px;
+      width: 110px;
+      height: 110px;
     }
   }
 }
@@ -100,13 +98,14 @@
       color: rgba($text-color-light, 0.5);
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .title {
       @include text-style-primary($font-sm, $font-md, 1.2, 600);
       color: #ffffff;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
+      word-break: break-word;
     }
 
     .band {
@@ -154,8 +153,8 @@
   .ellipsis {
     background: transparent;
     border: none;
-    padding: 0.5rem 1rem;
-    margin-right: -15px;
+    padding: 0.25rem 0.5rem;
+    margin-right: -8px;
     display: flex;
     flex-direction: column;
     gap: 4px;
@@ -177,7 +176,7 @@
     position: absolute;
     right: 0;
     top: 100%;
-    min-width: 210px; // Slightly widened to make room for logos comfortably
+    min-width: 210px;
     background: #1a1a1a;
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 4px;
@@ -198,8 +197,6 @@
       line-height: 1.7;
       text-transform: uppercase;
       cursor: pointer;
-      
-      // Layout alignment for logos and text
       display: flex;
       align-items: center;
       gap: 10px;
@@ -208,7 +205,7 @@
         background: rgba(255, 255, 255, 0.1); 
         
         .apple-icon { color: #ffffff; }
-        .google-icon { color: #4285F4; } // Subtle branding pop on hover
+        .google-icon { color: #4285F4; }
       }
 
       .menu-icon {

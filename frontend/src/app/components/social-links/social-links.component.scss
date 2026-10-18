@@ -13,14 +13,12 @@
   &.divided {
     gap: 1.5rem;
     --icon-color: #{$text-color-light}; 
-    --icon-hover-color: var(--primary); // Use the fixed token name
+    --icon-hover-color: var(--primary);
   }
 
   &.glass {
-    gap: 0.5rem;
     --icon-color: #{$text-color-light};
     --icon-hover-color: #{$text-color-light};
-    // ... rest of glass styles
   }
 
   &.large i { font-size: 1.8rem; }

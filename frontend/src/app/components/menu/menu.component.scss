@@ -9,15 +9,28 @@
    Header Container
    ========================= */
 .header-container {
-  position: relative;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: $background-gradient-dark;
-  border-bottom: 1px outset $text-color-light;
-  padding: 0 $spacing-md;
+  position: absolute;
+  margin: 0 auto;
   z-index: 100;
+  left: 0;
+  right: 0;
+  top: 1.25rem;
+  background-color: rgba(0, 0, 0, 0.65);
+  box-shadow: 0 0px 4px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  width: fit-content;
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+
+  > *:first-child {
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+  }
+
+  > *:last-child {
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+  }
 }
 
 /* =========================
@@ -44,9 +57,15 @@
   }
 
   &.open {
-    .top-bar { transform: translateY(8px) rotate(45deg); }
-    .middle-bar { opacity: 0; }
-    .bottom-bar { transform: translateY(-8px) rotate(-45deg); }
+    .top-bar {
+      transform: translateY(8px) rotate(45deg);
+    }
+    .middle-bar {
+      opacity: 0;
+    }
+    .bottom-bar {
+      transform: translateY(-8px) rotate(-45deg);
+    }
   }
 
   @media (min-width: 769px) {
@@ -78,7 +97,6 @@
   }
 }
 
-/* ===== FIX #1: Mobile width consistency ===== */
 .mobile-menu-content {
   display: flex;
   flex-direction: column;
@@ -100,14 +118,14 @@
     background: transparent;
     border: none;
     text-align: left;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 
     display: flex;
     justify-content: space-between;
     align-items: center;
 
     &:hover {
-      background: rgba(255,255,255,0.1);
+      background: rgba(255, 255, 255, 0.1);
     }
   }
 }
@@ -116,7 +134,7 @@
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.3s ease;
-  background: rgba(255,255,255,0.03);
+  background: rgba(255, 255, 255, 0.03);
 
   &.open {
     max-height: 1000px;
@@ -142,6 +160,16 @@
     height: 60px;
     width: 100%;
   }
+
+  > *:first-child {
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+  }
+
+  > *:last-child {
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+  }
 }
 
 .navbar a,
@@ -165,67 +193,137 @@
 }
 
 /* =========================
-   Desktop Dropdown
+   Desktop Dropdown (Mega Menu)
    ========================= */
 .dropdown {
-  position: relative;
+  position: static;
   display: flex;
   align-items: stretch;
-}
-
-/* Keep dropdown open when moving mouse */
-.dropdown:hover .dropdown-content,
-.dropdown:focus-within .dropdown-content,
-.dropdown.open .dropdown-content {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-  pointer-events: auto;
 }
 
 .dropdown-content {
   position: absolute;
   top: 100%;
-  left: 0;
-  min-width: 220px;
-  background: $text-color-light;
-  border-radius: 0 0 6px 6px;
-  border-top: 2px solid $frame-border-color;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  width: max-content;
+  max-width: 92vw;
+  background: rgba(12, 12, 12, 0.99);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
   z-index: 1000;
   opacity: 0;
   visibility: hidden;
-  transform: translateY(6px);
   transition: opacity 0.2s ease, transform 0.2s ease;
-  pointer-events: none; // prevents flicker
+  pointer-events: none;
 
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: $spacing-md;
+  padding: $spacing-xl;
+  margin-top: 12px;
+
+  /* Hover bridge keeps the menu open when moving mouse down */
+  &::before {
+    content: "";
+    position: absolute;
+    top: -12px;
+    left: 0;
+    width: 100%;
+    height: 12px;
+  }
+
+  .dropdown:hover &,
+  .dropdown:focus-within &,
+  .dropdown.open & {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: auto;
+  }
+
+  /* Individual card styles */
   a {
-    @include text-style-secondary(0.95rem, 1.3rem, 1.5, 600);
-    color: #000;
-    padding: $spacing-sm $spacing-md;
-    display: block;
-    white-space: nowrap;
+    position: relative;
+    padding: $spacing-md $spacing-lg;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    text-decoration: none;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 
-    &:hover {
-      background: $text-color-medium;
+    &:hover,
+    &:focus {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.35);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
+
+      .band-name {
+        color: #fff !important;
+      }
+
+      .band-subtitle {
+        color: rgba(255, 255, 255, 0.8);
+      }
+    }
+
+    .band-symbol {
+      width: 104px;
+      height: 88px;
+      border-radius: 8px;
+      object-fit: cover;
+      background: rgba(255, 255, 255, 0.08);
+      flex-shrink: 0;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .band-info {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      min-width: 0;
+    }
+
+    .band-name {
+      @include text-style-secondary(0.95rem, 1.25rem, 1.3, 600);
+      color: rgba(255, 255, 255, 0.95);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .band-subtitle {
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.5);
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      transition: color 0.2s ease;
     }
   }
 }
 
 /* =========================
-  Parent Tab Active State
-  ========================= */
-  .dropdown:hover .dropbtn,
-  .dropdown:focus-within .dropbtn,
-  .dropdown.open .dropbtn {
-    background-color: $text-color-light;
-    color: $text-color-dark;
-  }
+   Parent Tab Active State
+   ========================= */
+.dropdown:hover .dropbtn,
+.dropdown:focus-within .dropbtn,
+.dropdown.open .dropbtn {
+  background-color: $text-color-light;
+  color: $text-color-dark;
+}
 
 .chevron-icon {
-  margin-left: 6px;
-  font-size: 0.8rem;
+  margin-left: 10px;
+  font-size: 0.85rem;
   transition: transform 0.25s ease;
+  display: inline-block;
 }
 
 .dropdown:hover .chevron-icon,

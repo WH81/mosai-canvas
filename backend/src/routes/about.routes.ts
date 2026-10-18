@@ -1,28 +1,51 @@
-import express from "express";
-import { 
-    getAbout, 
-    getAboutById, 
-    createAbout, 
-    updateAbout, 
-    deleteAbout 
-} from "../controllers/about.controller";
-import { validateAbout } from "../middleware/validate-about"; // Middleware import
+import express from 'express';
+
+import {
+  getAbout,
+  getAboutById,
+  createAbout,
+  updateAbout,
+  deleteAbout,
+} from '../controllers/about.controller';
+
+import { validateAbout } from '../middleware/validate-about';
+import { authenticateAdmin } from '../middleware/auth.middleware';
 
 const router = express.Router();
 
-// Get all carousel items
-router.get("/", getAbout);
+/*
+ * Public read endpoints.
+ *
+ * The public website needs to retrieve About content.
+ */
+router.get('/', getAbout);
 
-// Get a single carousel item by ID
-router.get("/:id", getAboutById);
+router.get('/:id', getAboutById);
 
-// Create a new carousel item (with validation middleware)
-router.post("/", validateAbout, createAbout);
+/*
+ * Protected write endpoints.
+ *
+ * Authentication happens BEFORE validation and controller
+ * execution.
+ */
+router.post(
+  '/',
+  authenticateAdmin,
+  validateAbout,
+  createAbout
+);
 
-// Update an existing carousel item by ID (with validation middleware)
-router.put("/:id", validateAbout, updateAbout);
+router.put(
+  '/:id',
+  authenticateAdmin,
+  validateAbout,
+  updateAbout
+);
 
-// Delete a carousel item by ID
-router.delete("/:id", deleteAbout);
+router.delete(
+  '/:id',
+  authenticateAdmin,
+  deleteAbout
+);
 
 export default router;

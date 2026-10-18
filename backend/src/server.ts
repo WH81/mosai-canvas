@@ -23,9 +23,11 @@ import releaseRoutes from './routes/release.routes';
 import youtubeRoutes from './routes/youtube.routes';
 import galleryRoutes from './routes/gallery.routes';
 import spotifyRoutes from './routes/spotify.routes'; 
- 
+import { apiLimiter } from './middleware/rate-limit.middleware';
+
 import { errorHandler } from './middleware/error.middleware';
- 
+import authRoutes from './routes/auth.routes';
+
 dotenv.config();
 connectDB();
  
@@ -99,6 +101,7 @@ app.use(compression());
 app.use('/assets/gallery', express.static(path.join(__dirname, 'src/assets/gallery')));
  
 // ─── API Routes ───────────────────────────────────────────────────────────────
+app.use('/api/', apiLimiter);
 app.use('/api/band', bandRoutes);
 app.use('/api/social-links', socialLinksRoutes);
 app.use('/api/streaming-links', streamingLinksRoutes);
@@ -114,6 +117,7 @@ app.use('/api/releases', releaseRoutes);
 app.use('/api/youtube', youtubeRoutes);
 app.use('/api/gallery', galleryRoutes);
 app.use('/api/spotify', spotifyRoutes);
+app.use('/api/auth', authRoutes);
  
 // ─── Error Handler (always last) ─────────────────────────────────────────────
 app.use(errorHandler);

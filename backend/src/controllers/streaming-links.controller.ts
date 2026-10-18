@@ -1,74 +1,206 @@
 import { Request, Response, NextFunction } from 'express';
-import * as streamingLinksService from '../services/streaming-links.service';
 
-export const createStreamingLinks = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  const bandId = req.params.bandId;
-  if (!bandId) {
-    res.status(400).json({ message: 'Band ID is required' });
-    return;
-  }
+import {
+  createStreamingLinksForBand as createBandLinks,
+  getStreamingLinksForBand as getBandLinks,
+  updateStreamingLinksForBand as updateBandLinks,
+  deleteStreamingLinksForBand as deleteBandLinks,
+  createStreamingLinksForMember as createMemberLinks,
+  getStreamingLinksForMember as getMemberLinks,
+  updateStreamingLinksForMember as updateMemberLinks,
+  deleteStreamingLinksForMember as deleteMemberLinks,
+  StreamingLinksPayload,
+} from '../services/streaming-links.service';
 
-  try {
-    const created = await streamingLinksService.createStreamingLinks(bandId, req.body);
-    res.status(201).json(created);
-  } catch (error) {
-    next(error); // Let Express handle with global error middleware
-  }
+// ============================================================
+// ROUTE PARAMETER TYPES
+// ============================================================
+
+type BandParams = {
+  bandId: string;
 };
 
-export const updateStreamingLinks = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  const bandId = req.params.bandId;
-  if (!bandId) {
-    res.status(400).json({ message: 'Band ID is required' });
-    return;
-  }
+type MemberParams = {
+  memberId: string;
+};
 
-  try {
-    const updated = await streamingLinksService.updateStreamingLinks(bandId, req.body);
-    if (!updated) {
-      res.status(404).json({ message: 'Streaming links not found for the given band.' });
+// ============================================================
+// ERROR HANDLING
+// ============================================================
+
+const handleError = (
+  error: unknown,
+  res: Response,
+  next: NextFunction
+): void => {
+  if (error instanceof Error) {
+    if (error.name === 'NotFoundError') {
+      res.status(404).json({
+        message: error.message,
+      });
       return;
     }
-    res.status(200).json(updated);
+
+    if (error.name === 'ConflictError') {
+      res.status(409).json({
+        message: error.message,
+      });
+      return;
+    }
+
+    if (error.message.startsWith('Invalid ')) {
+      res.status(400).json({
+        message: error.message,
+      });
+      return;
+    }
+  }
+
+  next(error);
+};
+
+// ============================================================
+// BAND
+// ============================================================
+
+export const createStreamingLinksForBand = async (
+  req: Request<BandParams>,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const links = await createBandLinks(
+      req.params.bandId,
+      req.body as StreamingLinksPayload
+    );
+
+    res.status(201).json(links);
   } catch (error) {
-    next(error);
+    handleError(error, res, next);
   }
 };
 
-export const getStreamingLinks = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  const bandId = req.params.bandId;
-  if (!bandId) {
-    res.status(400).json({ message: 'Band ID is required' });
-    return;
-  }
-
+export const getStreamingLinksForBand = async (
+  req: Request<BandParams>,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
-    const links = await streamingLinksService.getStreamingLinks(bandId);
+    const links = await getBandLinks(req.params.bandId);
+
     if (!links) {
-      res.status(404).json({ message: 'Streaming links not found for the given band.' });
+      res.status(404).json({
+        message: 'Streaming links not found for this band.',
+      });
       return;
     }
-    res.status(200).json(links);
+
+    res.json(links);
   } catch (error) {
-    next(error);
+    handleError(error, res, next);
   }
 };
 
-export const deleteStreamingLinks = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  const bandId = req.params.bandId;
-  if (!bandId) {
-    res.status(400).json({ message: 'Band ID is required' });
-    return;
-  }
-
+export const updateStreamingLinksForBand = async (
+  req: Request<BandParams>,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
-    const deleted = await streamingLinksService.deleteStreamingLinks(bandId);
-    if (!deleted) {
-      res.status(404).json({ message: 'Streaming links not found for the given band.' });
+    const links = await updateBandLinks(
+      req.params.bandId,
+      req.body as StreamingLinksPayload
+    );
+
+    res.json(links);
+  } catch (error) {
+    handleError(error, res, next);
+  }
+};
+
+export const deleteStreamingLinksForBand = async (
+  req: Request<BandParams>,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    await deleteBandLinks(req.params.bandId);
+
+    res.status(204).send();
+  } catch (error) {
+    handleError(error, res, next);
+  }
+};
+
+// ============================================================
+// MEMBER
+// ============================================================
+
+export const createStreamingLinksForMember = async (
+  req: Request<MemberParams>,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const links = await createMemberLinks(
+      req.params.memberId,
+      req.body as StreamingLinksPayload
+    );
+
+    res.status(201).json(links);
+  } catch (error) {
+    handleError(error, res, next);
+  }
+};
+
+export const getStreamingLinksForMember = async (
+  req: Request<MemberParams>,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const links = await getMemberLinks(req.params.memberId);
+
+    if (!links) {
+      res.status(404).json({
+        message: 'Streaming links not found for this member.',
+      });
       return;
     }
-    res.status(200).json({ message: 'Streaming links deleted successfully.' });
+
+    res.json(links);
   } catch (error) {
-    next(error);
+    handleError(error, res, next);
+  }
+};
+
+export const updateStreamingLinksForMember = async (
+  req: Request<MemberParams>,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const links = await updateMemberLinks(
+      req.params.memberId,
+      req.body as StreamingLinksPayload
+    );
+
+    res.json(links);
+  } catch (error) {
+    handleError(error, res, next);
+  }
+};
+
+export const deleteStreamingLinksForMember = async (
+  req: Request<MemberParams>,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    await deleteMemberLinks(req.params.memberId);
+
+    res.status(204).send();
+  } catch (error) {
+    handleError(error, res, next);
   }
 };

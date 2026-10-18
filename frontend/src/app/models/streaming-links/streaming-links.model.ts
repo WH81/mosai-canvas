@@ -1,6 +1,5 @@
 export interface StreamingLinks {
-    appleMusic?: string;
-    spotify?: string;
-    soundCloud?: string;
-  }
-  
+  appleMusic?: string;
+  spotify?: string;
+  soundCloud?: string;
+}

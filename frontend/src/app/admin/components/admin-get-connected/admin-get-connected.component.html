@@ -1,0 +1,99 @@
+<section class="admin-get-connected">
+
+    <!-- Page Header -->
+  
+    <header class="admin-get-connected__header">
+  
+      <div>
+        <p class="admin-get-connected__eyebrow">
+          Homepage
+        </p>
+  
+        <h1>
+          Get Connected
+        </h1>
+  
+        <p class="admin-get-connected__description">
+          Manage the social media and streaming links displayed
+          in the Mosai Canvas collective Get Connected section.
+        </p>
+      </div>
+  
+    </header>
+  
+  
+    <!-- Loading -->
+  
+    <div
+      *ngIf="loading"
+      class="admin-get-connected__loading"
+      role="status"
+      aria-live="polite"
+    >
+      Loading Get Connected information...
+    </div>
+  
+  
+    <!-- Error -->
+  
+    <div
+      *ngIf="!loading && errorMessage"
+      class="admin-message admin-message--error"
+      role="alert"
+    >
+      {{ errorMessage }}
+  
+      <button
+        type="button"
+        (click)="loadGetConnectedData()"
+      >
+        Try Again
+      </button>
+    </div>
+  
+  
+    <!-- Success -->
+  
+    <div
+      *ngIf="!loading && successMessage"
+      class="admin-message admin-message--success"
+      role="status"
+      aria-live="polite"
+    >
+      {{ successMessage }}
+    </div>
+  
+  
+    <!-- Editors -->
+  
+    <div
+      *ngIf="!loading && !errorMessage"
+      class="admin-get-connected__editors"
+    >
+  
+      <!-- Social Media -->
+  
+      <app-social-links-editor
+        [socialLinks]="socialLinks"
+        title="Social Media Links"
+        [saving]="savingSocial"
+        (save)="saveSocialLinks($event)"
+        (cancel)="onSocialCancel()"
+      >
+      </app-social-links-editor>
+  
+  
+      <!-- Streaming -->
+  
+      <app-streaming-links-editor
+        [streamingLinks]="streamingLinks"
+        title="Streaming Links"
+        [saving]="savingStreaming"
+        (save)="saveStreamingLinks($event)"
+        (cancel)="onStreamingCancel()"
+      >
+      </app-streaming-links-editor>
+  
+    </div>
+  
+  </section>

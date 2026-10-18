@@ -1,5 +1,10 @@
 <div class="header-container">
-  <button class="hamburger-icon" [class.open]="isMobileMenuOpen" (click)="toggleMobileMenu()" aria-label="Toggle mobile menu">
+  <button
+    class="hamburger-icon"
+    [class.open]="isMobileMenuOpen"
+    (click)="toggleMobileMenu()"
+    aria-label="Toggle mobile menu"
+  >
     <span class="bar top-bar"></span>
     <span class="bar middle-bar"></span>
     <span class="bar bottom-bar"></span>
@@ -14,35 +19,65 @@
         </button>
         <div class="dropdown-content">
           <a *ngFor="let sub of item.submenu" [routerLink]="sub.path">
-            {{ sub.name }}
+            <img
+              [src]="sub.icon || 'assets/images/default-thumb.jpg'"
+              alt=""
+              class="band-symbol"
+            />
+            <div class="band-info">
+              <span class="band-name">{{ sub.name }}</span>
+              <span class="band-subtitle">Explore project</span>
+            </div>
           </a>
         </div>
       </div>
       <ng-template #singleLink>
-        <a [routerLink]="item.path">{{ item.name }}</a>
+        <a [routerLink]="item.path" [fragment]="item.fragment" (click)="onNavClick(item)">{{ item.name }}</a>
       </ng-template>
     </ng-container>
   </nav>
 
-  <nav class="mobile-menu" [class.open]="isMobileMenuOpen" aria-label="Mobile navigation">
+  <nav
+    class="mobile-menu"
+    [class.open]="isMobileMenuOpen"
+    aria-label="Mobile navigation"
+  >
     <div class="mobile-menu-content">
       <ng-container *ngFor="let item of menuItems">
-        <div class="mobile-dropdown" *ngIf="item.submenu; else mobileSingleLink">
-          <button class="mobile-dropbtn" (click)="toggleMobileDropdown(item.name)"
-                  [attr.aria-expanded]="isMobileDropdownOpen[item.name]" aria-haspopup="true">
+        <div
+          class="mobile-dropdown"
+          *ngIf="item.submenu; else mobileSingleLink"
+        >
+          <button
+            class="mobile-dropbtn"
+            (click)="toggleMobileDropdown(item.name)"
+            [attr.aria-expanded]="isMobileDropdownOpen[item.name]"
+            aria-haspopup="true"
+          >
             {{ item.name }}
-            <i class="fa fa-caret-down chevron-icon" [class.rotated]="isMobileDropdownOpen[item.name]" aria-hidden="true"></i>
+            <i
+              class="fa fa-caret-down chevron-icon"
+              [class.rotated]="isMobileDropdownOpen[item.name]"
+              aria-hidden="true"
+            ></i>
           </button>
-          <div class="mobile-dropdown-content" [class.open]="isMobileDropdownOpen[item.name]">
-            <a *ngFor="let sub of item.submenu" [routerLink]="sub.path" (click)="closeMobileMenu()">
+          <div
+            class="mobile-dropdown-content"
+            [class.open]="isMobileDropdownOpen[item.name]"
+          >
+            <a
+              *ngFor="let sub of item.submenu"
+              [routerLink]="sub.path"
+              (click)="closeMobileMenu()"
+            >
               {{ sub.name }}
             </a>
           </div>
         </div>
         <ng-template #mobileSingleLink>
-          <a [routerLink]="item.path" (click)="closeMobileMenu()">{{ item.name }}</a>
+          <a [routerLink]="item.path" [fragment]="item.fragment" (click)="onNavClick(item)">{{ item.name }}</a>
         </ng-template>
       </ng-container>
     </div>
   </nav>
-</div> 
+</div>

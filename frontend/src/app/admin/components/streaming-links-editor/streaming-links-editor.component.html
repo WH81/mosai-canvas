@@ -1,0 +1,182 @@
+<section
+  class="streaming-links-editor"
+  [attr.aria-busy]="saving"
+>
+
+  <header class="streaming-links-editor__header">
+
+    <div>
+      <h2 class="streaming-links-editor__title">
+        {{ title }}
+      </h2>
+
+      <p class="streaming-links-editor__description">
+        Add or update streaming service destinations
+        displayed on the website.
+      </p>
+    </div>
+
+  </header>
+
+  <form
+    class="streaming-links-editor__form"
+    [formGroup]="form"
+    (ngSubmit)="onSubmit()"
+    novalidate
+  >
+
+    <!-- Spotify -->
+
+    <div class="form-field">
+
+      <label for="spotify">
+        Spotify
+      </label>
+
+      <input
+        id="spotify"
+        type="url"
+        formControlName="spotify"
+        placeholder="https://open.spotify.com/..."
+        autocomplete="url"
+        inputmode="url"
+        [attr.aria-invalid]="hasError('spotify')"
+        [attr.aria-describedby]="
+          hasError('spotify')
+            ? 'spotify-error'
+            : null
+        "
+      />
+
+      @if (hasError('spotify')) {
+        <p
+          id="spotify-error"
+          class="form-field__error"
+          role="alert"
+        >
+          {{ getErrorMessage('spotify') }}
+        </p>
+      }
+
+    </div>
+
+    <!-- Apple Music -->
+
+    <div class="form-field">
+
+      <label for="appleMusic">
+        Apple Music
+      </label>
+
+      <input
+        id="appleMusic"
+        type="url"
+        formControlName="appleMusic"
+        placeholder="https://music.apple.com/..."
+        autocomplete="url"
+        inputmode="url"
+        [attr.aria-invalid]="hasError('appleMusic')"
+        [attr.aria-describedby]="
+          hasError('appleMusic')
+            ? 'apple-music-error'
+            : null
+        "
+      />
+
+      @if (hasError('appleMusic')) {
+        <p
+          id="apple-music-error"
+          class="form-field__error"
+          role="alert"
+        >
+          {{ getErrorMessage('appleMusic') }}
+        </p>
+      }
+
+    </div>
+
+    <!-- SoundCloud -->
+
+    <div class="form-field">
+
+      <label for="soundCloud">
+        SoundCloud
+      </label>
+
+      <input
+        id="soundCloud"
+        type="url"
+        formControlName="soundCloud"
+        placeholder="https://soundcloud.com/..."
+        autocomplete="url"
+        inputmode="url"
+        [attr.aria-invalid]="hasError('soundCloud')"
+        [attr.aria-describedby]="
+          hasError('soundCloud')
+            ? 'soundcloud-error'
+            : null
+        "
+      />
+
+      @if (hasError('soundCloud')) {
+        <p
+          id="soundcloud-error"
+          class="form-field__error"
+          role="alert"
+        >
+          {{ getErrorMessage('soundCloud') }}
+        </p>
+      }
+
+    </div>
+
+    <!--
+      Existing reusable functionality is preserved.
+      The Artist Editor sets [showActions]="false"
+      and uses its own single Create Artist / Save Changes button.
+    -->
+
+    @if (showActions) {
+      <div class="streaming-links-editor__actions">
+
+        <button
+          type="submit"
+          class="button button--primary"
+          [disabled]="saving"
+        >
+          @if (!saving) {
+            <span>Save Streaming Links</span>
+          }
+
+          @if (saving) {
+            <span>Saving...</span>
+          }
+        </button>
+
+        <button
+          type="button"
+          class="button button--secondary"
+          (click)="onReset()"
+          [disabled]="
+            saving ||
+            form.pristine
+          "
+        >
+          Reset
+        </button>
+
+        <button
+          type="button"
+          class="button button--ghost"
+          (click)="onCancel()"
+          [disabled]="saving"
+        >
+          Cancel
+        </button>
+
+      </div>
+    }
+
+  </form>
+
+</section>

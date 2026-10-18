@@ -1,51 +1,70 @@
-// Spacing scale
-$spacing-xxs: 0.25rem;  // 4px
-$spacing-xs: 0.5rem;    // 8px
-$spacing-sm: 1rem;      // 16px
-$spacing-md: 1.5rem;    // 24px
-$spacing-lg: 2rem;      // 32px
-$spacing-xl: 3rem;      // 48px
-$spacing-xxl: 4rem;     // 64px
-$spacing-xxll: 4.5rem;  // 72px
-$spacing-xxxl: 5rem;    // 80px
-$spacing-xxxxl: 6rem;   // 96px
+// ==========================================
+// 1. DESIGN SYSTEM SCALING & TOKENS
+// ==========================================
+
+// Spacing Scale
+$spacing-xxs: 0.25rem;   // 4px
+$spacing-xs: 0.5rem;     // 8px
+$spacing-sm: 1rem;       // 16px
+$spacing-md: 1.5rem;     // 24px
+$spacing-lg: 2rem;       // 32px
+$spacing-xl: 3rem;       // 48px
+$spacing-xxl: 4rem;      // 64px
+$spacing-xxll: 4.5rem;   // 72px
+$spacing-xxxl: 5rem;     // 80px
+$spacing-xxxxl: 6rem;    // 96px
 $spacing-xxxxll: 7.5rem; // 120px
 $spacing-xxxxxl: 8rem;   // 128px
 $spacing-xxxxxxl: 10rem; // 160px
 
-// Font size scale
+// Font Size Scale
 $font-xxs: 0.625rem; // 10px - micro labels, timestamps
 $font-xs: 0.75rem;   // 12px - subtle UI text
 $font-sm: 0.875rem;  // 14px - compact body text
 $font-md: 1rem;      // 16px - main body text
 $font-lg: 1.25rem;   // 20px - section subtitles / highlights
-$font-xl: 1.5rem;    // 24px - component titles (carousel, mailing list titles)
+$font-xl: 1.5rem;    // 24px - component titles
 $font-xxl: 2rem;     // 32px - hero labels, band section headers
 $font-xxxl: 3rem;    // 48px - major page titles / about headers
-$font-xxxxl: 4rem;   // 64px - feature headings / high-impact editorial titles
-$font-xxxxxl: 5rem;  // 80px - optional: large hero text or landing page titles
+$font-xxxxl: 4rem;   // 64px - feature headings
+$font-xxxxxl: 5rem;  // 80px - hero text
 
-$font-family-primary: "Montserrat", sans-serif;
-$font-family-secondary: "Lato", sans-serif;
+// Typography Families & Weights
+$font-family-primary: "Cinzel", serif;
+$font-family-secondary: "Plus Jakarta Sans", sans-serif;
 
-$font-size-base: 1.125rem; // Good for body text
+$font-weight-thin: 200;
+$font-weight-regular: 400;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
 
+$letter-spacing-heading: 0.25em;
+$letter-spacing-body: 0.02em;
+$letter-spacing-base: 0px;
+$font-size-base: 1.125rem; // Body text baseline
+
+// ==========================================
+// 2. COLOR PALETTE & GRADIENTS
+// ==========================================
 $text-color-light: #ffffff;
 $text-color-medium: #acacac;
 $text-color-dark: #000000;
-$primary-color: #00c2ff; // A vibrant blue for links and accents
-$secondary-color: #ff5722; // A contrasting accent color (orange)
-$background-dark: #121212; // A deep, dark background color
+$primary-color: #00c2ff; 
+$secondary-color: #ff5722; 
+$background-dark: #121212; 
 
+// Gradient tokens
 $dark-gradient-start: #121212;
 $dark-gradient-mid: #171717;
 $dark-gradient-end: #121212;
+
 $background-gradient-dark: linear-gradient(
   90deg,
   $dark-gradient-start,
   $dark-gradient-mid,
   $dark-gradient-end
 );
+
 $light-gradient-end: #ffffff;
 $background-gradient-dark-light: linear-gradient(
   135deg,
@@ -53,39 +72,53 @@ $background-gradient-dark-light: linear-gradient(
   $light-gradient-end
 );
 
-$letter-spacing-base: 0px;
 $gradient-start: #4a90e2;
 $gradient-end: #50e3c2;
 $gradient-mosai-canvas: linear-gradient(to bottom, $gradient-start, $gradient-end);
 $bg-mailing-list: #131820;
 
-// Additional variables for a cohesive theme
-$border-radius-rounded: 0.75rem; // For cards and sections
-$box-shadow-light: 0 4px 6px rgba(0, 0, 0, 0.2); // For modals and cards
+// ==========================================
+// 3. UI COMPONENTS & FRAME TOKENS
+// ==========================================
+$border-radius-rounded: 0.75rem; 
+$box-shadow-light: 0 4px 6px rgba(0, 0, 0, 0.2); 
 
 $spacing-title-vertical: clamp(1rem, 4vw, 2rem);
 $spacing-title-horizontal: clamp(1rem, 2vw, 1.5rem);
 
-// Contributor member image frame
 $frame-background-color: #2c2c2c;
 $frame-border-color: #000000;
 
+// ==========================================
+// 4. CSS CUSTOM PROPERTIES ROOT EXPOSURE
+// ==========================================
 :root {
+  /* Typography Tokens */
+  --font-heading: #{$font-family-primary};
+  --font-body: #{$font-family-secondary};
+  --font-weight-heading: #{$font-weight-thin};
+  --letter-spacing-heading: #{$letter-spacing-heading};
+
+  /* Default Colors */
+  --text-main: #{$text-color-light};
+  --text-muted: rgba(255, 255, 255, 0.7);
+  --background-dark: #{$background-dark};
+  
+  /* Responsive Layout Tokens */
   --container-max-width: 90rem;
-  --container-gutter: #{$spacing-md};     // ← 24px default for mobile
+  --container-gutter: #{$spacing-lg};
   --section-spacing: #{$spacing-xl};
   --section-spacing-fluid: clamp(#{$spacing-xl}, 8vw, #{$spacing-xxxxll});
-  // ← floor raised from 72px to 48px — sections breathe without being sparse on mobile
 }
 
 @media (min-width: 768px) {
   :root {
-    --container-gutter: #{$spacing-lg};   // ← 32px tablet
+    --container-gutter: #{$spacing-xxxl};
   }
 }
 
 @media (min-width: 1440px) {
   :root {
-    --container-gutter: #{$spacing-xl};   // ← 48px large desktop
+    --container-gutter: #{$spacing-xl};
   }
 }

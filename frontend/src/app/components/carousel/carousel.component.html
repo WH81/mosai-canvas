@@ -31,10 +31,12 @@
         <h1 class="songName">{{ item.songName }}</h1>
         <h2 class="bandName">{{ item.bandName }}</h2>
         <h4 class="formattedDate">
-          <span class="release-date">Out:</span> {{ item.formattedDate }}
+          <span *ngIf="item.formattedDate" class="release-date">Out:</span> 
+          {{ item.formattedDate }}
         </h4>
         <a
           class="carousel-button animated-button"
+          *ngIf="item.buttonText && item.buttonLink"
           [href]="item.buttonLink"
           target="_blank"
           rel="noopener noreferrer"

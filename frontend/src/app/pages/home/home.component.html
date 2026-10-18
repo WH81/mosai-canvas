@@ -1,12 +1,43 @@
 <app-mosaicanvas-logo></app-mosaicanvas-logo>
-<app-carousel></app-carousel>
-<app-about></app-about>
-<app-tour></app-tour>
-<app-releases-page></app-releases-page>
-<app-ringtones></app-ringtones>
-<app-mailing-list></app-mailing-list>
 
-<section class="l-section get-connected-section">
+<app-carousel></app-carousel>
+
+<section class="l-section">
+  <app-about></app-about>
+</section>
+
+<section class="l-section">
+  <app-tour></app-tour>
+</section>
+
+<!-- Latest Releases Block -->
+<section class="l-section">
+  <app-latest-releases
+    [latestReleases]="latestReleasesList"
+    [bandSlug]="homepageBandSlug"
+    (action)="onReleaseAction($event)">
+  </app-latest-releases>
+</section>
+
+<!-- Coming Soon / Pre-Releases Block -->
+<section class="l-section">
+  <app-pre-releases
+    [releases]="preReleasesList"
+    [bandSlug]="homepageBandSlug"
+    (action)="onReleaseAction($event)">
+  </app-pre-releases>
+</section>
+
+<section class="l-section">
+  <app-ringtones></app-ringtones>
+</section>
+
+<section class="l-section">
+  <app-mailing-list></app-mailing-list>
+</section>
+
+<!-- Get Connected Section -->
+<section class="l-section">
   <div class="container">
     <div class="get-connected">
       <div class="get-connected__grid">
@@ -22,21 +53,17 @@
           <div class="get-connected__links-group">
             <div class="get-connected__social">
               <app-social-links
-                *ngIf="socialLinks"
-                [socialLinks]="socialLinks"
+                [socialLinks]="socialLinks!"
                 variant="glass"
-                size="large"
-              >
+                size="large">
               </app-social-links>
             </div>
 
             <div class="get-connected__streaming">
               <app-streaming-links
-                *ngIf="streamingLinks"
-                [streamingLinks]="streamingLinks"
+                [streamingLinks]="streamingLinks!"
                 variant="glass"
-                size="large"
-              >
+                size="large">
               </app-streaming-links>
             </div>
           </div>

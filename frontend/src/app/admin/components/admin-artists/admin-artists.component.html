@@ -1,0 +1,157 @@
+<main
+  class="admin-artists"
+  aria-labelledby="artists-heading"
+>
+  <header class="admin-artists__header">
+
+    <a
+      routerLink="/admin"
+      class="admin-artists__back-link"
+    >
+      ← Dashboard
+    </a>
+
+    <p class="admin-artists__eyebrow">
+      MOSAI CANVAS
+    </p>
+
+    <h1
+      id="artists-heading"
+      class="admin-artists__title"
+    >
+      Artists
+    </h1>
+
+    <p class="admin-artists__description">
+      Select a band to manage its artists, biographies,
+      instruments, images, and links.
+    </p>
+
+  </header>
+
+  @if (errorMessage) {
+    <div
+      class="admin-artists__message admin-artists__message--error"
+      role="alert"
+      aria-live="assertive"
+    >
+      {{ errorMessage }}
+    </div>
+  }
+
+  <section
+    class="admin-artists__content"
+    aria-labelledby="available-bands-heading"
+  >
+
+    <div class="admin-artists__section-header">
+
+      <div>
+        <h2
+          id="available-bands-heading"
+          class="admin-artists__section-title"
+        >
+          Select a Band
+        </h2>
+
+        <p class="admin-artists__section-description">
+          Choose the band whose artists you want to manage.
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="admin-artists__refresh-button"
+        (click)="refresh()"
+        [disabled]="isLoading"
+      >
+        {{ isLoading ? 'Loading...' : 'Refresh' }}
+      </button>
+
+    </div>
+
+    @if (isLoading) {
+
+      <div
+        class="admin-artists__state"
+        role="status"
+        aria-live="polite"
+      >
+        Loading bands...
+      </div>
+
+    } @else if (bands.length === 0 && !errorMessage) {
+
+      <div
+        class="admin-artists__state"
+        role="status"
+      >
+        No bands are currently available.
+      </div>
+
+    } @else {
+
+      <div
+        class="admin-artists__grid"
+        aria-label="Available bands"
+      >
+
+        @for (band of bands; track band._id) {
+
+          <article class="admin-artists__card">
+
+            <div class="admin-artists__card-content">
+
+              @if (band.bandLogo) {
+                <div class="admin-artists__logo-wrapper">
+                  <img
+                    class="admin-artists__logo"
+                    [src]="band.bandLogo"
+                    [alt]="band.name + ' logo'"
+                    loading="lazy"
+                  />
+                </div>
+              }
+
+              <div class="admin-artists__details">
+
+                <h3 class="admin-artists__band-name">
+                  {{ band.name }}
+                </h3>
+
+                @if (band.bio) {
+                  <p class="admin-artists__band-description">
+                    {{ band.bio }}
+                  </p>
+                }
+
+              </div>
+
+            </div>
+
+            <div class="admin-artists__actions">
+
+              <a
+                class="admin-artists__manage-link"
+                [routerLink]="[
+                  '/admin/artists',
+                  band.slug
+                ]"
+                [attr.aria-label]="'Manage artists for ' + band.name"
+              >
+                Manage Artists →
+              </a>
+
+            </div>
+
+          </article>
+
+        }
+
+      </div>
+
+    }
+
+  </section>
+
+</main>

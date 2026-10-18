@@ -1,117 +1,492 @@
-import { NextFunction, Request, Response } from "express";
-import CarouselItem from "../models/carousel-item.model";
-import mongoose from "mongoose";
+import {
+  NextFunction,
+  Request,
+  Response,
+} from 'express';
 
-// Get all carousel items
-export const getCarouselItems = async (_req: Request, res: Response, next: NextFunction): Promise<void> => {
-  try {
-    const items = await CarouselItem.find();
-    res.json(items);
-  } catch (error) {
-      next(error);
-  }
-  return;
-};
+import mongoose from 'mongoose';
 
-// Get a single carousel item by ID
-export const getCarouselItemById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  try {
-      const item = await CarouselItem.findById(req.params.id);
-      if (!item) {
-          res.status(404).json({ error: "Item not found" });
-          return;
-      }
-      res.json(item); // No return statement needed
-  } catch (error) {
-      next(error);
-  }
-};
+import CarouselItem from '../models/carousel-item.model';
 
-// Create a new carousel item
-export const createCarouselItem = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  const { imageUrl, bandName, songName, releaseDate, buttonText, buttonLink } = req.body;
-
-  // Ensure all required fields are provided
-  if (!imageUrl || !bandName || !songName || !releaseDate || !buttonText || !buttonLink) {
-    res.status(400).json({ message: "Missing required fields" });
-    return; // 🔴 Important: Stop further execution
+/**
+ * Convert YYYY-MM-DD into UTC midnight.
+ * Returns undefined when value is empty or omitted.
+ */
+const parseDateOnly = (
+  value: unknown
+): Date | undefined => {
+  // Empty date is allowed.
+  if (
+    value === undefined ||
+    value === null ||
+    value === ''
+  ) {
+    return undefined;
   }
 
-  const newItem = new CarouselItem({
-    imageUrl,
-    bandName,
-    songName,
-    releaseDate,
-    buttonText,
-    buttonLink,
-  });
-
-  try {
-    // Save the new item to the database
-    const savedItem = await newItem.save();
-    res.status(201).json(savedItem); // Return the saved item with a 201 status
-  } catch (error) {
-    // Catch validation or other errors and respond with a 500 error
-    next(error); // 🔵 Use `next(error)` to let Express error middleware handle it
-  }
-};
-
-// Update an existing carousel item
-export const updateCarouselItem = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  const { id } = req.params;
-  const { imageUrl, bandName, songName, releaseDate, buttonText, buttonLink } = req.body;
-
-  // Validate request body
-  if (!imageUrl || !bandName || !songName || !releaseDate || !buttonText || !buttonLink) {
-    res.status(400).json({ message: "All fields are required" });
-    return;
+  if (typeof value !== 'string') {
+    throw new Error(
+      'Invalid date format.'
+    );
   }
 
-  try {
-    // Update the carousel item
-    const updatedItem = await CarouselItem.findByIdAndUpdate(
-      id,
-      { imageUrl, bandName, songName, releaseDate, buttonText, buttonLink },
-      { new: true }
+  const match =
+    /^(\d{4})-(\d{2})-(\d{2})$/
+      .exec(value);
+
+  if (!match) {
+    throw new Error(
+      'Invalid date format.'
+    );
+  }
+
+  const year =
+    Number(match[1]);
+
+  const month =
+    Number(match[2]);
+
+  const day =
+    Number(match[3]);
+
+  const date =
+    new Date(
+      Date.UTC(
+        year,
+        month - 1,
+        day
+      )
     );
 
-    // If the item is not found
-    if (!updatedItem) {
-      res.status(404).json({ message: "Carousel item not found" });
+  if (
+    date.getUTCFullYear() !== year ||
+    date.getUTCMonth() !== month - 1 ||
+    date.getUTCDate() !== day
+  ) {
+    throw new Error(
+      'Invalid date.'
+    );
+  }
+
+  return date;
+};
+
+/**
+ * GET /api/carousel
+ */
+export const getCarouselItems =
+  async (
+    _req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    try {
+      const items =
+        await CarouselItem
+          .find()
+          .sort({
+            order: 1,
+            createdAt: 1,
+          })
+          .lean();
+
+      res.status(200).json(
+        items
+      );
+    } catch (error) {
+      next(error);
+    }
+  };
+
+/**
+ * GET /api/carousel/:id
+ */
+export const getCarouselItemById =
+  async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    const { id } =
+      req.params;
+
+    if (
+      !id ||
+      !mongoose.Types.ObjectId.isValid(
+        id
+      )
+    ) {
+      res.status(400).json({
+        message:
+          'Invalid Carousel item ID.',
+      });
+
       return;
     }
 
-    // Return the updated item
-    res.json(updatedItem);
-  } catch (error) {
-    console.error(error); // Log error for debugging
-    next(error); // Pass the error to the next middleware (error handler)
-  }
-};
+    try {
+      const item =
+        await CarouselItem
+          .findById(id)
+          .lean();
 
-// Delete a carousel item
-export const deleteCarouselItem = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  const { id } = req.params;
+      if (!item) {
+        res.status(404).json({
+          message:
+            'Carousel item not found.',
+        });
 
-  // Validate if the ID is provided and is a valid MongoDB ObjectId
-  if (!id || !mongoose.Types.ObjectId.isValid(id)) {
-    res.status(400).json({ message: "Invalid ID format" });
-    return;
-  }
+        return;
+      }
 
-  try {
-    // Attempt to delete the carousel item by ID
-    const deletedItem = await CarouselItem.findByIdAndDelete(id);
+      res.status(200).json(
+        item
+      );
+    } catch (error) {
+      next(error);
+    }
+  };
 
-    if (!deletedItem) {
-      res.status(404).json({ message: "Carousel item not found" });
+/**
+ * POST /api/carousel
+ */
+export const createCarouselItem =
+  async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    try {
+      const {
+        imageUrl,
+        bandName,
+        songName,
+        releaseDate,
+        buttonText,
+        buttonLink,
+      } = req.body;
+
+      const highestOrderItem =
+        await CarouselItem
+          .findOne()
+          .sort({
+            order: -1,
+          })
+          .select({
+            order: 1,
+          })
+          .lean();
+
+      const nextOrder =
+        typeof highestOrderItem?.order ===
+        'number'
+          ? highestOrderItem.order + 1
+          : 0;
+
+      const newItem =
+        new CarouselItem({
+          imageUrl,
+          bandName,
+          songName,
+          releaseDate:
+            parseDateOnly(
+              releaseDate
+            ),
+          buttonText,
+          buttonLink,
+          order:
+            nextOrder,
+        });
+
+      const savedItem =
+        await newItem.save();
+
+      res.status(201).json(
+        savedItem
+      );
+    } catch (error) {
+      next(error);
+    }
+  };
+
+/**
+ * PUT /api/carousel/:id
+ */
+export const updateCarouselItem =
+  async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    const { id } =
+      req.params;
+
+    if (
+      !id ||
+      !mongoose.Types.ObjectId.isValid(
+        id
+      )
+    ) {
+      res.status(400).json({
+        message:
+          'Invalid Carousel item ID.',
+      });
+
       return;
     }
 
-    // Return a 204 No Content status indicating successful deletion
-    res.status(204).send();
-  } catch (error) {
-    console.error(error); // Log the error for debugging
-    next(error); // Pass the error to the next middleware (error handler)
-  }
-};
+    try {
+      const {
+        imageUrl,
+        bandName,
+        songName,
+        releaseDate,
+        buttonText,
+        buttonLink,
+      } = req.body;
+
+      const parsedReleaseDate =
+        parseDateOnly(
+          releaseDate
+        );
+
+      const updateQuery: Record<
+        string,
+        any
+      > = {
+        $set: {
+          imageUrl,
+          bandName,
+          songName,
+          buttonText,
+          buttonLink,
+        },
+      };
+
+      if (parsedReleaseDate === undefined) {
+        updateQuery.$unset = {
+          releaseDate: 1,
+        };
+      } else {
+        updateQuery.$set.releaseDate =
+          parsedReleaseDate;
+      }
+
+      const updatedItem =
+        await CarouselItem
+          .findByIdAndUpdate(
+            id,
+            updateQuery,
+            {
+              new: true,
+              runValidators: true,
+            }
+          );
+
+      if (!updatedItem) {
+        res.status(404).json({
+          message:
+            'Carousel item not found.',
+        });
+
+        return;
+      }
+
+      res.status(200).json(
+        updatedItem
+      );
+    } catch (error) {
+      next(error);
+    }
+  };
+
+/**
+ * PUT /api/carousel/order
+ */
+export const reorderCarouselItems =
+  async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    try {
+      const {
+        orderedIds,
+      } = req.body;
+
+      if (
+        !Array.isArray(
+          orderedIds
+        )
+      ) {
+        res.status(400).json({
+          message:
+            'orderedIds must be an array.',
+        });
+
+        return;
+      }
+
+      if (
+        orderedIds.length === 0
+      ) {
+        res.status(200).json(
+          []
+        );
+
+        return;
+      }
+
+      const invalidId =
+        orderedIds.some(
+          (id: unknown) =>
+            typeof id !==
+              'string' ||
+            !mongoose.Types.ObjectId.isValid(
+              id
+            )
+        );
+
+      if (invalidId) {
+        res.status(400).json({
+          message:
+            'One or more Carousel item IDs are invalid.',
+        });
+
+        return;
+      }
+
+      const uniqueIds =
+        new Set(
+          orderedIds
+        );
+
+      if (
+        uniqueIds.size !==
+        orderedIds.length
+      ) {
+        res.status(400).json({
+          message:
+            'Duplicate Carousel item IDs are not allowed.',
+        });
+
+        return;
+      }
+
+      const existingItems =
+        await CarouselItem
+          .find({
+            _id: {
+              $in: orderedIds,
+            },
+          })
+          .select({
+            _id: 1,
+          })
+          .lean();
+
+      if (
+        existingItems.length !==
+        orderedIds.length
+      ) {
+        res.status(400).json({
+          message:
+            'The submitted Carousel order does not match the existing Carousel items.',
+        });
+
+        return;
+      }
+
+      const operations =
+        orderedIds.map(
+          (
+            id: string,
+            index: number
+          ) => ({
+            updateOne: {
+              filter: {
+                _id: id,
+              },
+              update: {
+                $set: {
+                  order:
+                    index,
+                },
+              },
+            },
+          })
+        );
+
+      await CarouselItem.bulkWrite(
+        operations,
+        {
+          ordered: true,
+        }
+      );
+
+      const items =
+        await CarouselItem
+          .find()
+          .sort({
+            order: 1,
+            createdAt: 1,
+          })
+          .lean();
+
+      res.status(200).json(
+        items
+      );
+    } catch (error) {
+      next(error);
+    }
+  };
+
+/**
+ * DELETE /api/carousel/:id
+ */
+export const deleteCarouselItem =
+  async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    const { id } =
+      req.params;
+
+    if (
+      !id ||
+      !mongoose.Types.ObjectId.isValid(
+        id
+      )
+    ) {
+      res.status(400).json({
+        message:
+          'Invalid Carousel item ID.',
+      });
+
+      return;
+    }
+
+    try {
+      const deletedItem =
+        await CarouselItem
+          .findByIdAndDelete(
+            id
+          );
+
+      if (!deletedItem) {
+        res.status(404).json({
+          message:
+            'Carousel item not found.',
+        });
+
+        return;
+      }
+
+      res.status(200).json(
+        deletedItem
+      );
+    } catch (error) {
+      next(error);
+    }
+  };

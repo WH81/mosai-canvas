@@ -1,0 +1,252 @@
+<section
+  class="social-links-editor"
+  [attr.aria-busy]="saving"
+>
+
+  <header class="social-links-editor__header">
+
+    <div>
+      <h2 class="social-links-editor__title">
+        {{ title }}
+      </h2>
+
+      <p class="social-links-editor__description">
+        Add or update the social media destinations
+        displayed on the website.
+      </p>
+    </div>
+
+  </header>
+
+  <form
+    class="social-links-editor__form"
+    [formGroup]="form"
+    (ngSubmit)="onSubmit()"
+    novalidate
+  >
+
+    <!-- Facebook -->
+
+    <div class="form-field">
+
+      <label for="facebook">
+        Facebook
+      </label>
+
+      <input
+        id="facebook"
+        type="url"
+        formControlName="facebook"
+        placeholder="https://facebook.com/your-page"
+        autocomplete="url"
+        inputmode="url"
+        [attr.aria-invalid]="hasError('facebook')"
+        [attr.aria-describedby]="
+          hasError('facebook')
+            ? 'facebook-error'
+            : null
+        "
+      />
+
+      @if (hasError('facebook')) {
+        <p
+          id="facebook-error"
+          class="form-field__error"
+          role="alert"
+        >
+          {{ getErrorMessage('facebook') }}
+        </p>
+      }
+
+    </div>
+
+    <!-- Instagram -->
+
+    <div class="form-field">
+
+      <label for="instagram">
+        Instagram
+      </label>
+
+      <input
+        id="instagram"
+        type="url"
+        formControlName="instagram"
+        placeholder="https://instagram.com/your-account"
+        autocomplete="url"
+        inputmode="url"
+        [attr.aria-invalid]="hasError('instagram')"
+        [attr.aria-describedby]="
+          hasError('instagram')
+            ? 'instagram-error'
+            : null
+        "
+      />
+
+      @if (hasError('instagram')) {
+        <p
+          id="instagram-error"
+          class="form-field__error"
+          role="alert"
+        >
+          {{ getErrorMessage('instagram') }}
+        </p>
+      }
+
+    </div>
+
+    <!-- X -->
+
+    <div class="form-field">
+
+      <label for="x">
+        X
+      </label>
+
+      <input
+        id="x"
+        type="url"
+        formControlName="x"
+        placeholder="https://x.com/your-account"
+        autocomplete="url"
+        inputmode="url"
+        [attr.aria-invalid]="hasError('x')"
+        [attr.aria-describedby]="
+          hasError('x')
+            ? 'x-error'
+            : null
+        "
+      />
+
+      @if (hasError('x')) {
+        <p
+          id="x-error"
+          class="form-field__error"
+          role="alert"
+        >
+          {{ getErrorMessage('x') }}
+        </p>
+      }
+
+    </div>
+
+    <!-- YouTube -->
+
+    <div class="form-field">
+
+      <label for="youtube">
+        YouTube
+      </label>
+
+      <input
+        id="youtube"
+        type="url"
+        formControlName="youtube"
+        placeholder="https://youtube.com/@your-channel"
+        autocomplete="url"
+        inputmode="url"
+        [attr.aria-invalid]="hasError('youtube')"
+        [attr.aria-describedby]="
+          hasError('youtube')
+            ? 'youtube-error'
+            : null
+        "
+      />
+
+      @if (hasError('youtube')) {
+        <p
+          id="youtube-error"
+          class="form-field__error"
+          role="alert"
+        >
+          {{ getErrorMessage('youtube') }}
+        </p>
+      }
+
+    </div>
+
+    <!-- TikTok -->
+
+    <div class="form-field">
+
+      <label for="tiktok">
+        TikTok
+      </label>
+
+      <input
+        id="tiktok"
+        type="url"
+        formControlName="tiktok"
+        placeholder="https://tiktok.com/@your-account"
+        autocomplete="url"
+        inputmode="url"
+        [attr.aria-invalid]="hasError('tiktok')"
+        [attr.aria-describedby]="
+          hasError('tiktok')
+            ? 'tiktok-error'
+            : null
+        "
+      />
+
+      @if (hasError('tiktok')) {
+        <p
+          id="tiktok-error"
+          class="form-field__error"
+          role="alert"
+        >
+          {{ getErrorMessage('tiktok') }}
+        </p>
+      }
+
+    </div>
+
+    <!--
+      These actions remain available everywhere this reusable
+      component is used unless the parent explicitly sets
+      [showActions]="false".
+    -->
+
+    @if (showActions) {
+      <div class="social-links-editor__actions">
+
+        <button
+          type="submit"
+          class="button button--primary"
+          [disabled]="saving"
+        >
+          @if (!saving) {
+            <span>Save Social Links</span>
+          }
+
+          @if (saving) {
+            <span>Saving...</span>
+          }
+        </button>
+
+        <button
+          type="button"
+          class="button button--secondary"
+          (click)="onReset()"
+          [disabled]="
+            saving ||
+            form.pristine
+          "
+        >
+          Reset
+        </button>
+
+        <button
+          type="button"
+          class="button button--ghost"
+          (click)="onCancel()"
+          [disabled]="saving"
+        >
+          Cancel
+        </button>
+
+      </div>
+    }
+
+  </form>
+
+</section>

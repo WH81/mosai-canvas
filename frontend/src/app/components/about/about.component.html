@@ -2,46 +2,70 @@
   <div class="container">
     <div class="about-content">
 
-      <!-- ── Left Column: Text ─────────────────────────────────────────── -->
+      <!-- ── Left Column: Text ─────────────────────────────────────── -->
       <div class="about-text-wrapper">
-        <h2 class="section-title" appScrollAnimate animationType="fade-slide">
-          About
-        </h2>
 
+        <!-- BAND PAGE -->
         <ng-container *ngIf="band; else homeAbout">
+
+          <!-- Band About title -->
+          <h2
+            id="about-title"
+            class="section-title"
+            appScrollAnimate
+            animationType="fade-slide"
+          >
+            About
+          </h2>
+
+          <!-- Band bio/body -->
           <p
             class="about-body"
-            [appScrollTypewriter]="band.bio"
-            [typewriterScrollRange]="700"
-            [typewriterStartOffset]="0.8"
             appScrollAnimate
             animationType="fade-slide"
             animationDelay="0.1s"
-            aria-hidden="true"
-          ></p>
-          <p class="sr-only">{{ band.bio }}</p>
+          >
+            {{ band.bio }}
+          </p>
+
         </ng-container>
 
+        <!-- HOME PAGE -->
         <ng-template #homeAbout>
-          <div *ngIf="loading" class="loading">Loading...</div>
+
+          <div *ngIf="loading" class="loading">
+            Loading...
+          </div>
 
           <div *ngFor="let about of aboutList; let i = index">
+
+            <!-- About title -->
+            <h2
+              id="about-title"
+              class="section-title"
+              appScrollAnimate
+              animationType="fade-slide"
+              [animationDelay]="i * 0.15 + 's'"
+            >
+              {{ about.title }}
+            </h2>
+
+            <!-- About body -->
             <p
               class="about-body"
-              [appScrollTypewriter]="about.body"
-              [typewriterScrollRange]="600"
-              [typewriterStartOffset]="0.8"
               appScrollAnimate
-              [animationType]="'fade-slide'"
-              [animationDelay]="i * 0.15 + 's'"
-              aria-hidden="true"
-            ></p>
-            <p class="sr-only">{{ about.body }}</p>
+              animationType="fade-slide"
+              [animationDelay]="(i * 0.15 + 0.1) + 's'"
+            >
+              {{ about.body }}
+            </p>
+
           </div>
+
         </ng-template>
       </div>
 
-      <!-- ── Right Column: Player (band page) OR Watermark (home page) ── -->
+      <!-- ── Right Column: Player / Watermark ─────────────────────── -->
 
       <!-- BAND PAGE: Spotify player -->
       <div
@@ -54,14 +78,14 @@
         ></app-streaming-players>
       </div>
 
-      <!-- HOME PAGE (or band page with no player data): watermark -->
+      <!-- HOME PAGE / No player: watermark -->
       <div
         *ngIf="showWatermark"
         class="about-visual-accent"
         aria-hidden="true"
       >
         <span #parallaxText class="vertical-brand">
-          {{ band ? band.name : "MOSAI CANVAS" }}
+          {{ band ? band.name : 'MOSAI CANVAS' }}
         </span>
       </div>
 

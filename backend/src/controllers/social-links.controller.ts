@@ -1,158 +1,200 @@
 import { Request, Response, NextFunction } from 'express';
-import * as socialLinksService from '../services/social-links.service';
 
-// BAND social links handlers
+import {
+  createSocialLinksForBand as createBandLinks,
+  getSocialLinksForBand as getBandLinks,
+  updateSocialLinksForBand as updateBandLinks,
+  deleteSocialLinksForBand as deleteBandLinks,
+  createSocialLinksForMember as createMemberLinks,
+  getSocialLinksForMember as getMemberLinks,
+  updateSocialLinksForMember as updateMemberLinks,
+  deleteSocialLinksForMember as deleteMemberLinks,
+  SocialLinksPayload,
+} from '../services/social-links.service';
 
-export const createSocialLinksForBand = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  const bandId = req.params.bandId;
-  if (!bandId) {
-    res.status(400).json({ message: 'Band ID is required' });
-    return;
-  }
+// ============================================================
+// ROUTE PARAMETER TYPES
+// ============================================================
 
-  try {
-    const created = await socialLinksService.createSocialLinksForBand(bandId, req.body);
-    if (!created) {
-      res.status(400).json({ message: 'Social links already exist for this band' });
+type BandParams = {
+  bandId: string;
+};
+
+type MemberParams = {
+  memberId: string;
+};
+
+// ============================================================
+// ERROR HANDLING
+// ============================================================
+
+const handleError = (
+  error: unknown,
+  res: Response,
+  next: NextFunction
+): void => {
+  if (error instanceof Error) {
+    if (error.name === 'NotFoundError') {
+      res.status(404).json({ message: error.message });
       return;
     }
-    res.status(201).json(created);
+
+    if (error.name === 'ConflictError') {
+      res.status(409).json({ message: error.message });
+      return;
+    }
+
+    if (error.message.startsWith('Invalid ')) {
+      res.status(400).json({ message: error.message });
+      return;
+    }
+  }
+
+  next(error);
+};
+
+// ============================================================
+// BAND
+// ============================================================
+
+export const createSocialLinksForBand = async (
+  req: Request<BandParams>,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const links = await createBandLinks(
+      req.params.bandId,
+      req.body as SocialLinksPayload
+    );
+
+    res.status(201).json(links);
   } catch (error) {
-    next(error);
+    handleError(error, res, next);
   }
 };
 
-export const updateSocialLinksForBand = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  const bandId = req.params.bandId;
-  if (!bandId) {
-    res.status(400).json({ message: 'Band ID is required' });
-    return;
-  }
-
+export const getSocialLinksForBand = async (
+  req: Request<BandParams>,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
-    const updated = await socialLinksService.updateSocialLinksForBand(bandId, req.body);
-    if (!updated) {
-      res.status(404).json({ message: 'Social links not found for this band' });
+    const links = await getBandLinks(req.params.bandId);
+
+    if (!links) {
+      res.status(404).json({
+        message: 'Social links not found for this band.',
+      });
       return;
     }
-    res.status(200).json(updated);
+
+    res.json(links);
   } catch (error) {
-    next(error);
+    handleError(error, res, next);
   }
 };
 
-export const getSocialLinksForBand = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  const bandId = req.params.bandId;
-  if (!bandId) {
-    res.status(400).json({ message: 'Band ID is required' });
-    return;
-  }
-
+export const updateSocialLinksForBand = async (
+  req: Request<BandParams>,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
-    const socialLinks = await socialLinksService.getSocialLinksForBand(bandId);
-    if (!socialLinks) {
-      res.status(404).json({ message: 'Social links not found for this band' });
-      return;
-    }
-    res.status(200).json(socialLinks);
+    const links = await updateBandLinks(
+      req.params.bandId,
+      req.body as SocialLinksPayload
+    );
+
+    res.json(links);
   } catch (error) {
-    next(error);
+    handleError(error, res, next);
   }
 };
 
-export const deleteSocialLinksForBand = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  const bandId = req.params.bandId;
-  if (!bandId) {
-    res.status(400).json({ message: 'Band ID is required' });
-    return;
-  }
-
+export const deleteSocialLinksForBand = async (
+  req: Request<BandParams>,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
-    const deleted = await socialLinksService.deleteSocialLinksForBand(bandId);
-    if (!deleted) {
-      res.status(404).json({ message: 'Social links not found for this band' });
-      return;
-    }
+    await deleteBandLinks(req.params.bandId);
+
     res.status(204).send();
   } catch (error) {
-    next(error);
+    handleError(error, res, next);
   }
 };
 
-// MEMBER social links handlers
+// ============================================================
+// MEMBER
+// ============================================================
 
-export const createSocialLinksForMember = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  const memberId = req.params.memberId;
-  if (!memberId) {
-    res.status(400).json({ message: 'Member ID is required' });
-    return;
-  }
-
+export const createSocialLinksForMember = async (
+  req: Request<MemberParams>,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
-    const created = await socialLinksService.createSocialLinksForMember(memberId, req.body);
-    if (!created) {
-      res.status(400).json({ message: 'Social links already exist for this member' });
-      return;
-    }
-    res.status(201).json(created);
+    const links = await createMemberLinks(
+      req.params.memberId,
+      req.body as SocialLinksPayload
+    );
+
+    res.status(201).json(links);
   } catch (error) {
-    next(error);
+    handleError(error, res, next);
   }
 };
 
-export const updateSocialLinksForMember = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  const memberId = req.params.memberId;
-  if (!memberId) {
-    res.status(400).json({ message: 'Member ID is required' });
-    return;
-  }
-
+export const getSocialLinksForMember = async (
+  req: Request<MemberParams>,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
-    const updated = await socialLinksService.updateSocialLinksForMember(memberId, req.body);
-    if (!updated) {
-      res.status(404).json({ message: 'Social links not found for this member' });
+    const links = await getMemberLinks(req.params.memberId);
+
+    if (!links) {
+      res.status(404).json({
+        message: 'Social links not found for this member.',
+      });
       return;
     }
-    res.status(200).json(updated);
+
+    res.json(links);
   } catch (error) {
-    next(error);
+    handleError(error, res, next);
   }
 };
 
-export const getSocialLinksForMember = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  const memberId = req.params.memberId;
-  if (!memberId) {
-    res.status(400).json({ message: 'Member ID is required' });
-    return;
-  }
-
+export const updateSocialLinksForMember = async (
+  req: Request<MemberParams>,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
-    const socialLinks = await socialLinksService.getSocialLinksForMember(memberId);
-    if (!socialLinks) {
-      res.status(404).json({ message: 'Social links not found for this member' });
-      return;
-    }
-    res.status(200).json(socialLinks);
+    const links = await updateMemberLinks(
+      req.params.memberId,
+      req.body as SocialLinksPayload
+    );
+
+    res.json(links);
   } catch (error) {
-    next(error);
+    handleError(error, res, next);
   }
 };
 
-export const deleteSocialLinksForMember = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  const memberId = req.params.memberId;
-  if (!memberId) {
-    res.status(400).json({ message: 'Member ID is required' });
-    return;
-  }
-
+export const deleteSocialLinksForMember = async (
+  req: Request<MemberParams>,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
-    const deleted = await socialLinksService.deleteSocialLinksForMember(memberId);
-    if (!deleted) {
-      res.status(404).json({ message: 'Social links not found for this member' });
-      return;
-    }
+    await deleteMemberLinks(req.params.memberId);
+
     res.status(204).send();
   } catch (error) {
-    next(error);
+    handleError(error, res, next);
   }
 };

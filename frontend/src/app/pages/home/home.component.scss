@@ -3,116 +3,42 @@
 @use "mixins" as m;
 @use "breakpoints" as *;
 
-/* =================================================
-   BLOCK: GET CONNECTED SECTION WRAPPER
-   Full-width background on the section element
-   ================================================= */
-.get-connected-section {
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  overflow: hidden;
-
-  // Subtle teal glow top-left
-  &::before {
-    content: "";
-    position: absolute;
-    top: -20%;
-    left: -10%;
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(
-      circle,
-      rgba($gradient-end, 0.035) 0%,
-      transparent 70%
-    );
-    pointer-events: none;
-    z-index: 0;
-  }
+:host {
+  display: block;
+  width: 100%;
 }
 
-/* =================================================
-   BLOCK: PRE-FOOTER CTA BLOCK
-   ================================================= */
-.pre-footer__cta-block {
-  display: flex;
-  justify-content: center;
-  align-items: stretch;
-  gap: 4rem;
-  margin: 0 auto;
-  padding-block: clamp(3rem, 8vh, 6rem);
-  padding-inline: var(--container-gutter, 2rem);
-  max-width: var(--container-max-width, 1400px);
-  position: relative;
-
-  @include respond-max(lg) {
-    flex-direction: column;
-    padding-inline: 1.5rem;
-    gap: 3rem;
-  }
-}
-
-.pre-footer__cta-block__item {
-  width: 50%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  padding: 0;
-
-  @include respond-max(lg) {
-    width: 100%;
-  }
-}
-
-/* =================================================
-   BLOCK: GET CONNECTED
-   ================================================= */
 .get-connected {
   position: relative;
-  padding-block: clamp(1.5rem, 3vh, 2.5rem);
   z-index: 1;
 
   &__grid {
     display: grid;
     grid-template-columns: 1fr;
     align-items: center;
-    gap: 4rem;
-    position: relative;
-    z-index: 1;
+    gap: clamp(3rem, 5vw, 6rem);
+    width: 100%;
 
     @include respond-min(lg) {
       grid-template-columns: 1fr 1fr;
-      max-width: var(--container-max-width, 1400px);
-      margin: 0 auto;
     }
   }
 
   &__content {
-    @include respond-min(lg) {
-      max-width: 55rem;
-    }
-
     .get-connected__desc {
-      color: rgba(255, 255, 255, 0.6);
+      color: rgba(255, 255, 255, 0.85);
       font-size: $font-md;
       text-align: left;
       margin: 0;
-      line-height: 1.6;
-      max-width: 420px;
-
-      @include respond-min(lg) {
-        text-align: left;
-        margin: 0;
-      }
+      line-height: 1.8;
+      max-width: 440px;
     }
   }
 
-  /* --- RIGHT SIDE --- */
   &__card {
-    padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 2.5rem;
-    align-items: center;
+    gap: 2rem;
 
     @include respond-min(lg) {
       align-items: flex-start;
@@ -123,106 +49,38 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 0;
-    align-items: flex-start;
+    gap: 2rem;
   }
 
   &__social,
   &__streaming {
     display: flex;
     flex-direction: column;
-    align-items: self-start;
-    gap: 0.75rem;
-
-    @include respond-min(lg) {
-      align-items: flex-start;
-    }
+    gap: 1rem;
+    width: 100%;
 
     &::before {
       font-family: $font-family-secondary;
-      font-size: $font-xxs;
+      font-size: $font-lg;
       font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.2em;
-      color: rgba(255, 255, 255, 0.35);
+      letter-spacing: 0.25em;
+      color: rgba(255, 255, 255, 0.4);
     }
-
-    ::ng-deep {
-      app-social-links,
-      app-streaming-links {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-
-        @include respond-min(lg) {
-          justify-content: flex-start;
-        }
-
-        a {
-          position: relative;
-          display: inline-flex !important;
-          align-items: center !important;
-          justify-content: center !important;
-          width: 52px !important;
-          height: 52px !important;
-          text-decoration: none !important;
-          border: none !important;
-          background: transparent !important;
-          transition: transform 0.3s
-            cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-
-          &::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: rgba(255, 255, 255, 0.1) !important;
-            border: 1px solid rgba(255, 255, 255, 0.15) !important;
-            backdrop-filter: blur(4px) !important;
-            border-radius: 8px !important;
-            opacity: 0 !important;
-            transition: opacity 0.3s ease !important;
-            z-index: 1;
-          }
-
-          &:hover {
-            transform: translateY(-5px) !important;
-            &::before {
-              opacity: 1 !important;
-            }
-          }
-
-          i,
-          svg {
-            position: relative;
-            z-index: 2;
-            font-size: 1.6rem !important;
-            color: #fff !important;
-            line-height: 1 !important;
-            display: block !important;
-            margin: 0 !important;
-          }
-        }
-      }
-    }
-  }
-
-  &__social {
-    padding-bottom: 1.25rem;
-  }
-
-  &__streaming {
-    width: 100%;
-    padding-top: 1.25rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   &__social::before {
     content: "Follow us";
   }
 
-  &__streaming::before {
-    content: "Listen on";
+  &__streaming {
+    padding-top: 1.75rem;
+
+    &::before {
+      content: "Listen on";
+    }
   }
+
+  /* Consume shared DRY mixin */
+  @include m.glass-link-buttons;
 }

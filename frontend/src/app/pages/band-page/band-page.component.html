@@ -18,25 +18,7 @@
     </div>
   </div>
 
-  <!-- ── Social + Streaming Link Bar ──────────────────────────────────── -->
-  <div class="c-band-link-bar" *ngIf="bandLinks.social || bandLinks.streaming">
-    <app-social-links
-      [socialLinks]="bandSocials"
-      variant="default"
-      size="large"
-    ></app-social-links>
-
-    <app-streaming-links
-      [streamingLinks]="bandLinks.streaming"
-      variant="default"
-      size="large"
-    ></app-streaming-links>
-  </div>
-
-  <!-- ── About + Streaming Player (right column inside About) ──────────
-       streamingPlayer is passed into AboutComponent which handles
-       the watermark ↔ player swap internally.
-  ─────────────────────────────────────────────────────────────────────── -->
+  <!-- ── About + Streaming Player ─────────────────────────────────────── -->
   <app-about [band]="bandData" [streamingPlayer]="streamingPlayer"></app-about>
 
   <!-- ── Members ───────────────────────────────────────────────────────── -->
@@ -63,4 +45,31 @@
     [releases]="pastReleases"
     [bandSlug]="bandSlug"
   ></app-past-releases>
+
+   <!-- ── Minimalist Vertical Utility Bar ───────────────────────────────── -->
+   <div class="c-band-link-bar" *ngIf="hasSocialLinks || hasStreamingLinks">
+    <div class="utility-container">
+      
+      <!-- Follow Section -->
+      <div class="utility-section" *ngIf="hasSocialLinks">
+        <span class="utility-label">FOLLOW US</span>
+        <app-social-links
+          [socialLinks]="bandSocials"
+          variant="default"
+          size="large"
+        ></app-social-links>
+      </div>
+
+      <!-- Listen Section -->
+      <div class="utility-section" *ngIf="hasStreamingLinks">
+        <span class="utility-label">LISTEN ON</span>
+        <app-streaming-links
+          [streamingLinks]="bandLinks.streaming"
+          variant="default"
+          size="large"
+        ></app-streaming-links>
+      </div>
+
+    </div>
+  </div>
 </section>

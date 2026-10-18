@@ -21,7 +21,8 @@
  
 .about-body {
   @include text-style-secondary(clamp(1rem, 1.2vw, 1.125rem), $font-size-base, 1.6, 400);
-  color: var(--color-text-medium);
+  /* Matches .band-name color ($text-color-light) across all theme canvases */
+  color: rgba($text-color-light, 0.85);
   max-width: 56rem;
   margin-inline: auto;
   margin-bottom: $spacing-md;
@@ -38,8 +39,7 @@
  
   &:first-of-type {
     font-size: clamp(1.125rem, 1vw + 1rem, 1.25rem);
-    color: var(--color-text-light);
-    font-style: italic;
+    color: $text-color-light;
     line-height: 1.6;
     margin-bottom: $spacing-lg;
     letter-spacing: 0.01em;
@@ -53,7 +53,7 @@
   @include respond-min(lg) {
     display: flex;
     justify-content: flex-end;
-    position: relative; // changed from absolute so player flows in grid naturally
+    position: relative;
     height: 100%;
     width: 100%;
     z-index: 1;
@@ -61,7 +61,6 @@
 }
  
 // ── Watermark variant (home page + band pages without player) ─────────────
-// Keeps original absolute + low opacity behaviour
 .about-visual-accent:not(.about-player) {
   @include respond-min(lg) {
     position: absolute;
@@ -85,7 +84,6 @@
     opacity: 1;
     pointer-events: auto;
  
-    // Stretch the streaming player to fill the right column
     app-streaming-players {
       width: 100%;
     }
@@ -98,7 +96,7 @@
   writing-mode: vertical-rl;
   text-transform: uppercase;
   white-space: nowrap;
-  color: var(--color-text-light);
+  color: $text-color-light;
   line-height: 0.8;
   will-change: transform;
   transition: transform 0.2s cubic-bezier(0, 0, 0.2, 1);

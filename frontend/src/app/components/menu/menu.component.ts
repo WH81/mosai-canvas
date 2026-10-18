@@ -24,6 +24,23 @@ export class MenuComponent {
   isMobileDropdownOpen: { [key: string]: boolean } = {};
 
   /**
+   * Handles navigation link clicks, ensuring fragment scrolling
+   * works reliably even when already on the current route.
+   */
+  onNavClick(item: any): void {
+    if (item.fragment) {
+      // Use setTimeout to ensure the target view/DOM element is available
+      setTimeout(() => {
+        const element = document.getElementById(item.fragment);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 350);
+    }
+    this.closeMobileMenu();
+  }
+
+  /**
    * Toggles the visibility of the mobile menu.
    * If the menu is being closed, it also closes all open mobile dropdowns.
    */
@@ -46,6 +63,7 @@ export class MenuComponent {
 
   /**
    * Toggles the visibility of a specific mobile dropdown.
+   * 
    * @param itemName The name of the menu item whose dropdown is to be toggled.
    */
   toggleMobileDropdown(itemName: string): void {
@@ -57,6 +75,7 @@ export class MenuComponent {
    * Listens for window resize events to automatically close the mobile menu
    * if the screen is resized to a desktop width (greater than 768px).
    * This prevents the mobile menu from being stuck open on desktop.
+   * 
    * @param event The window resize event.
    */
   @HostListener('window:resize', ['$event'])

@@ -1,36 +1,49 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map, Observable, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { Band } from '../../models/band/band.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BandService {
-  /** * Matches server.ts: app.use('/api/band', bandRoutes)
-   * Matches band.routes.ts: router.get('/:slug', getBandBySlug)
+  /**
+   * Matches server.ts:
+   * app.use('/api/band', bandRoutes)
    */
-  private apiUrl = 'http://localhost:5001/api/band';
+  private readonly apiUrl = 'http://localhost:5001/api/band';
 
   /**
-   * 1. Create a Signal to hold the state of the "active" band.
-   * This allows other components to reactively subscribe to the logo/branding.
+   * Holds the currently active band.
    */
-  private bandState = signal<Band | null>(null);
+  private readonly bandState = signal<Band | null>(null);
 
   /**
-   * 2. Expose a read-only version of the state.
+   * Read-only access to the active band.
    */
   readonly currentBand = this.bandState.asReadonly();
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
+  /**
+   * Get all bands.
+   */
+  getBands(): Observable<Band[]> {
+    return this.http.get<Band[]>(this.apiUrl);
+  }
+
+  /**
+   * Get a band by its slug.
+   */
   getBandBySlug(slug: string): Observable<Band> {
     return this.http.get<Band>(`${this.apiUrl}/${slug}`).pipe(
       tap((band) => this.bandState.set(band))
     );
   }
 
+  /**
+   * Clear the currently active band.
+   */
   clearBandState(): void {
     this.bandState.set(null);
   }
