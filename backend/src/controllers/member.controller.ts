@@ -233,7 +233,6 @@ export const getMemberById = async (
     return;
   }
 
-  // CodeQL safe: explicitly cast and validate string ID primitive
   const memberId = String(id);
 
   if (!isValidObjectId(memberId)) {
@@ -245,7 +244,10 @@ export const getMemberById = async (
   }
 
   try {
-    const member = await getPopulatedMember(memberId);
+    // CodeQL safe: Wrapped in new mongoose.Types.ObjectId
+    const member = await getPopulatedMember(
+      new mongoose.Types.ObjectId(memberId)
+    );
 
     if (!member) {
       res.status(404).json({
@@ -291,7 +293,9 @@ export const createMember = async (
   }
 
   try {
-    const band = await Band.findById(body.band!);
+    const band = await Band.findById(
+      new mongoose.Types.ObjectId(body.band!)
+    );
 
     if (!band) {
       res.status(404).json({
@@ -393,7 +397,7 @@ export const createMembersBatch = async (
       }
 
       const band = await Band.findById(
-        memberData.band!
+        new mongoose.Types.ObjectId(memberData.band!)
       );
 
       if (!band) {
@@ -477,7 +481,6 @@ export const updateMember = async (
     return;
   }
 
-  // CodeQL safe: explicitly cast and validate string ID primitive
   const memberId = String(id);
 
   if (!isValidObjectId(memberId)) {
@@ -515,7 +518,9 @@ export const updateMember = async (
     // Verify Band
     // --------------------------------------------------------
 
-    const band = await Band.findById(body.band!);
+    const band = await Band.findById(
+      new mongoose.Types.ObjectId(body.band!)
+    );
 
     if (!band) {
       res.status(404).json({
@@ -529,7 +534,10 @@ export const updateMember = async (
     // Find Member
     // --------------------------------------------------------
 
-    const member = await Member.findById(memberId);
+    // CodeQL safe: Wrapped in new mongoose.Types.ObjectId
+    const member = await Member.findById(
+      new mongoose.Types.ObjectId(memberId)
+    );
 
     if (!member) {
       res.status(404).json({
@@ -637,7 +645,6 @@ export const deleteMember = async (
     return;
   }
 
-  // CodeQL safe: explicitly cast and validate string ID primitive
   const memberId = String(id);
 
   if (!isValidObjectId(memberId)) {
@@ -653,8 +660,11 @@ export const deleteMember = async (
     // Find Member
     // --------------------------------------------------------
 
+    // CodeQL safe: Wrapped in new mongoose.Types.ObjectId
     const deletedMember =
-      await Member.findByIdAndDelete(memberId);
+      await Member.findByIdAndDelete(
+        new mongoose.Types.ObjectId(memberId)
+      );
 
     if (!deletedMember) {
       res.status(404).json({

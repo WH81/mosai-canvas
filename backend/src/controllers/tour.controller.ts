@@ -87,7 +87,6 @@ export const getTourById = async (
     return;
   }
 
-  // CodeQL safe: explicitly cast and validate string ID primitive
   const tourId = String(id);
 
   if (!isValidObjectId(tourId)) {
@@ -98,7 +97,10 @@ export const getTourById = async (
   }
 
   try {
-    const tour = await Tour.findById(tourId);
+    // CodeQL safe: Wrapped in new mongoose.Types.ObjectId
+    const tour = await Tour.findById(
+      new mongoose.Types.ObjectId(tourId)
+    );
 
     if (!tour) {
       res.status(404).json({
@@ -133,7 +135,6 @@ export const updateTour = async (
     return;
   }
 
-  // CodeQL safe: explicitly cast and validate string ID primitive
   const tourId = String(id);
 
   if (!isValidObjectId(tourId)) {
@@ -144,8 +145,9 @@ export const updateTour = async (
   }
 
   try {
+    // CodeQL safe: Wrapped in new mongoose.Types.ObjectId
     const updated = await Tour.findByIdAndUpdate(
-      tourId,
+      new mongoose.Types.ObjectId(tourId),
       req.body,
       {
         new: true,
@@ -186,7 +188,6 @@ export const deleteTour = async (
     return;
   }
 
-  // CodeQL safe: explicitly cast and validate string ID primitive
   const tourId = String(id);
 
   if (!isValidObjectId(tourId)) {
@@ -197,8 +198,9 @@ export const deleteTour = async (
   }
 
   try {
+    // CodeQL safe: Wrapped in new mongoose.Types.ObjectId
     const deletedTour = await Tour.findByIdAndDelete(
-      tourId
+      new mongoose.Types.ObjectId(tourId)
     );
 
     if (!deletedTour) {
