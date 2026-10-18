@@ -233,7 +233,10 @@ export const getMemberById = async (
     return;
   }
 
-  if (!isValidObjectId(id)) {
+  // CodeQL safe: explicitly cast and validate string ID primitive
+  const memberId = String(id);
+
+  if (!isValidObjectId(memberId)) {
     res.status(400).json({
       message: 'Invalid member ID.',
     });
@@ -242,7 +245,7 @@ export const getMemberById = async (
   }
 
   try {
-    const member = await getPopulatedMember(id);
+    const member = await getPopulatedMember(memberId);
 
     if (!member) {
       res.status(404).json({
@@ -474,7 +477,10 @@ export const updateMember = async (
     return;
   }
 
-  if (!isValidObjectId(id)) {
+  // CodeQL safe: explicitly cast and validate string ID primitive
+  const memberId = String(id);
+
+  if (!isValidObjectId(memberId)) {
     res.status(400).json({
       message: 'Invalid member ID.',
     });
@@ -523,7 +529,7 @@ export const updateMember = async (
     // Find Member
     // --------------------------------------------------------
 
-    const member = await Member.findById(id);
+    const member = await Member.findById(memberId);
 
     if (!member) {
       res.status(404).json({
@@ -631,7 +637,10 @@ export const deleteMember = async (
     return;
   }
 
-  if (!isValidObjectId(id)) {
+  // CodeQL safe: explicitly cast and validate string ID primitive
+  const memberId = String(id);
+
+  if (!isValidObjectId(memberId)) {
     res.status(400).json({
       message: 'Invalid member ID.',
     });
@@ -645,7 +654,7 @@ export const deleteMember = async (
     // --------------------------------------------------------
 
     const deletedMember =
-      await Member.findByIdAndDelete(id);
+      await Member.findByIdAndDelete(memberId);
 
     if (!deletedMember) {
       res.status(404).json({

@@ -1,5 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
+import mongoose from 'mongoose';
 import Tour from '../models/tour.model';
+
+/**
+ * Validates a MongoDB ObjectId.
+ */
+const isValidObjectId = (id: string): boolean =>
+  mongoose.Types.ObjectId.isValid(id);
 
 /**
  * Returns today's date as YYYY-MM-DD using the server's local date.
@@ -40,17 +47,6 @@ export const createTour = async (
  * Get all current and future tour dates.
  *
  * Today's date is included.
- *
- * Example:
- *
- * Today: 2026-08-24
- *
- * 2026-08-23 → hidden
- * 2026-08-24 → shown
- * 2026-08-25 → shown
- * 2026-08-30 → shown
- *
- * Results are ordered newest/closest upcoming date first.
  */
 export const getAllTours = async (
   _req: Request,
@@ -82,8 +78,27 @@ export const getTourById = async (
   res: Response,
   next: NextFunction
 ): Promise<void> => {
+  const { id } = req.params;
+
+  if (!id) {
+    res.status(400).json({
+      error: 'Tour ID is required',
+    });
+    return;
+  }
+
+  // CodeQL safe: explicitly cast and validate string ID primitive
+  const tourId = String(id);
+
+  if (!isValidObjectId(tourId)) {
+    res.status(400).json({
+      error: 'Invalid tour ID',
+    });
+    return;
+  }
+
   try {
-    const tour = await Tour.findById(req.params.id);
+    const tour = await Tour.findById(tourId);
 
     if (!tour) {
       res.status(404).json({
@@ -109,9 +124,28 @@ export const updateTour = async (
   res: Response,
   next: NextFunction
 ): Promise<void> => {
+  const { id } = req.params;
+
+  if (!id) {
+    res.status(400).json({
+      error: 'Tour ID is required',
+    });
+    return;
+  }
+
+  // CodeQL safe: explicitly cast and validate string ID primitive
+  const tourId = String(id);
+
+  if (!isValidObjectId(tourId)) {
+    res.status(400).json({
+      error: 'Invalid tour ID',
+    });
+    return;
+  }
+
   try {
     const updated = await Tour.findByIdAndUpdate(
-      req.params.id,
+      tourId,
       req.body,
       {
         new: true,
@@ -143,9 +177,28 @@ export const deleteTour = async (
   res: Response,
   next: NextFunction
 ): Promise<void> => {
+  const { id } = req.params;
+
+  if (!id) {
+    res.status(400).json({
+      message: 'Tour ID is required',
+    });
+    return;
+  }
+
+  // CodeQL safe: explicitly cast and validate string ID primitive
+  const tourId = String(id);
+
+  if (!isValidObjectId(tourId)) {
+    res.status(400).json({
+      message: 'Invalid tour ID',
+    });
+    return;
+  }
+
   try {
     const deletedTour = await Tour.findByIdAndDelete(
-      req.params.id
+      tourId
     );
 
     if (!deletedTour) {
