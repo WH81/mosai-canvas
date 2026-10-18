@@ -145,10 +145,42 @@ export const updateTour = async (
   }
 
   try {
-    // CodeQL safe: Wrapped in new mongoose.Types.ObjectId
+    // Explicitly construct a sanitized update payload to prevent operator injection
+    const {
+      title,
+      date,
+      time,
+      venue,
+      city,
+      state,
+      country,
+      ticketUrl,
+      status,
+      description,
+      ticketStatus,
+      soldOut,
+      notes,
+    } = req.body;
+
+    const updatePayload: Record<string, any> = {};
+    if (title !== undefined) updatePayload.title = title;
+    if (date !== undefined) updatePayload.date = date;
+    if (time !== undefined) updatePayload.time = time;
+    if (venue !== undefined) updatePayload.venue = venue;
+    if (city !== undefined) updatePayload.city = city;
+    if (state !== undefined) updatePayload.state = state;
+    if (country !== undefined) updatePayload.country = country;
+    if (ticketUrl !== undefined) updatePayload.ticketUrl = ticketUrl;
+    if (status !== undefined) updatePayload.status = status;
+    if (description !== undefined) updatePayload.description = description;
+    if (ticketStatus !== undefined) updatePayload.ticketStatus = ticketStatus;
+    if (soldOut !== undefined) updatePayload.soldOut = soldOut;
+    if (notes !== undefined) updatePayload.notes = notes;
+
+    // CodeQL safe: Wrapped ID and sanitized update payload
     const updated = await Tour.findByIdAndUpdate(
       new mongoose.Types.ObjectId(tourId),
-      req.body,
+      updatePayload,
       {
         new: true,
         runValidators: true,
