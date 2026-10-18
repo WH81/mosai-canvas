@@ -23,7 +23,8 @@ import releaseRoutes from './routes/release.routes';
 import youtubeRoutes from './routes/youtube.routes';
 import galleryRoutes from './routes/gallery.routes';
 import spotifyRoutes from './routes/spotify.routes'; 
- 
+import { apiLimiter } from './middleware/rate-limit.middleware';
+
 import { errorHandler } from './middleware/error.middleware';
 import authRoutes from './routes/auth.routes';
 
@@ -100,6 +101,7 @@ app.use(compression());
 app.use('/assets/gallery', express.static(path.join(__dirname, 'src/assets/gallery')));
  
 // ─── API Routes ───────────────────────────────────────────────────────────────
+app.use('/api/', apiLimiter);
 app.use('/api/band', bandRoutes);
 app.use('/api/social-links', socialLinksRoutes);
 app.use('/api/streaming-links', streamingLinksRoutes);
