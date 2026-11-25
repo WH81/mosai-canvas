@@ -13,7 +13,7 @@
 
   /* Align perfectly with the shared section layout column */
   width: 100%;
-  max-width: var(--carousel-active-width, 70vw);
+  //max-width: var(--carousel-active-width, 70vw);
   margin: 0 auto;
 
   @media (max-width: 1024px) {

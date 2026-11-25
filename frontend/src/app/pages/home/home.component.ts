@@ -20,6 +20,8 @@ import { Releases } from '../../models/release/release.model';
 import { BandService } from '../../services/band/band.service';
 import { BandLinksService } from '../../services/band-links/band-links.service';
 
+import { ScrollAnimateDirective } from '../../directives/scroll-animate.directive';
+
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -35,6 +37,7 @@ import { BandLinksService } from '../../services/band-links/band-links.service';
     MailingListComponent,
     SocialLinksComponent,
     StreamingLinksComponent,
+    ScrollAnimateDirective,
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],

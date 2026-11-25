@@ -42,6 +42,26 @@
       stroke-linecap="round"
     />
   </svg> -->
+<!-- 
+
+
+
+  
+  <div class="logo-hero-container">
+    <img
+      src="https://res.cloudinary.com/des66zgsp/image/upload/v1791653948/mosai-canvas-collage-background_cqhgrl.jpg"
+      alt="Mosaic Canvas Background"
+      class="hero-bg-img"
+    />
+  
+   
+    <img
+      src="https://res.cloudinary.com/des66zgsp/image/upload/v1791518213/mosai-canvas-logo-2_ht4znw.png"
+      alt="Mosai Canvas Graphic"
+      class="cloudinary-logo-image logo-image-container"
+    />
+  </div> -->
+
 
   <div class="logo-hero-container">
     <!-- 1. Background Image Layer -->
@@ -51,10 +71,20 @@
       class="hero-bg-img"
     />
   
-    <!-- 2. Foreground Logo Graphic -->
-    <img
-      src="https://res.cloudinary.com/des66zgsp/image/upload/v1791518213/mosai-canvas-logo-2_ht4znw.png"
-      alt="Mosai Canvas Graphic"
-      class="cloudinary-logo-image logo-image-container"
-    />
+    <!-- 2. Foreground Layer: Overlapping Logo Composition -->
+    <div class="logo-composition">
+      <!-- Rectangle Icon (Positioned behind text, animates in first) -->
+      <img
+        src="https://res.cloudinary.com/des66zgsp/image/upload/v1793233292/mosai-canvas-logo-rectangle_urwur7.png"
+        alt="Mosai Canvas Rectangle Icon"
+        class="logo-layer logo-rectangle"
+      />
+      
+      <!-- Logo Font/Text (Positioned on top of rectangle, animates in second) -->
+      <img
+        src="https://res.cloudinary.com/des66zgsp/image/upload/v1793233293/mosai-canvas-logo-font_jxbag4.png"
+        alt="Mosai Canvas Font"
+        class="logo-layer logo-font"
+      />
+    </div>
   </div>

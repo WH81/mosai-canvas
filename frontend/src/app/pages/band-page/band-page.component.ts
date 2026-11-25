@@ -12,6 +12,8 @@ import { PreReleasesComponent } from '../../components/releases/pre-releases/pre
 import { PastReleasesComponent } from '../../components/releases/past-releases/past-releases.component';
 import { YouTubeVideosComponent } from '../../components/youtube-videos/youtube-videos.component';
 
+import { ScrollAnimateDirective } from '../../directives/scroll-animate.directive';
+
 import { ReleasesService } from '../../services/releases/releases.service';
 import { BandService } from '../../services/band/band.service';
 import { BandLinksService } from '../../services/band-links/band-links.service';
@@ -22,6 +24,7 @@ import { Band } from '../../models/band/band.model';
 import { BandLinks } from '../../models/band-links/band-links.model';
 import { SocialLinks } from '../../models/social-links/social-links.model';
 import { StreamingPlayers } from '../../models/streaming-players/streaming-players.model';
+
 
 @Component({
   selector: 'app-band-page',
@@ -36,6 +39,7 @@ import { StreamingPlayers } from '../../models/streaming-players/streaming-playe
     PreReleasesComponent,
     PastReleasesComponent,
     YouTubeVideosComponent,
+    ScrollAnimateDirective,
   ],
   templateUrl: './band-page.component.html',
   styleUrls: ['./band-page.component.scss'],
@@ -85,6 +89,7 @@ export class BandPageComponent implements OnInit, OnDestroy {
 
         this.bandSlug = slug;
         this.resetPageState();
+        this.updateBodyTheme(slug); // Synchronizes theme class on body for CSS variables (--frame-bg)
 
         this.bandService.getBandBySlug(slug)
           .pipe(takeUntil(this.destroy$))
@@ -99,6 +104,18 @@ export class BandPageComponent implements OnInit, OnDestroy {
             });
           });
       });
+  }
+
+  private updateBodyTheme(slug: string): void {
+    // Clean up any previously applied band theme classes from the body element
+    const existingClasses = Array.from(document.body.classList);
+    existingClasses.forEach(cls => {
+      if (cls.endsWith('-theme')) {
+        document.body.classList.remove(cls);
+      }
+    });
+    // Apply the active band's theme class (e.g., canvas-catalyst-theme)
+    document.body.classList.add(`${slug}-theme`);
   }
 
   private loadRelatedData(band: Band): void {
@@ -158,6 +175,9 @@ export class BandPageComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.bandService.clearBandState();
+    if (this.bandSlug) {
+      document.body.classList.remove(`${this.bandSlug}-theme`);
+    }
     this.destroy$.next();
     this.destroy$.complete();
   }

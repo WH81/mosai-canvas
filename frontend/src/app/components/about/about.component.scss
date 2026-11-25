@@ -72,7 +72,7 @@
   }
  
   @include respond-min(lg) {
-    opacity: 0.03;
+    opacity: 1;
     width: 45%;
   }
 }
@@ -91,13 +91,11 @@
 }
  
 .vertical-brand {
-  font-size: clamp(8rem, 20vw, 25rem);
-  font-weight: 950;
+  @include text-style-primary(8rem, 25rem, 0.8, 950);
   writing-mode: vertical-rl;
   text-transform: uppercase;
   white-space: nowrap;
   color: $text-color-light;
-  line-height: 0.8;
   will-change: transform;
   transition: transform 0.2s cubic-bezier(0, 0, 0.2, 1);
   user-select: none;

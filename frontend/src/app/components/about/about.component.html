@@ -9,22 +9,12 @@
         <ng-container *ngIf="band; else homeAbout">
 
           <!-- Band About title -->
-          <h2
-            id="about-title"
-            class="section-title"
-            appScrollAnimate
-            animationType="fade-slide"
-          >
+          <h2 id="about-title" class="section-title">
             About
           </h2>
-
-          <!-- Band bio/body -->
-          <p
-            class="about-body"
-            appScrollAnimate
-            animationType="fade-slide"
-            animationDelay="0.1s"
-          >
+          
+          <!-- Band About bio -->
+          <p class="about-body">
             {{ band.bio }}
           </p>
 
@@ -40,23 +30,12 @@
           <div *ngFor="let about of aboutList; let i = index">
 
             <!-- About title -->
-            <h2
-              id="about-title"
-              class="section-title"
-              appScrollAnimate
-              animationType="fade-slide"
-              [animationDelay]="i * 0.15 + 's'"
-            >
+            <h2 id="about-title" class="section-title">
               {{ about.title }}
             </h2>
 
             <!-- About body -->
-            <p
-              class="about-body"
-              appScrollAnimate
-              animationType="fade-slide"
-              [animationDelay]="(i * 0.15 + 0.1) + 's'"
-            >
+            <p class="about-body">
               {{ about.body }}
             </p>
 
@@ -84,9 +63,15 @@
         class="about-visual-accent"
         aria-hidden="true"
       >
-        <span #parallaxText class="vertical-brand">
+        <!-- <span #parallaxText class="vertical-brand">
           {{ band ? band.name : 'MOSAI CANVAS' }}
-        </span>
+        </span> -->
+         <!-- Rectangle Icon (Positioned behind text, animates in first) -->
+        <img
+          src="https://res.cloudinary.com/des66zgsp/image/upload/v1793236020/mosai-canvas-logo-rectangle-cropped_uia1fp.png"
+          alt="Mosai Canvas Rectangle Icon"
+          class="logo-layer logo-rectangle"
+        />
       </div>
 
     </div>

@@ -11,23 +11,23 @@ import rateLimit from 'express-rate-limit';
  * private admin application.
  */
 export const loginRateLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
+  // windowMs: 15 * 60 * 1000,
 
-  max: 10,
+  // max: 10,
 
-  standardHeaders: 'draft-7',
+  // standardHeaders: 'draft-7',
 
-  legacyHeaders: false,
+  // legacyHeaders: false,
 
-  message: {
-    message:
-      'Too many login attempts. Please try again later.',
-  },
+  // message: {
+  //   message:
+  //     'Too many login attempts. Please try again later.',
+  // },
 
-  /**
-   * Do not count successful requests against the limit.
-   *
-   * Failed login attempts are what we're primarily interested in.
-   */
-  skipSuccessfulRequests: true,
+  // /**
+  //  * Do not count successful requests against the limit.
+  //  *
+  //  * Failed login attempts are what we're primarily interested in.
+  //  */
+  // skipSuccessfulRequests: true,
 });

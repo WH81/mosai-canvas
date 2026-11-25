@@ -1,3 +1,4 @@
+
 import {
   Component,
   OnInit,
@@ -8,13 +9,8 @@ import {
   ChangeDetectorRef,
 } from '@angular/core';
 
-import {
-  CommonModule,
-} from '@angular/common';
-
-import {
-  RouterModule,
-} from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 import {
   trigger,
@@ -23,35 +19,20 @@ import {
   animate,
 } from '@angular/animations';
 
-import {
-  CarouselService,
-} from '../../services/carousel/carousel.service';
-
-import {
-  CarouselItem,
-} from '../../models/carousel/carousel.model';
-
-import {
-  ScrollAnimateDirective,
-} from '../../directives/scroll-animate.directive';
+import { CarouselService } from '../../services/carousel/carousel.service';
+import { CarouselItem } from '../../models/carousel/carousel.model';
+import { ScrollAnimateDirective } from '../../directives/scroll-animate.directive';
 
 @Component({
   selector: 'app-carousel',
   standalone: true,
-
-  templateUrl:
-    './carousel.component.html',
-
-  styleUrls: [
-    './carousel.component.scss',
-  ],
-
+  templateUrl: './carousel.component.html',
+  styleUrls: ['./carousel.component.scss'],
   imports: [
     CommonModule,
     RouterModule,
     ScrollAnimateDirective,
   ],
-
   animations: [
     trigger('slideUp', [
       transition(':enter', [
@@ -59,7 +40,6 @@ import {
           opacity: 0,
           transform: 'translateY(20px)',
         }),
-
         animate(
           '600ms ease-out',
           style({
@@ -71,29 +51,32 @@ import {
     ]),
   ],
 })
-export class CarouselComponent
-  implements OnInit, OnDestroy {
-
+export class CarouselComponent implements OnInit, OnDestroy {
   /** ITEMS */
-  originalItems:
-    CarouselItem[] = [];
-
-  carouselItems:
-    CarouselItem[] = [];
+  originalItems: CarouselItem[] = [];
+  carouselItems: CarouselItem[] = [];
 
   /** INDEXING */
   currentIndex = 1;
 
   /** LAYOUT */
   slideWidth = 0;
-
   containerWidth = 0;
+  slideMarginLeft = 0;
+  slideMarginRight = 0;
 
   /** STATE */
   transitionEnabled = true;
 
-  private readonly TRANSITION_MS =
-    600;
+  private autoSlideInterval:
+    ReturnType<typeof setInterval> | null = null;
+
+  private isDragging = false;
+  private isClick = false;
+  private startX = 0;
+  private endX = 0;
+  private isAnimating = false;
+  private resizeObserver?: ResizeObserver;
 
   /** PAGINATION */
   get activePaginationIndex(): number {
@@ -102,40 +85,15 @@ export class CarouselComponent
           this.currentIndex -
           1 +
           this.originalItems.length
-        ) %
-          this.originalItems.length
+        ) % this.originalItems.length
       : 0;
   }
 
-  /** INTERNAL STATE */
-  private autoSlideInterval:
-    ReturnType<typeof setInterval> | null =
-      null;
-
-  private isDragging = false;
-
-  private isClick = false;
-
-  private startX = 0;
-
-  private endX = 0;
-
-  private isAnimating = false;
-
-  private resizeObserver?: ResizeObserver;
-
   constructor(
-    private carouselService:
-      CarouselService,
-
-    private el:
-      ElementRef,
-
-    private ngZone:
-      NgZone,
-
-    private cdr:
-      ChangeDetectorRef
+    private carouselService: CarouselService,
+    private el: ElementRef<HTMLElement>,
+    private ngZone: NgZone,
+    private cdr: ChangeDetectorRef
   ) {}
 
   // -----------------------------
@@ -143,191 +101,149 @@ export class CarouselComponent
   // -----------------------------
 
   ngOnInit(): void {
-    this.carouselService
-      .getCarouselItems()
-      .subscribe({
-        next: (items) => {
+    this.carouselService.getCarouselItems().subscribe({
+      next: (items) => {
+        this.originalItems = items.map((item) => ({
+          ...item,
+          imageUrl: item.imageUrl || '',
+          formattedDate: this.formatReleaseDate(
+            item.releaseDate
+          ),
+        }));
 
-          this.originalItems =
-            items.map(
-              (item) => ({
-                ...item,
+        this.cloneSlides();
 
-                imageUrl:
-                  item.imageUrl ||
-                  '',
+        this.cdr.detectChanges();
 
-                /**
-                 * Treat releaseDate as a
-                 * calendar date rather than
-                 * a timezone-aware timestamp.
-                 */
-                formattedDate:
-                  this.formatReleaseDate(
-                    item.releaseDate
-                  ),
-              })
-            );
-
-          this.cloneSlides();
-
+        requestAnimationFrame(() => {
+          this.measure();
           this.cdr.detectChanges();
+        });
+      },
 
-          requestAnimationFrame(() => {
-            this.measure();
+      error: (error) => {
+        console.error(
+          'Failed to load Carousel content.',
+          error
+        );
 
-            this.cdr.detectChanges();
-          });
-        },
+        this.originalItems = [];
+        this.carouselItems = [];
+        this.currentIndex = 0;
 
-        error: (error) => {
-          console.error(
-            'Failed to load Carousel content.',
-            error
-          );
-
-          this.originalItems = [];
-
-          this.carouselItems = [];
-
-          this.cdr.detectChanges();
-        },
-      });
+        this.stopAutoSlide();
+        this.cdr.detectChanges();
+      },
+    });
 
     this.startAutoSlide();
-
     this.initResizeObserver();
   }
 
   ngOnDestroy(): void {
     this.stopAutoSlide();
-
-    this.resizeObserver
-      ?.disconnect();
+    this.resizeObserver?.disconnect();
   }
 
-  /**
-   * Format YYYY-MM-DD without timezone
-   * conversion.
-   *
-   * Example:
-   *
-   * 2025-10-19
-   *
-   * always renders as:
-   *
-   * Sunday, October 19, 2025
-   */
-  private formatReleaseDate(
-    value?: string
-  ): string {
+  // -----------------------------
+  // DATE FORMATTING
+  // -----------------------------
 
+  private formatReleaseDate(value?: string): string {
     if (!value) {
       return '';
     }
 
-    const match =
-      /^(\d{4})-(\d{2})-(\d{2})/.exec(
-        value
-      );
+    const match = /^(\d{4})-(\d{2})-(\d{2})/.exec(value);
 
     if (!match) {
       return '';
     }
 
-    const year =
-      Number(match[1]);
+    const year = Number(match[1]);
+    const month = Number(match[2]);
+    const day = Number(match[3]);
 
-    const month =
-      Number(match[2]);
-
-    const day =
-      Number(match[3]);
-
-    const date =
-      new Date(
-        year,
-        month - 1,
-        day,
-        12,
-        0,
-        0
-      );
+    const date = new Date(
+      year,
+      month - 1,
+      day,
+      12,
+      0,
+      0
+    );
 
     if (
-      Number.isNaN(
-        date.getTime()
-      )
+      Number.isNaN(date.getTime()) ||
+      date.getFullYear() !== year ||
+      date.getMonth() !== month - 1 ||
+      date.getDate() !== day
     ) {
       return '';
     }
 
-    return new Intl.DateTimeFormat(
-      'en-US',
-      {
-        weekday: 'long',
-        month: 'long',
-        day: 'numeric',
-        year: 'numeric',
-      }
-    ).format(date);
+    return new Intl.DateTimeFormat('en-US', {
+      weekday: 'long',
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric',
+    }).format(date);
   }
 
   // -----------------------------
-  // STABLE LAYOUT TRACKING
+  // RESPONSIVE LAYOUT TRACKING
   // -----------------------------
 
   private initResizeObserver(): void {
-    const container =
-      this.el.nativeElement
-        .querySelector(
-          '.carousel-container'
-        );
+    const container = this.el.nativeElement.querySelector(
+      '.carousel-container'
+    );
 
-    if (!container) {
+    if (!container || typeof ResizeObserver === 'undefined') {
       return;
     }
 
-    this.resizeObserver =
-      new ResizeObserver(() => {
-
-        this.ngZone.run(() => {
-
-          this.measure();
-
-          this.cdr.detectChanges();
-        });
+    this.resizeObserver = new ResizeObserver(() => {
+      this.ngZone.run(() => {
+        this.measure();
+        this.cdr.detectChanges();
       });
+    });
 
-    this.resizeObserver
-      .observe(container);
+    this.resizeObserver.observe(container);
+  }
+
+  @HostListener('window:resize')
+  onWindowResize(): void {
+    this.measure();
+    this.cdr.detectChanges();
   }
 
   private measure(): void {
-    const slideEl =
-      this.el.nativeElement
-        .querySelector(
-          '.carousel-slide'
-        );
+    const slide = this.el.nativeElement.querySelector(
+      '.carousel-slide'
+    ) as HTMLElement | null;
 
-    const containerEl =
-      this.el.nativeElement
-        .querySelector(
-          '.carousel-container'
-        );
+    const container = this.el.nativeElement.querySelector(
+      '.carousel-container'
+    ) as HTMLElement | null;
 
-    if (
-      !slideEl ||
-      !containerEl
-    ) {
+    if (!slide || !container) {
+      this.slideWidth = 0;
+      this.containerWidth = 0;
+      this.slideMarginLeft = 0;
+      this.slideMarginRight = 0;
       return;
     }
 
-    this.slideWidth =
-      slideEl.offsetWidth;
+    const styles = getComputedStyle(slide);
 
-    this.containerWidth =
-      containerEl.offsetWidth;
+    this.slideWidth = slide.offsetWidth;
+    this.containerWidth = container.clientWidth;
+    this.slideMarginLeft =
+      parseFloat(styles.marginLeft) || 0;
+    this.slideMarginRight =
+      parseFloat(styles.marginRight) || 0;
   }
 
   // -----------------------------
@@ -335,23 +251,16 @@ export class CarouselComponent
   // -----------------------------
 
   private cloneSlides(): void {
-    if (
-      !this.originalItems.length
-    ) {
+    if (!this.originalItems.length) {
       this.carouselItems = [];
-
       this.currentIndex = 0;
-
       return;
     }
 
-    const first =
-      this.originalItems[0];
-
-    const last =
-      this.originalItems[
-        this.originalItems.length - 1
-      ];
+    const first = this.originalItems[0];
+    const last = this.originalItems[
+      this.originalItems.length - 1
+    ];
 
     this.carouselItems = [
       last,
@@ -367,12 +276,11 @@ export class CarouselComponent
   // -----------------------------
 
   nextSlide(): void {
-    if (this.isAnimating) {
+    if (this.isAnimating || this.originalItems.length <= 1) {
       return;
     }
 
     this.isAnimating = true;
-
     this.stopAutoSlide();
 
     this.currentIndex++;
@@ -380,19 +288,16 @@ export class CarouselComponent
     this.resolveLoopBoundary();
 
     this.isAnimating = false;
-
     this.startAutoSlide();
-
     this.cdr.detectChanges();
   }
 
   prevSlide(): void {
-    if (this.isAnimating) {
+    if (this.isAnimating || this.originalItems.length <= 1) {
       return;
     }
 
     this.isAnimating = true;
-
     this.stopAutoSlide();
 
     this.currentIndex--;
@@ -400,9 +305,7 @@ export class CarouselComponent
     this.resolveLoopBoundary();
 
     this.isAnimating = false;
-
     this.startAutoSlide();
-
     this.cdr.detectChanges();
   }
 
@@ -414,47 +317,35 @@ export class CarouselComponent
       this.jumpTo(1);
     }
 
-    if (
-      this.currentIndex === 0
-    ) {
-      this.jumpTo(
-        this.originalItems.length
-      );
+    if (this.currentIndex === 0) {
+      this.jumpTo(this.originalItems.length);
     }
   }
 
-  selectSlide(
-    index: number
-  ): void {
-    const target =
-      index + 1;
+  selectSlide(index: number): void {
+    const target = index + 1;
 
     if (
       this.isAnimating ||
-      target === this.currentIndex
+      target === this.currentIndex ||
+      index < 0 ||
+      index >= this.originalItems.length
     ) {
       return;
     }
 
     this.isAnimating = true;
-
     this.stopAutoSlide();
 
-    this.currentIndex =
-      target;
+    this.currentIndex = target;
 
     this.isAnimating = false;
-
     this.startAutoSlide();
-
     this.cdr.detectChanges();
   }
 
-  private jumpTo(
-    index: number
-  ): void {
-    this.currentIndex =
-      index;
+  private jumpTo(index: number): void {
+    this.currentIndex = index;
   }
 
   // -----------------------------
@@ -464,28 +355,18 @@ export class CarouselComponent
   startAutoSlide(): void {
     this.stopAutoSlide();
 
-    if (
-      this.originalItems.length >
-      1
-    ) {
-      this.autoSlideInterval =
-        setInterval(
-          () => this.nextSlide(),
-          5000
-        );
+    if (this.originalItems.length > 1) {
+      this.autoSlideInterval = setInterval(
+        () => this.nextSlide(),
+        5000
+      );
     }
   }
 
   stopAutoSlide(): void {
-    if (
-      this.autoSlideInterval
-    ) {
-      clearInterval(
-        this.autoSlideInterval
-      );
-
-      this.autoSlideInterval =
-        null;
+    if (this.autoSlideInterval !== null) {
+      clearInterval(this.autoSlideInterval);
+      this.autoSlideInterval = null;
     }
   }
 
@@ -493,21 +374,10 @@ export class CarouselComponent
   // DRAG / SWIPE
   // -----------------------------
 
-  @HostListener(
-    'touchstart',
-    ['$event']
-  )
-  @HostListener(
-    'mousedown',
-    ['$event']
-  )
-  onDragStart(
-    event:
-      TouchEvent | MouseEvent
-  ): void {
-
-    const target =
-      event.target as HTMLElement;
+  @HostListener('touchstart', ['$event'])
+  @HostListener('mousedown', ['$event'])
+  onDragStart(event: TouchEvent | MouseEvent): void {
+    const target = event.target as HTMLElement;
 
     if (
       target.closest(
@@ -523,55 +393,36 @@ export class CarouselComponent
 
     this.stopAutoSlide();
 
-    this.startX =
-      'touches' in event
-        ? event.touches[0].clientX
-        : event.clientX;
+    this.startX = 'touches' in event
+      ? event.touches[0].clientX
+      : event.clientX;
 
+    this.endX = this.startX;
     this.isDragging = true;
-
     this.isClick = true;
   }
 
-  @HostListener(
-    'touchmove',
-    ['$event']
-  )
-  @HostListener(
-    'mousemove',
-    ['$event']
-  )
-  onDragMove(
-    event:
-      TouchEvent | MouseEvent
-  ): void {
-
+  @HostListener('touchmove', ['$event'])
+  @HostListener('mousemove', ['$event'])
+  onDragMove(event: TouchEvent | MouseEvent): void {
     if (!this.isDragging) {
       return;
     }
 
-    const clientX =
-      'touches' in event
-        ? event.touches[0].clientX
-        : event.clientX;
+    const clientX = 'touches' in event
+      ? event.touches[0].clientX
+      : event.clientX;
 
-    if (
-      Math.abs(
-        this.startX -
-        clientX
-      ) > 5
-    ) {
+    if (Math.abs(this.startX - clientX) > 5) {
       this.isClick = false;
     }
 
-    this.endX =
-      clientX;
+    this.endX = clientX;
   }
 
   @HostListener('touchend')
   @HostListener('mouseup')
   onDragEnd(): void {
-
     if (!this.isDragging) {
       return;
     }
@@ -580,53 +431,51 @@ export class CarouselComponent
 
     if (this.isClick) {
       this.startAutoSlide();
-
       return;
     }
 
-    const diff =
-      this.startX -
-      this.endX;
+    const diff = this.startX - this.endX;
 
-    if (
-      Math.abs(diff) < 50
-    ) {
+    if (Math.abs(diff) < 50) {
       this.startAutoSlide();
-
       return;
     }
 
-    diff > 0
-      ? this.nextSlide()
-      : this.prevSlide();
+    if (diff > 0) {
+      this.nextSlide();
+    } else {
+      this.prevSlide();
+    }
   }
 
   // -----------------------------
-  // PRESENTATION
+  // PRESENTATION / CENTERING
   // -----------------------------
 
   get wrapperTransform(): string {
-    const margin = 16;
+    if (
+      !this.carouselItems.length ||
+      !this.slideWidth ||
+      !this.containerWidth
+    ) {
+      return 'translateX(0px)';
+    }
 
-    const total =
+    const slideStep =
       this.slideWidth +
-      margin;
+      this.slideMarginLeft +
+      this.slideMarginRight;
 
-    const center =
-      this.containerWidth /
-      2;
+    // Center the slide's border box, accounting for
+    // its left margin and the actual container width.
+    const centerOffset =
+      (this.containerWidth - this.slideWidth) / 2 -
+      this.slideMarginLeft;
 
-    const slideCenter =
-      total / 2;
+    const translateX =
+      centerOffset -
+      this.currentIndex * slideStep;
 
-    const offset =
-      center -
-      slideCenter;
-
-    const base =
-      this.currentIndex *
-      total;
-
-    return `translateX(${offset - base}px)`;
+    return `translateX(${translateX}px)`;
   }
 }

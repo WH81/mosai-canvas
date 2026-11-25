@@ -1,31 +1,20 @@
 <section class="l-section" id="tour">
   <div class="container">
-    <div 
-      class="tour-container" 
-      appScrollAnimate 
-      [animationType]="'fade-slide'" 
-      [animationDelay]="'0s'"
-    >
+    <div class="tour-container">
       <div class="tour-content-wrapper">
         <h2 class="section-title">Tour Dates</h2>
-        
+
         <div class="tour-list">
-          <div 
-            class="tour-card" 
-            *ngFor="let tour of tours"
-          >
+          <div class="tour-card" *ngFor="let tour of tours">
             <div class="tour-card__grid">
-              
               <div class="tour-card__date-col">
-                <span class="editorial-label">
-                  Date
-                </span>
+                <span class="editorial-label"> Date </span>
 
                 <span class="date-value">
-                  {{ tour.date | date: 'MMM dd' }}
+                  {{ tour.date | date : "MMM dd" }}
                 </span>
               </div>
-              
+
               <div class="tour-card__info-col">
                 <h3 class="band-name">
                   {{ tour.band }}
@@ -41,13 +30,12 @@
                   </span>
                 </div>
               </div>
-
             </div>
 
             <div class="tour-card__actions">
-              <a 
-                class="calendar-btn" 
-                [href]="getGoogleCalendarLink(tour)" 
+              <a
+                class="calendar-btn"
+                [href]="getGoogleCalendarLink(tour)"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -57,18 +45,13 @@
                   class="calendar-btn__icon"
                 />
 
-                <span>
-                  Add to Calendar
-                </span>
+                <span> Add to Calendar </span>
               </a>
             </div>
           </div>
 
-          <div
-            *ngIf="tours.length === 0"
-            class="no-tours"
-          >
-            STAY TUNED.
+          <div *ngIf="tours.length === 0" class="no-tours">
+            No Upcoming Tour Dates
           </div>
         </div>
       </div>
