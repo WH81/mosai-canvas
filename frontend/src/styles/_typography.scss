@@ -75,18 +75,12 @@ small {
   @extend %gradient-title-base;
   @include text-style-primary(clamp(2.5rem, 4vw + 1rem, 5rem), $font-xxxxxl, 0.9, 900);
   padding-left: 0.05rem;
-  text-align: center; // Mobile default
+  text-align: left;
   word-break: break-word;
   margin-top: 0;
-  margin-bottom: $spacing-md; // Baseline title spacing
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
   paint-order: fill markers stroke;
-
-  @include respond-min(lg) {
-    text-align: left;
-    margin-left: -0.04em;
-    margin-bottom: $spacing-xl; // Desktop title spacing
-  }
+  margin-bottom: $spacing-xl;
 }
 
 .section-title__secondary {

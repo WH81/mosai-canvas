@@ -1,18 +1,40 @@
 @use "index" as *;
 
 /* ==========================================================================
-   1. GLOBAL PAGE WRAPPER & OVERFLOW PREVENTION
+   1. SHARED CAROUSEL AND CONTENT WIDTH
    ========================================================================== */
-html, body {
-  overflow-x: hidden;
+
+:root {
+  --carousel-active-width: min(80vw, 1440px);
+}
+
+@include respond-max(md) {
+  :root {
+    --carousel-active-width: 80vw;
+  }
+}
+
+@include respond-max(sm) {
+  :root {
+    --carousel-active-width: 320px;
+  }
+}
+
+/* ==========================================================================
+   2. GLOBAL PAGE WRAPPER
+   ========================================================================== */
+
+html,
+body {
   width: 100%;
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
 }
 
-main, 
-.main-content, 
-.page-container, 
+main,
+.main-content,
+.page-container,
 app-root > div {
   width: 100%;
   max-width: 100%;
@@ -22,11 +44,11 @@ app-root > div {
 }
 
 /* ==========================================================================
-   2. SHARED CONTAINER & SECTION WRAPPERS (GLOBAL GRID & SPACING)
+   3. SHARED CONTENT SECTIONS
    ========================================================================== */
+
 .l-section,
 .section-wrapper,
-section,
 app-about,
 app-tour,
 app-latest-release,
@@ -42,34 +64,33 @@ app-connect,
   position: relative;
   z-index: 1;
   width: 100%;
-  max-width: var(--carousel-active-width, 70vw);
-  margin: 0 auto clamp(7rem, 10vw, 8rem) auto;
+  max-width: var(--carousel-active-width);
+  margin: 0 auto clamp(7rem, 10vw, 8rem);
   box-sizing: border-box;
-
-  @media (max-width: 1024px) {
-    max-width: 90vw;
-  }
 }
 
 /* ==========================================================================
-   3. HERO CAROUSEL
+   4. HERO CAROUSEL
+   Preserve the original component's layout and positioning.
    ========================================================================== */
-.carousel-container, 
-.hero-slider, 
+
+.carousel-container,
+.hero-slider,
 .band-carousel,
 .hero-carousel,
 app-carousel {
   width: 100%;
   max-width: 100%;
-  margin: 0 0 clamp(7rem, 10vw, 16rem) 0;
+  margin: 0 0 clamp(7rem, 10vw, 16rem);
   padding: 0;
   box-sizing: border-box;
   overflow: hidden;
 }
 
 /* ==========================================================================
-   4. GLASS CONTAINERS
+   5. EXISTING GLASS STYLES
    ========================================================================== */
+
 .about-container,
 .tour-section,
 .release-card,
@@ -80,14 +101,20 @@ app-carousel {
   background: var(--glass-bg, rgba(18, 18, 18, 0.65));
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  
   border: 1px solid transparent;
-  background-image: 
-    linear-gradient(rgba(18, 18, 18, 0.85), rgba(18, 18, 18, 0.85)), 
-    linear-gradient(135deg, rgba(241, 235, 217, 0.35) 0%, rgba(255, 255, 255, 0.03) 50%, var(--glow-1, rgba(255, 255, 255, 0.15)) 100%);
+  background-image:
+    linear-gradient(
+      rgba(18, 18, 18, 0.85),
+      rgba(18, 18, 18, 0.85)
+    ),
+    linear-gradient(
+      135deg,
+      rgba(241, 235, 217, 0.35) 0%,
+      rgba(255, 255, 255, 0.03) 50%,
+      var(--glow-1, rgba(255, 255, 255, 0.15)) 100%
+    );
   background-origin: border-box;
   background-clip: padding-box, border-box;
-
   box-shadow: 0 25px 50px -15px rgba(0, 0, 0, 0.8);
 
   @media (max-width: 768px) {
@@ -96,14 +123,15 @@ app-carousel {
 }
 
 /* ==========================================================================
-   5. FRAMELESS SECTIONS
+   6. FRAMELESS SECTIONS
    ========================================================================== */
+
 .ring-tones-container,
 .ringtones-section,
 app-ringtones,
 .join-section,
 app-join,
-.connect-section,
+connect-section,
 app-connect,
 .coming-soon-container,
 app-coming-soon {
@@ -113,9 +141,13 @@ app-coming-soon {
 }
 
 /* ==========================================================================
-   6. GLOBAL TYPOGRAPHY DEFAULTS
+   7. GLOBAL TYPOGRAPHY
    ========================================================================== */
-h1, h2, h3, h4, 
+
+h1,
+h2,
+h3,
+h4,
 .heading-cyan {
   font-family: var(--font-heading, "Cinzel", serif);
   color: var(--primary, var(--text-main, #f1ebd9));
@@ -128,7 +160,8 @@ h1, h2, h3, h4,
   -moz-osx-font-smoothing: grayscale;
 }
 
-p, .description {
+p,
+.description {
   font-family: var(--font-body, "Plus Jakarta Sans", sans-serif);
   font-size: 0.95rem;
   line-height: 1.85;
@@ -137,10 +170,11 @@ p, .description {
 }
 
 /* ==========================================================================
-   7. FOOTER WRAPPER
+   8. FOOTER
    ========================================================================== */
-footer, 
-.site-footer, 
+
+footer,
+.site-footer,
 app-footer {
   width: 100%;
   box-sizing: border-box;

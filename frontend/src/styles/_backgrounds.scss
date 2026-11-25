@@ -128,8 +128,6 @@
 // // }
 
 
-
-
 @use "variables" as *;
 
 /* =================================================
@@ -141,32 +139,29 @@ body {
   background-color: var(--color-bg, #0d0d0d); // Fallback background color
   overflow-x: hidden;
 
-  /* Premium Circular Backdrop Flare */
+  /* Smooth Left-Anchored Ambient Glow (Globally Behind Content) */
   &::before {
     content: "";
     position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 90vw;
-    max-width: 1200px;
-    height: 80vh;
-    max-height: 900px;
-    border-radius: 50%;
-
-    /* Soft radial light glow */
+    inset: 0;
     background: radial-gradient(
-      circle at center,
-      rgba(0, 230, 204, 0.12) 0%,   /* Teal core glow */
-      rgba(99, 102, 241, 0.08) 35%,  /* Accent transition */
-      transparent 70%                /* Fades seamlessly into theme background */
+      ellipse 100% 100% at right center,
+      rgba(177, 177, 177, 0.08) 0%,   
+      rgba(104, 104, 104, 0.03) 50%,  
+      transparent 100%               
     );
-
-    /* Deep blur for organic light diffusion */
-    filter: blur(90px);
-    
-    /* Click-through & z-index isolation */
     pointer-events: none;
-    z-index: 0;
+    z-index: -1; // Forces it safely behind all page content globally
+  }
+
+  /* Ultra-Fine Noise Texture (Globally Behind Content) */
+  &::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    /* Changed opacity from 0.03 to 0.015 for a more delicate touch */
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.015'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: -1;
   }
 }

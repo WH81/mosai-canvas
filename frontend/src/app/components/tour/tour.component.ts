@@ -4,7 +4,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { TourService } from '../../services/tour/tour.service';
 import { Tour } from '../../models/tour/tour.model';
 import { catchError, of } from 'rxjs';
-import { ScrollAnimateDirective } from '../../directives/scroll-animate.directive';
 
 @Component({
   selector: 'app-tour',
@@ -12,7 +11,6 @@ import { ScrollAnimateDirective } from '../../directives/scroll-animate.directiv
   imports: [
     CommonModule,
     HttpClientModule,
-    ScrollAnimateDirective,
   ],
   templateUrl: './tour.component.html',
   styleUrls: ['./tour.component.scss'],
@@ -30,7 +28,6 @@ export class TourComponent implements OnInit {
 
   /**
    * Loads current and upcoming tour dates.
-   *
    * The backend already removes expired dates.
    * We additionally filter and sort here so the
    * component remains defensive.
@@ -61,7 +58,6 @@ export class TourComponent implements OnInit {
 
   /**
    * Returns today's date as YYYY-MM-DD.
-   *
    * Uses local date components rather than
    * toISOString() to prevent timezone shifts.
    */

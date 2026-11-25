@@ -1,9 +1,9 @@
 <section class="band-content" *ngIf="bandData">
-  <!-- ── Hero ─────────────────────────────────────────────────────────── -->
+  <!-- ── Hero (Excluded from animation) ──────────────────────────────── -->
   <div
     class="band-hero"
-    [style.background-image]="
-      bandData.heroImage ? 'url(' + bandData.heroImage + ')' : 'none'
+    [style.--hero-image]="
+      bandData.heroImage ? 'url(' + bandData.heroImage + ')' : null
     "
   >
     <div class="hero-overlay">
@@ -19,57 +19,70 @@
   </div>
 
   <!-- ── About + Streaming Player ─────────────────────────────────────── -->
-  <app-about [band]="bandData" [streamingPlayer]="streamingPlayer"></app-about>
+  <section class="l-section" appScrollAnimate animationType="fade-slide">
+    <app-about [band]="bandData" [streamingPlayer]="streamingPlayer"></app-about>
+  </section>
 
   <!-- ── Members ───────────────────────────────────────────────────────── -->
-  <app-members-list [bandSlug]="bandSlug"></app-members-list>
+  <section class="l-section" appScrollAnimate animationType="fade-slide">
+    <app-members-list [bandSlug]="bandSlug"></app-members-list>
+  </section>
 
   <!-- ── YouTube Videos ───────────────────────────────────────────────── -->
-  <app-youtube-videos
-    *ngIf="bandSlug"
-    [bandSlug]="bandSlug"
-  ></app-youtube-videos>
+  <section class="l-section" appScrollAnimate animationType="fade-slide" *ngIf="bandSlug">
+    <app-youtube-videos
+      [bandSlug]="bandSlug"
+    ></app-youtube-videos>
+  </section>
 
   <!-- ── Releases ──────────────────────────────────────────────────────── -->
-  <app-latest-releases
-    [latestReleases]="latestReleases"
-    [bandSlug]="bandSlug"
-  ></app-latest-releases>
+  <section class="l-section" appScrollAnimate animationType="fade-slide">
+    <app-latest-releases
+      [latestReleases]="latestReleases"
+      [bandSlug]="bandSlug"
+    ></app-latest-releases>
+  </section>
 
-  <app-pre-releases
-    [releases]="preReleases"
-    [bandSlug]="bandSlug"
-  ></app-pre-releases>
+  <section class="l-section" appScrollAnimate animationType="fade-slide">
+    <app-pre-releases
+      [releases]="preReleases"
+      [bandSlug]="bandSlug"
+    ></app-pre-releases>
+  </section>
 
-  <app-past-releases
-    [releases]="pastReleases"
-    [bandSlug]="bandSlug"
-  ></app-past-releases>
+  <section class="l-section" appScrollAnimate animationType="fade-slide">
+    <app-past-releases
+      [releases]="pastReleases"
+      [bandSlug]="bandSlug"
+    ></app-past-releases>
+  </section>
 
    <!-- ── Minimalist Vertical Utility Bar ───────────────────────────────── -->
-   <div class="c-band-link-bar" *ngIf="hasSocialLinks || hasStreamingLinks">
-    <div class="utility-container">
-      
-      <!-- Follow Section -->
-      <div class="utility-section" *ngIf="hasSocialLinks">
-        <span class="utility-label">FOLLOW US</span>
-        <app-social-links
-          [socialLinks]="bandSocials"
-          variant="default"
-          size="large"
-        ></app-social-links>
-      </div>
+   <section class="l-section" appScrollAnimate animationType="fade-slide" *ngIf="hasSocialLinks || hasStreamingLinks">
+     <div class="c-band-link-bar">
+      <div class="utility-container">
+        
+        <!-- Follow Section -->
+        <div class="utility-section" *ngIf="hasSocialLinks">
+          <span class="utility-label">FOLLOW US</span>
+          <app-social-links
+            [socialLinks]="bandSocials"
+            variant="default"
+            size="large"
+          ></app-social-links>
+        </div>
 
-      <!-- Listen Section -->
-      <div class="utility-section" *ngIf="hasStreamingLinks">
-        <span class="utility-label">LISTEN ON</span>
-        <app-streaming-links
-          [streamingLinks]="bandLinks.streaming"
-          variant="default"
-          size="large"
-        ></app-streaming-links>
-      </div>
+        <!-- Listen Section -->
+        <div class="utility-section" *ngIf="hasStreamingLinks">
+          <span class="utility-label">LISTEN ON</span>
+          <app-streaming-links
+            [streamingLinks]="bandLinks.streaming"
+            variant="default"
+            size="large"
+          ></app-streaming-links>
+        </div>
 
+      </div>
     </div>
-  </div>
+  </section>
 </section>

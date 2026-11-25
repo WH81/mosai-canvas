@@ -10,7 +10,6 @@ import {
 import { CommonModule } from '@angular/common';
 import { AboutService } from '../../services/about/about.service';
 import { About } from '../../models/about/about.model';
-import { ScrollAnimateDirective } from '../../directives/scroll-animate.directive';
 import { Band } from '../../models/band/band.model';
 import { StreamingPlayers } from '../../models/streaming-players/streaming-players.model';
 import { StreamingPlayersComponent } from '../streaming-player/streaming-players.component';
@@ -22,7 +21,6 @@ import { StreamingPlayersComponent } from '../streaming-player/streaming-players
   styleUrls: ['./about.component.scss'],
   imports: [
     CommonModule,
-    ScrollAnimateDirective,
     StreamingPlayersComponent,
   ],
 })

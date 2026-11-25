@@ -3,3 +3,8 @@
 @use 'themes';
 @use 'backgrounds';
 @use 'components';
+
+/* Automatically offsets all anchor scroll targets below your floating navigation header */
+[id] {
+    scroll-margin-top: 110px; /* Adjust this height if your header is taller/shorter */
+  }

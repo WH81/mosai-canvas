@@ -1,17 +1,20 @@
+<!-- HERO (Excluded as requested) -->
 <app-mosaicanvas-logo></app-mosaicanvas-logo>
 
+<!-- CAROUSEL (Excluded as requested) -->
 <app-carousel></app-carousel>
 
-<section class="l-section">
+<!-- ALL COMPONENTS BELOW ANIMATED AT THE WRAPPER LEVEL -->
+
+<section class="l-section" appScrollAnimate animationType="fade-slide">
   <app-about></app-about>
 </section>
 
-<section class="l-section">
+<section class="l-section" appScrollAnimate animationType="fade-slide">
   <app-tour></app-tour>
 </section>
 
-<!-- Latest Releases Block -->
-<section class="l-section">
+<section class="l-section" appScrollAnimate animationType="fade-slide">
   <app-latest-releases
     [latestReleases]="latestReleasesList"
     [bandSlug]="homepageBandSlug"
@@ -19,8 +22,7 @@
   </app-latest-releases>
 </section>
 
-<!-- Coming Soon / Pre-Releases Block -->
-<section class="l-section">
+<section class="l-section" appScrollAnimate animationType="fade-slide">
   <app-pre-releases
     [releases]="preReleasesList"
     [bandSlug]="homepageBandSlug"
@@ -28,16 +30,15 @@
   </app-pre-releases>
 </section>
 
-<section class="l-section">
+<section class="l-section" appScrollAnimate animationType="fade-slide">
   <app-ringtones></app-ringtones>
 </section>
 
-<section class="l-section">
+<section class="l-section" appScrollAnimate animationType="fade-slide">
   <app-mailing-list></app-mailing-list>
 </section>
 
-<!-- Get Connected Section -->
-<section class="l-section">
+<section class="l-section" appScrollAnimate animationType="fade-slide">
   <div class="container">
     <div class="get-connected">
       <div class="get-connected__grid">

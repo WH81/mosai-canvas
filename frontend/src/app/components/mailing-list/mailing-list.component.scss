@@ -31,7 +31,6 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: $spacing-xxl;
-    align-items: center;
     position: relative;
     z-index: 3;
 
@@ -45,21 +44,6 @@
   &__content {
     display: flex;
     flex-direction: column;
-    gap: $spacing-md;
-
-    .section-title {
-      margin-bottom: $spacing-sm;
-      text-align: left;
-      line-height: 0.95;
-    }
-  }
-
-  &__divider {
-    width: 3rem;
-    height: 2px;
-    background: linear-gradient(to right, $gradient-start, $gradient-end);
-    border: none;
-    margin: 0;
   }
 
   &__desc {
@@ -68,6 +52,7 @@
     line-height: 1.7;
     color: rgba($text-color-light, 0.85);
     max-width: 440px;
+    padding-bottom: $spacing-sm;
 
     @include respond-max(md) {
       margin: 0;
@@ -133,7 +118,8 @@
       background: transparent;
       border: none;
       border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-      padding: 1.8rem 0 0.6rem;
+      /* Added 0.75rem left padding so typed text isn't hard against the edge */
+      padding: 1.8rem 0.75rem 0.6rem;
       color: $text-color-light;
       font-size: 1rem;
       font-family: $font-family-secondary;
@@ -153,7 +139,7 @@
     label {
       position: absolute;
       top: 1.8rem;
-      left: 0;
+      left: 0.75rem; /* Aligns with input left padding */
       color: rgba(255, 255, 255, 0.35);
       transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
       pointer-events: none;
@@ -167,6 +153,7 @@
     input:focus + label,
     input:not(:placeholder-shown) + label {
       top: 0.25rem;
+      left: 0.75rem; /* Keeps label indented when floating */
       font-size: 0.6rem;
       font-weight: 700;
       color: $gradient-start;
